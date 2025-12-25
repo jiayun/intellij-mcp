@@ -1,117 +1,106 @@
-# IntelliJ Platform Plugin Template
+# IntelliJ MCP
 
-[![Twitter Follow](https://img.shields.io/badge/follow-%40JBPlatform-1DA1F2?logo=twitter)](https://twitter.com/JBPlatform)
-[![Developers Forum](https://img.shields.io/badge/JetBrains%20Platform-Join-blue)][jb:forum]
+Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) for integration with AI coding assistants like Claude Code.
 
-## Plugin template structure
+## Features
 
-A generated project contains the following content structure:
+- **Find Symbol** - Search for class, function, or variable definitions by name
+- **Find References** - Find all usages of a symbol across the project
+- **Get Symbol Info** - Get detailed information (type, documentation, signature)
+- **List File Symbols** - List all symbols in a file with hierarchy
+- **Get Type Hierarchy** - Get inheritance hierarchy for classes
 
+## Supported Languages
+
+| Language | Status |
+|----------|--------|
+| Python   | ✅ Supported |
+| Java     | 🚧 Coming soon |
+| Kotlin   | 🚧 Coming soon |
+
+## Requirements
+
+- JetBrains IDE (IntelliJ IDEA, PyCharm, WebStorm, etc.) version 2025.1+
+- For Python support: Python plugin installed
+
+## Installation
+
+### From JetBrains Marketplace
+
+1. Open **Settings** → **Plugins** → **Marketplace**
+2. Search for "IntelliJ MCP"
+3. Click **Install** → **Restart IDE**
+
+### From Disk
+
+1. Download `intellij-mcp-x.x.x.zip` from [Releases](https://github.com/jiayun/intellij-mcp/releases)
+2. Open **Settings** → **Plugins** → ⚙️ → **Install Plugin from Disk...**
+3. Select the zip file → **Restart IDE**
+
+## Usage
+
+### 1. Start the MCP Server
+
+The server starts automatically when the IDE launches. You can also control it manually:
+
+- **Tools** → **IntelliJ MCP** → **Start MCP Server**
+- **Tools** → **IntelliJ MCP** → **Stop MCP Server**
+
+The server runs on `http://localhost:9876` by default.
+
+### 2. Verify Server
+
+```bash
+# Health check
+curl http://localhost:9876/health
+# Returns: OK
+
+# Server info
+curl http://localhost:9876/info
+# Returns: {"name":"intellij-mcp","version":"1.0.0","languages":["python"]}
 ```
-.
-├── .run/                   Predefined Run/Debug Configurations
-├── build/                  Output build directory
-├── gradle
-│   ├── wrapper/            Gradle Wrapper
-├── src                     Plugin sources
-│   ├── main
-│   │   ├── kotlin/         Kotlin production sources
-│   │   └── resources/      Resources - plugin.xml, icons, messages
-├── .gitignore              Git ignoring rules
-├── build.gradle.kts        Gradle build configuration
-├── gradle.properties       Gradle configuration properties
-├── gradlew                 *nix Gradle Wrapper script
-├── gradlew.bat             Windows Gradle Wrapper script
-├── README.md               README
-└── settings.gradle.kts     Gradle project settings
+
+### 3. Connect Claude Code
+
+```bash
+claude mcp add intellij-mcp --transport http http://localhost:9876/mcp
 ```
 
-In addition to the configuration files, the most crucial part is the `src` directory, which contains our implementation
-and the manifest for our plugin – [plugin.xml][file:plugin.xml].
+Or copy the config from: **Tools** → **IntelliJ MCP** → **Copy Claude Code Config**
 
-> [!NOTE]
-> To use Java in your plugin, create the `/src/main/java` directory.
+## MCP Tools
 
-## Plugin configuration file
+| Tool | Description |
+|------|-------------|
+| `list_projects` | List all open projects in the IDE |
+| `get_supported_languages` | Get list of supported languages |
+| `find_symbol` | Find symbol definition by name |
+| `find_references` | Find all references to a symbol |
+| `get_symbol_info` | Get detailed symbol information |
+| `get_file_symbols` | List all symbols in a file |
+| `get_type_hierarchy` | Get class inheritance hierarchy |
 
-The plugin configuration file is a [plugin.xml][file:plugin.xml] file located in the `src/main/resources/META-INF`
-directory.
-It provides general information about the plugin, its dependencies, extensions, and listeners.
+## Example
 
-You can read more about this file in the [Plugin Configuration File][docs:plugin.xml] section of our documentation.
+```bash
+# Find a symbol
+curl -X POST http://localhost:9876/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"find_symbol","arguments":{"name":"MyClass"}}}'
+```
 
-If you're still not quite sure what this is all about, read our
-introduction: [What is the IntelliJ Platform?][docs:intro]
+## Development
 
-$H$H Predefined Run/Debug configurations
+```bash
+# Build
+./gradlew :core:buildPlugin
 
-Within the default project structure, there is a `.run` directory provided containing predefined *Run/Debug
-configurations* that expose corresponding Gradle tasks:
+# Run IDE with plugin
+./gradlew :core:runIde
 
-| Configuration name | Description                                                                                                                                                                         |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Run Plugin         | Runs [`:runIde`][gh:intellij-platform-gradle-plugin-runIde] IntelliJ Platform Gradle Plugin task. Use the *Debug* icon for plugin debugging.                                        |
-| Run Tests          | Runs [`:test`][gradle:lifecycle-tasks] Gradle task.                                                                                                                                 |
-| Run Verifications  | Runs [`:verifyPlugin`][gh:intellij-platform-gradle-plugin-verifyPlugin] IntelliJ Platform Gradle Plugin task to check the plugin compatibility against the specified IntelliJ IDEs. |
+# Output: core/build/distributions/intellij-mcp-x.x.x.zip
+```
 
-> [!NOTE]
-> You can find the logs from the running task in the `idea.log` tab.
+## License
 
-## Publishing the plugin
-
-> [!TIP]
-> Make sure to follow all guidelines listed in [Publishing a Plugin][docs:publishing] to follow all recommended and
-> required steps.
-
-Releasing a plugin to [JetBrains Marketplace](https://plugins.jetbrains.com) is a straightforward operation that uses
-the `publishPlugin` Gradle task provided by
-the [intellij-platform-gradle-plugin][gh:intellij-platform-gradle-plugin-docs].
-
-You can also upload the plugin to the [JetBrains Plugin Repository](https://plugins.jetbrains.com/plugin/upload)
-manually via UI.
-
-## Useful links
-
-- [IntelliJ Platform SDK Plugin SDK][docs]
-- [IntelliJ Platform Gradle Plugin Documentation][gh:intellij-platform-gradle-plugin-docs]
-- [IntelliJ Platform Explorer][jb:ipe]
-- [JetBrains Marketplace Quality Guidelines][jb:quality-guidelines]
-- [IntelliJ Platform UI Guidelines][jb:ui-guidelines]
-- [JetBrains Marketplace Paid Plugins][jb:paid-plugins]
-- [IntelliJ SDK Code Samples][gh:code-samples]
-
-[docs]: https://plugins.jetbrains.com/docs/intellij
-
-[docs:intro]: https://plugins.jetbrains.com/docs/intellij/intellij-platform.html?from=IJPluginTemplate
-
-[docs:plugin.xml]: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html?from=IJPluginTemplate
-
-[docs:publishing]: https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate
-
-[file:plugin.xml]: ./src/main/resources/META-INF/plugin.xml
-
-[gh:code-samples]: https://github.com/JetBrains/intellij-sdk-code-samples
-
-[gh:intellij-platform-gradle-plugin]: https://github.com/JetBrains/intellij-platform-gradle-plugin
-
-[gh:intellij-platform-gradle-plugin-docs]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
-
-[gh:intellij-platform-gradle-plugin-runIde]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-tasks.html#runIde
-
-[gh:intellij-platform-gradle-plugin-verifyPlugin]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-tasks.html#verifyPlugin
-
-[gradle:lifecycle-tasks]: https://docs.gradle.org/current/userguide/java_plugin.html#lifecycle_tasks
-
-[jb:github]: https://github.com/JetBrains/.github/blob/main/profile/README.md
-
-[jb:forum]: https://platform.jetbrains.com/
-
-[jb:quality-guidelines]: https://plugins.jetbrains.com/docs/marketplace/quality-guidelines.html
-
-[jb:paid-plugins]: https://plugins.jetbrains.com/docs/marketplace/paid-plugins-marketplace.html
-
-[jb:quality-guidelines]: https://plugins.jetbrains.com/docs/marketplace/quality-guidelines.html
-
-[jb:ipe]: https://jb.gg/ipe
-
-[jb:ui-guidelines]: https://jetbrains.github.io/ui
+[MIT](LICENSE)
