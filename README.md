@@ -1,4 +1,4 @@
-# IntelliJ MCP
+# Code Intelligence MCP
 
 Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) for integration with AI coding assistants like Claude Code.
 
@@ -28,7 +28,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 ### From JetBrains Marketplace
 
 1. Open **Settings** → **Plugins** → **Marketplace**
-2. Search for "IntelliJ MCP"
+2. Search for "Code Intelligence MCP"
 3. Click **Install** → **Restart IDE**
 
 ### From Disk
@@ -43,8 +43,8 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 
 The server starts automatically when the IDE launches. You can also control it manually:
 
-- **Tools** → **IntelliJ MCP** → **Start MCP Server**
-- **Tools** → **IntelliJ MCP** → **Stop MCP Server**
+- **Tools** → **Code Intelligence MCP** → **Start MCP Server**
+- **Tools** → **Code Intelligence MCP** → **Stop MCP Server**
 
 The server runs on `http://localhost:9876` by default.
 
@@ -66,14 +66,14 @@ curl http://localhost:9876/info
 claude mcp add intellij-mcp --transport http http://localhost:9876/mcp
 ```
 
-Or copy the config from: **Tools** → **IntelliJ MCP** → **Copy Claude Code Config**
+Or copy the config from: **Tools** → **Code Intelligence MCP** → **Copy Claude Code Config**
 
 ### 4. Configure CLAUDE.md (Recommended)
 
 Add the following to your project's `CLAUDE.md` or `~/.claude/CLAUDE.md` to help Claude Code leverage the IDE's code analysis:
 
 ```markdown
-## IntelliJ MCP Integration
+## Code Intelligence MCP Integration
 
 When working with this Python codebase, prefer using intellij-mcp tools for:
 

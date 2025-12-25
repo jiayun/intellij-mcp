@@ -24,7 +24,7 @@ class StartServerAction : AnAction() {
 
     private fun notify(e: AnActionEvent, message: String, type: NotificationType) {
         NotificationGroupManager.getInstance()
-            .getNotificationGroup("IntelliJ MCP")
+            .getNotificationGroup("Code Intelligence MCP")
             .createNotification(message, type)
             .notify(e.project)
     }

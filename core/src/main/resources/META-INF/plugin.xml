@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>info.jiayun.intellij-mcp</id>
-    <name>IntelliJ MCP</name>
+    <name>Code Intelligence MCP</name>
     <vendor url="https://github.com/jiayun/intellij-mcp">Jiayun</vendor>
 
     <description><![CDATA[
@@ -58,12 +58,12 @@
 
         <!-- Notification -->
         <notificationGroup
-            id="IntelliJ MCP"
+            id="Code Intelligence MCP"
             displayType="BALLOON"/>
     </extensions>
 
     <actions>
-        <group id="IntellijMcp.Menu" text="IntelliJ MCP" popup="true">
+        <group id="IntellijMcp.Menu" text="Code Intelligence MCP" popup="true">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
 
             <action id="IntellijMcp.StartServer"

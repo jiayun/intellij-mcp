@@ -41,7 +41,7 @@ tasks {
 intellijPlatform {
     pluginConfiguration {
         id = "info.jiayun.intellij-mcp"
-        name = "IntelliJ MCP"
+        name = "Code Intelligence MCP"
         version = project.version.toString()
 
         description = """

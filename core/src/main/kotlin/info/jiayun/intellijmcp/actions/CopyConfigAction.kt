@@ -17,7 +17,7 @@ class CopyConfigAction : AnAction() {
             .setContents(StringSelection(config), null)
 
         NotificationGroupManager.getInstance()
-            .getNotificationGroup("IntelliJ MCP")
+            .getNotificationGroup("Code Intelligence MCP")
             .createNotification("Claude Code config copied!", NotificationType.INFORMATION)
             .notify(e.project)
     }
