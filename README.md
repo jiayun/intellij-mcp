@@ -87,6 +87,8 @@ When working with this Python codebase, prefer using intellij-mcp tools for:
 
 - **Exploring inheritance** - Use `get_type_hierarchy` to understand class inheritance relationships.
 
+**Important:** Line and column numbers are **0-based**. If you want to query line 16 in an editor, pass `line=15`.
+
 Note: intellij-mcp requires the JetBrains IDE to be running with the project open.
 ```
 
