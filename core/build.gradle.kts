@@ -45,8 +45,25 @@ intellijPlatform {
         version = project.version.toString()
 
         description = """
-            Exposes IDE code analysis capabilities via MCP (Model Context Protocol)
-            for integration with AI coding assistants like Claude Code.
+            <p>Expose JetBrains IDE code analysis capabilities via
+            <a href="https://modelcontextprotocol.io/">MCP (Model Context Protocol)</a>
+            for integration with AI coding assistants like Claude Code.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><b>Find Symbol</b> - Search for class, function, or variable definitions by name</li>
+                <li><b>Find References</b> - Find all usages of a symbol across the project</li>
+                <li><b>Get Symbol Info</b> - Get type information, documentation, and signatures</li>
+                <li><b>List File Symbols</b> - List all symbols in a file with hierarchy</li>
+                <li><b>Get Type Hierarchy</b> - Get inheritance hierarchy for classes</li>
+            </ul>
+
+            <h3>Usage</h3>
+            <ol>
+                <li>Install the plugin and restart IDE</li>
+                <li>MCP server starts automatically on port 9876</li>
+                <li>Connect Claude Code: <code>claude mcp add intellij-mcp --transport http http://localhost:9876/mcp</code></li>
+            </ol>
 
             <h3>Supported Languages</h3>
             <ul>
@@ -54,6 +71,8 @@ intellijPlatform {
                 <li>Java - coming soon</li>
                 <li>Kotlin - coming soon</li>
             </ul>
+
+            <p>Source code: <a href="https://github.com/jiayun/intellij-mcp">GitHub</a></p>
         """.trimIndent()
 
         vendor {
