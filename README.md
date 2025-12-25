@@ -68,6 +68,28 @@ claude mcp add intellij-mcp --transport http http://localhost:9876/mcp
 
 Or copy the config from: **Tools** → **IntelliJ MCP** → **Copy Claude Code Config**
 
+### 4. Configure CLAUDE.md (Recommended)
+
+Add the following to your project's `CLAUDE.md` or `~/.claude/CLAUDE.md` to help Claude Code leverage the IDE's code analysis:
+
+```markdown
+## IntelliJ MCP Integration
+
+When working with this Python codebase, prefer using intellij-mcp tools for:
+
+- **Finding symbol definitions** - Use `find_symbol` instead of grep/ripgrep when looking for class, function, or variable definitions. The IDE understands the language structure and provides accurate results.
+
+- **Finding references** - Use `find_references` to find all usages of a symbol. This is more accurate than text search as it understands scope and imports.
+
+- **Getting symbol details** - Use `get_symbol_info` to get type information, documentation, and function signatures for a symbol at a specific location.
+
+- **Understanding code structure** - Use `get_file_symbols` to get an overview of a file's classes, methods, and functions with their signatures.
+
+- **Exploring inheritance** - Use `get_type_hierarchy` to understand class inheritance relationships.
+
+Note: intellij-mcp requires the JetBrains IDE to be running with the project open.
+```
+
 ## MCP Tools
 
 | Tool | Description |
