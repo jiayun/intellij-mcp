@@ -1,0 +1,7 @@
+<idea-plugin>
+    <!-- Python language adapter - loaded only when Python plugin is available -->
+    <extensions defaultExtensionNs="info.jiayun.intellij-mcp">
+        <languageAdapter
+            implementation="info.jiayun.intellijmcp.python.PythonLanguageAdapter"/>
+    </extensions>
+</idea-plugin>

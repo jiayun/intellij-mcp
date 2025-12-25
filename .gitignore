@@ -44,3 +44,4 @@ bin/
 
 ### IntelliJ Platform Gradle Plugin ###
 .intellijPlatform/
+.claude/

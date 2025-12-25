@@ -1,0 +1,84 @@
+<idea-plugin>
+    <id>info.jiayun.intellij-mcp</id>
+    <name>IntelliJ MCP</name>
+    <vendor url="https://github.com/jiayun/intellij-mcp">Jiayun</vendor>
+
+    <description><![CDATA[
+        <p>Exposes IDE code analysis capabilities via MCP (Model Context Protocol)
+        for integration with AI coding assistants like Claude Code.</p>
+
+        <h3>Features</h3>
+        <ul>
+            <li>Find symbol definitions across the project</li>
+            <li>Find all references to a symbol</li>
+            <li>Get detailed symbol information (type, documentation, signature)</li>
+            <li>List all symbols in a file</li>
+            <li>Get type hierarchy (inheritance)</li>
+        </ul>
+
+        <h3>Language Support</h3>
+        <ul>
+            <li>Python (requires Python plugin installed)</li>
+            <li>Java - coming soon</li>
+            <li>Kotlin - coming soon</li>
+        </ul>
+    ]]></description>
+
+    <!-- Platform dependency -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Optional Python support - enabled when Python plugin is installed -->
+    <depends optional="true" config-file="python-support.xml">PythonCore</depends>
+
+    <!-- Extension Point: Let language modules register adapters -->
+    <extensionPoints>
+        <extensionPoint
+            name="languageAdapter"
+            interface="info.jiayun.intellijmcp.api.LanguageAdapter"
+            dynamic="true"/>
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Application level services -->
+        <applicationService
+            serviceImplementation="info.jiayun.intellijmcp.api.LanguageAdapterRegistry"/>
+        <applicationService
+            serviceImplementation="info.jiayun.intellijmcp.mcp.McpServer"/>
+        <applicationService
+            serviceImplementation="info.jiayun.intellijmcp.settings.PluginSettings"/>
+
+        <!-- Status bar -->
+        <statusBarWidgetFactory
+            id="IntellijMcpStatus"
+            implementation="info.jiayun.intellijmcp.ui.McpStatusWidgetFactory"/>
+
+        <!-- Startup activity -->
+        <postStartupActivity
+            implementation="info.jiayun.intellijmcp.McpStartupActivity"/>
+
+        <!-- Notification -->
+        <notificationGroup
+            id="IntelliJ MCP"
+            displayType="BALLOON"/>
+    </extensions>
+
+    <actions>
+        <group id="IntellijMcp.Menu" text="IntelliJ MCP" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+
+            <action id="IntellijMcp.StartServer"
+                    class="info.jiayun.intellijmcp.actions.StartServerAction"
+                    text="Start MCP Server"/>
+
+            <action id="IntellijMcp.StopServer"
+                    class="info.jiayun.intellijmcp.actions.StopServerAction"
+                    text="Stop MCP Server"/>
+
+            <separator/>
+
+            <action id="IntellijMcp.CopyConfig"
+                    class="info.jiayun.intellijmcp.actions.CopyConfigAction"
+                    text="Copy Claude Code Config"/>
+        </group>
+    </actions>
+</idea-plugin>

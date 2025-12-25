@@ -1,56 +1,31 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.1.20"
-    id("org.jetbrains.intellij.platform") version "2.10.2"
-    id("org.jetbrains.kotlin.plugin.compose") version "2.1.20"
+    id("org.jetbrains.kotlin.jvm") version "2.1.20" apply false
+    id("org.jetbrains.intellij.platform") version "2.10.2" apply false
 }
 
-group = "info.jiayun"
-version = "1.0-SNAPSHOT"
+allprojects {
+    group = "info.jiayun.intellijmcp"
+    version = "1.0.0"
 
-repositories {
-    mavenCentral()
-    intellijPlatform {
-        defaultRepositories()
+    repositories {
+        mavenCentral()
     }
 }
 
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
-dependencies {
-    intellijPlatform {
-        intellijIdea("2025.2.4")
-        testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
 
-        // Add plugin dependencies for compilation here:
-
-        composeUI()
-
-        compatiblePlugin("PythonCore")
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-}
 
-intellijPlatform {
-    pluginConfiguration {
-        ideaVersion {
-            sinceBuild = "252.25557"
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "21"
+            freeCompilerArgs = listOf("-Xjsr305=strict")
         }
-
-        changeNotes = """
-            Initial version
-        """.trimIndent()
-    }
-}
-
-tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "21"
-        targetCompatibility = "21"
-    }
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
     }
 }
