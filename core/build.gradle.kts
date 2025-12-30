@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+
 plugins {
     id("org.jetbrains.intellij.platform")
 }
@@ -11,9 +13,11 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        // Use PyCharm Community for compilation (has bundled PythonCore)
-        pycharmCommunity("2025.1.3")
-        bundledPlugin("PythonCore")
+        // IntelliJ IDEA Ultimate 2025.3.1 (has Java bundled)
+        intellijIdeaUltimate("2025.3.1")
+        bundledPlugin("com.intellij.java")
+        // Python Community (provides base Python PSI classes)
+        plugin("PythonCore:253.29346.138")
 
         pluginVerifier()
         zipSigner()
@@ -68,7 +72,7 @@ intellijPlatform {
             <h3>Supported Languages</h3>
             <ul>
                 <li>Python (requires Python plugin)</li>
-                <li>Java - coming soon</li>
+                <li>Java (requires Java plugin)</li>
                 <li>Kotlin - coming soon</li>
             </ul>
 
@@ -86,11 +90,27 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.1.0</h3>
+            <ul>
+                <li><b>New:</b> Java language support - all features now work with Java code in IntelliJ IDEA</li>
+            </ul>
+
             <h3>1.0.1</h3>
             <ul>
                 <li><b>Breaking:</b> Line/column numbers are now 1-based (matching editor display) instead of 0-based</li>
                 <li>Add <code>nameLocation</code> field to symbol info - provides precise location of function/class name for accurate reference lookups</li>
             </ul>
         """.trimIndent()
+    }
+}
+
+intellijPlatformTesting {
+    runIde {
+        // Run with PyCharm Professional
+        // Note: IntelliJ IDEA Community and PyCharm Community are no longer published since 2025.3
+        register("runPyCharm") {
+            type = IntelliJPlatformType.PyCharmProfessional
+            version = "2025.3.1"
+        }
     }
 }

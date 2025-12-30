@@ -2,14 +2,14 @@ package info.jiayun.intellijmcp.mcp
 
 data class McpRequest(
     val jsonrpc: String = "2.0",
-    val id: Any,
+    val id: Any?,
     val method: String,
     val params: Map<String, Any?>? = null
 )
 
 data class McpResponse(
     val jsonrpc: String = "2.0",
-    val id: Any,
+    val id: Any?,
     val result: Any? = null,
     val error: McpError? = null
 )

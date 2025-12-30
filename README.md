@@ -15,7 +15,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 | Language | Status |
 |----------|--------|
 | Python   | ✅ Supported |
-| Java     | 🚧 Coming soon |
+| Java     | ✅ Supported |
 | Kotlin   | 🚧 Coming soon |
 
 ## Requirements
@@ -121,10 +121,17 @@ curl -X POST http://localhost:9876/mcp \
 # Build
 ./gradlew :core:buildPlugin
 
-# Run IDE with plugin
+# Output: core/build/distributions/intellij-mcp-x.x.x.zip
+```
+
+### Run IDE with Plugin
+
+```bash
+# IntelliJ IDEA Ultimate (default)
 ./gradlew :core:runIde
 
-# Output: core/build/distributions/intellij-mcp-x.x.x.zip
+# PyCharm Professional
+./gradlew :core:runPyCharm
 ```
 
 ## License

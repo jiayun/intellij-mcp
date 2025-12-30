@@ -25,7 +25,7 @@ Output: `core/build/distributions/intellij-mcp-x.x.x.zip`
 
 ### Multi-module Gradle Project
 - Root project configures Kotlin 2.1.20 and Java 21
-- `:core` module contains all plugin code, depends on PyCharm Community 2025.1+ and Ktor for HTTP server
+- `:core` module contains all plugin code, uses IntelliJ Platform Gradle Plugin 2.x
 
 ### Key Components
 
@@ -33,7 +33,8 @@ Output: `core/build/distributions/intellij-mcp-x.x.x.zip`
 - Extension point pattern for language support
 - Each language implements `LanguageAdapter` interface with `findSymbol`, `findReferences`, `getSymbolInfo`, `getFileSymbols`, `getTypeHierarchy`
 - Registered via `plugin.xml` extension point `info.jiayun.intellij-mcp.languageAdapter`
-- Python adapter in `python/PythonLanguageAdapter.kt` uses PyCharm's Python PSI APIs (PyClassNameIndex, PyFunctionNameIndex, etc.)
+- Python adapter in `python/PythonLanguageAdapter.kt` uses Python PSI APIs (PyClass, PyFunction, etc.)
+- Java adapter in `java/JavaLanguageAdapter.kt` uses Java PSI APIs (PsiClass, PsiMethod, AllClassesSearch, etc.)
 
 **MCP Server** (`mcp/McpServer.kt`)
 - Ktor Netty server exposing JSON-RPC 2.0 endpoints
@@ -56,11 +57,52 @@ Output: `core/build/distributions/intellij-mcp-x.x.x.zip`
 
 - **1-based line/column numbers**: All position parameters use 1-based indexing (matching editor display)
 - Python support requires PythonCore plugin (bundled in PyCharm, optional in IntelliJ)
+- Java support requires Java plugin (bundled in IntelliJ IDEA, not available in PyCharm Community)
 - IDE must be running with project open for MCP tools to work
 - Index must be ready (not in "dumb mode") for symbol operations
+
+## Build Configuration
+
+### Dependencies Setup
+
+```kotlin
+intellijPlatform {
+    intellijIdeaUltimate("2025.3")
+    bundledPlugin("com.intellij.java")
+    plugin("PythonCore:253.29346.138")
+}
+```
+
+### Why This Configuration
+
+Building requires both Java and Python PSI libraries. Key learnings:
+
+| Platform | Java | Python | Notes |
+|----------|------|--------|-------|
+| PyCharm Community | ❌ | ✅ bundled | No Java PSI |
+| PyCharm Professional | ❌ | ✅ bundled | Limited Java, not full PSI |
+| IntelliJ IDEA Community | ✅ bundled | ❌ | Python not bundled |
+| IntelliJ IDEA Ultimate | ✅ bundled | ❌ | Python available via marketplace |
+
+**Solution**: Use IntelliJ IDEA Ultimate + `PythonCore` from marketplace.
+
+### PythonCore vs Pythonid
+
+- **PythonCore** (plugin ID: `PythonCore`) - Community Python plugin, contains base PSI classes (PyClass, PyFunction, PyNamedParameter, etc.)
+- **Pythonid** (plugin ID: `Pythonid`) - Professional Python plugin, depends on PythonCore but doesn't include the base classes
+
+Always use `PythonCore` for compilation - it provides the actual PSI implementation.
+
+### Updating Plugin Versions
+
+When updating the IntelliJ Platform version:
+1. Change `intellijIdeaUltimate("version")`
+2. Update `plugin("PythonCore:matching-version")` - find versions at https://plugins.jetbrains.com/plugin/631-python/versions
+3. Ensure `ideaVersion.sinceBuild` and `untilBuild` cover the target range
 
 ## Adding Language Support
 
 1. Create adapter class implementing `LanguageAdapter` in `<lang>/<Lang>LanguageAdapter.kt`
 2. Register in new config file (e.g., `<lang>-support.xml`)
 3. Add optional dependency in `plugin.xml` with config-file attribute
+4. Add required PSI dependencies in `build.gradle.kts`

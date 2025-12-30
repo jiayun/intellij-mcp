@@ -1,0 +1,7 @@
+<idea-plugin>
+    <!-- Java language adapter - loaded only when Java plugin is available -->
+    <extensions defaultExtensionNs="info.jiayun.intellij-mcp">
+        <languageAdapter
+            implementation="info.jiayun.intellijmcp.java.JavaLanguageAdapter"/>
+    </extensions>
+</idea-plugin>

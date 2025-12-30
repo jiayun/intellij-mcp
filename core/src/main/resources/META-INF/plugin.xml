@@ -18,8 +18,8 @@
 
         <h3>Language Support</h3>
         <ul>
-            <li>Python (requires Python plugin installed)</li>
-            <li>Java - coming soon</li>
+            <li>Python (requires Python plugin)</li>
+            <li>Java (requires Java plugin)</li>
             <li>Kotlin - coming soon</li>
         </ul>
     ]]></description>
@@ -29,6 +29,9 @@
 
     <!-- Optional Python support - enabled when Python plugin is installed -->
     <depends optional="true" config-file="python-support.xml">PythonCore</depends>
+
+    <!-- Optional Java support - enabled when Java plugin is installed -->
+    <depends optional="true" config-file="java-support.xml">com.intellij.modules.java</depends>
 
     <!-- Extension Point: Let language modules register adapters -->
     <extensionPoints>
