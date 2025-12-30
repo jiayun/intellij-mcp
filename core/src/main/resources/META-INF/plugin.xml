@@ -20,7 +20,7 @@
         <ul>
             <li>Python (requires Python plugin)</li>
             <li>Java (requires Java plugin)</li>
-            <li>Kotlin - coming soon</li>
+            <li>Kotlin (requires Kotlin plugin)</li>
         </ul>
     ]]></description>
 
@@ -32,6 +32,9 @@
 
     <!-- Optional Java support - enabled when Java plugin is installed -->
     <depends optional="true" config-file="java-support.xml">com.intellij.modules.java</depends>
+
+    <!-- Optional Kotlin support - enabled when Kotlin plugin is installed -->
+    <depends optional="true" config-file="kotlin-support.xml">org.jetbrains.kotlin</depends>
 
     <!-- Extension Point: Let language modules register adapters -->
     <extensionPoints>

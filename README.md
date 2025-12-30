@@ -16,12 +16,14 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 |----------|--------|
 | Python   | ✅ Supported |
 | Java     | ✅ Supported |
-| Kotlin   | 🚧 Coming soon |
+| Kotlin   | ✅ Supported |
 
 ## Requirements
 
 - JetBrains IDE (IntelliJ IDEA, PyCharm, WebStorm, etc.) version 2025.1+
 - For Python support: Python plugin installed
+- For Java support: Java plugin installed (bundled in IntelliJ IDEA)
+- For Kotlin support: Kotlin plugin installed (bundled in IntelliJ IDEA)
 
 ## Installation
 

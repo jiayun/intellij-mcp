@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.1.20" apply false
+    id("org.jetbrains.kotlin.jvm") version "2.1.21" apply false
     id("org.jetbrains.intellij.platform") version "2.10.2" apply false
 }
 
@@ -25,7 +25,7 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             jvmTarget = "21"
-            freeCompilerArgs = listOf("-Xjsr305=strict")
+            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xskip-metadata-version-check")
         }
     }
 }

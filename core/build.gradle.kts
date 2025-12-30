@@ -16,6 +16,7 @@ dependencies {
         // IntelliJ IDEA Ultimate 2025.3.1 (has Java bundled)
         intellijIdeaUltimate("2025.3.1")
         bundledPlugin("com.intellij.java")
+        bundledPlugin("org.jetbrains.kotlin")
         // Python Community (provides base Python PSI classes)
         plugin("PythonCore:253.29346.138")
 
@@ -26,11 +27,19 @@ dependencies {
     // JSON processing
     implementation("com.google.code.gson:gson:2.11.0")
 
-    // HTTP Server
-    implementation("io.ktor:ktor-server-core:2.3.12")
-    implementation("io.ktor:ktor-server-netty:2.3.12")
-    implementation("io.ktor:ktor-server-content-negotiation:2.3.12")
-    implementation("io.ktor:ktor-serialization-gson:2.3.12")
+    // HTTP Server - exclude slf4j to avoid conflict with IntelliJ's SLF4J
+    implementation("io.ktor:ktor-server-core:2.3.12") {
+        exclude(group = "org.slf4j")
+    }
+    implementation("io.ktor:ktor-server-netty:2.3.12") {
+        exclude(group = "org.slf4j")
+    }
+    implementation("io.ktor:ktor-server-content-negotiation:2.3.12") {
+        exclude(group = "org.slf4j")
+    }
+    implementation("io.ktor:ktor-serialization-gson:2.3.12") {
+        exclude(group = "org.slf4j")
+    }
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
@@ -73,7 +82,7 @@ intellijPlatform {
             <ul>
                 <li>Python (requires Python plugin)</li>
                 <li>Java (requires Java plugin)</li>
-                <li>Kotlin - coming soon</li>
+                <li>Kotlin (requires Kotlin plugin)</li>
             </ul>
 
             <p>Source code: <a href="https://github.com/jiayun/intellij-mcp">GitHub</a></p>
@@ -92,7 +101,8 @@ intellijPlatform {
         changeNotes = """
             <h3>1.1.0</h3>
             <ul>
-                <li><b>New:</b> Java language support - all features now work with Java code in IntelliJ IDEA</li>
+                <li><b>New:</b> Java language support - all features now work with Java code</li>
+                <li><b>New:</b> Kotlin language support - full support for Kotlin code analysis</li>
             </ul>
 
             <h3>1.0.1</h3>

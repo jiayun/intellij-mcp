@@ -1,0 +1,12 @@
+<idea-plugin>
+    <!-- Declare K2 mode support for IntelliJ 2025.3+ -->
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true"/>
+    </extensions>
+
+    <!-- Kotlin language adapter - loaded only when Kotlin plugin is available -->
+    <extensions defaultExtensionNs="info.jiayun.intellij-mcp">
+        <languageAdapter
+            implementation="info.jiayun.intellijmcp.kotlin.KotlinLanguageAdapter"/>
+    </extensions>
+</idea-plugin>
