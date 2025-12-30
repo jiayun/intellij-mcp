@@ -27,8 +27,10 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 
 ### From JetBrains Marketplace
 
+[![JetBrains Plugin](https://img.shields.io/jetbrains/plugin/v/29509-code-intelligence-mcp.svg)](https://plugins.jetbrains.com/plugin/29509-code-intelligence-mcp)
+
 1. Open **Settings** → **Plugins** → **Marketplace**
-2. Search for "Code Intelligence MCP"
+2. Search for "[Code Intelligence MCP](https://plugins.jetbrains.com/plugin/29509-code-intelligence-mcp)"
 3. Click **Install** → **Restart IDE**
 
 ### From Disk
