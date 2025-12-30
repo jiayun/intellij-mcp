@@ -322,8 +322,8 @@ package info.jiayun.intellijmcp.api
  */
 data class LocationInfo(
     val filePath: String,
-    val line: Int,              // 0-based
-    val column: Int,            // 0-based
+    val line: Int,              // 1-based
+    val column: Int,            // 1-based
     val endLine: Int? = null,
     val endColumn: Int? = null,
     val preview: String? = null
@@ -1036,11 +1036,11 @@ class McpServer {
                         ),
                         "line" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based line number"
+                            "description" to "1-based line number"
                         ),
                         "column" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based column number"
+                            "description" to "1-based column number"
                         ),
                         "projectPath" to mapOf(
                             "type" to "string",
@@ -1062,11 +1062,11 @@ class McpServer {
                         ),
                         "line" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based line number"
+                            "description" to "1-based line number"
                         ),
                         "column" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based column number"
+                            "description" to "1-based column number"
                         ),
                         "projectPath" to mapOf(
                             "type" to "string",

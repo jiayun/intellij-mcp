@@ -96,11 +96,11 @@ class McpServer {
                         ),
                         "line" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based line number"
+                            "description" to "1-based line number"
                         ),
                         "column" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based column number"
+                            "description" to "1-based column number"
                         ),
                         "projectPath" to mapOf(
                             "type" to "string",
@@ -122,11 +122,11 @@ class McpServer {
                         ),
                         "line" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based line number"
+                            "description" to "1-based line number"
                         ),
                         "column" to mapOf(
                             "type" to "integer",
-                            "description" to "0-based column number"
+                            "description" to "1-based column number"
                         ),
                         "projectPath" to mapOf(
                             "type" to "string",

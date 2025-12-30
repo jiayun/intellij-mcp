@@ -5,8 +5,8 @@ package info.jiayun.intellijmcp.api
  */
 data class LocationInfo(
     val filePath: String,
-    val line: Int,              // 0-based
-    val column: Int,            // 0-based
+    val line: Int,              // 1-based (MCP API)
+    val column: Int,            // 1-based (MCP API)
     val endLine: Int? = null,
     val endColumn: Int? = null,
     val preview: String? = null

@@ -54,7 +54,7 @@ Output: `core/build/distributions/intellij-mcp-x.x.x.zip`
 
 ### Important Notes
 
-- **0-based line/column numbers**: All position parameters use 0-based indexing (editor line 1 = API line 0)
+- **1-based line/column numbers**: All position parameters use 1-based indexing (matching editor display)
 - Python support requires PythonCore plugin (bundled in PyCharm, optional in IntelliJ)
 - IDE must be running with project open for MCP tools to work
 - Index must be ready (not in "dumb mode") for symbol operations

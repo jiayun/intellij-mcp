@@ -51,7 +51,7 @@ class McpToolExecutor {
         return ReadAction.compute<List<SymbolInfo>, Exception> {
             adapters.flatMap { adapter ->
                 adapter.findSymbol(project, name, symbolKind)
-            }
+            }.map { it.toOneBased() }  // Convert to 1-based
         }
     }
 
@@ -66,11 +66,16 @@ class McpToolExecutor {
 
         val adapter = getAdapterForFile(filePath)
 
+        // Convert from 1-based (MCP API) to 0-based (internal)
+        val line0 = line - 1
+        val column0 = column - 1
+
         return ReadAction.compute<List<LocationInfo>, Exception> {
-            val offset = adapter.getOffset(project, filePath, line, column)
+            val offset = adapter.getOffset(project, filePath, line0, column0)
                 ?: throw InvalidPositionException("Invalid position: $filePath:$line:$column")
 
             adapter.findReferences(project, filePath, offset)
+                .map { it.toOneBased() }  // Convert back to 1-based
         }
     }
 
@@ -85,12 +90,17 @@ class McpToolExecutor {
 
         val adapter = getAdapterForFile(filePath)
 
+        // Convert from 1-based (MCP API) to 0-based (internal)
+        val line0 = line - 1
+        val column0 = column - 1
+
         return ReadAction.compute<SymbolInfo, Exception> {
-            val offset = adapter.getOffset(project, filePath, line, column)
+            val offset = adapter.getOffset(project, filePath, line0, column0)
                 ?: throw InvalidPositionException("Invalid position: $filePath:$line:$column")
 
-            adapter.getSymbolInfo(project, filePath, offset)
-                ?: throw SymbolNotFoundException("No symbol found at $filePath:$line:$column")
+            (adapter.getSymbolInfo(project, filePath, offset)
+                ?: throw SymbolNotFoundException("No symbol found at $filePath:$line:$column"))
+                .toOneBased()  // Convert back to 1-based
         }
     }
 
@@ -105,6 +115,7 @@ class McpToolExecutor {
 
         return ReadAction.compute<FileSymbols, Exception> {
             adapter.getFileSymbols(project, filePath)
+                .toOneBased()  // Convert to 1-based
         }
     }
 
@@ -123,9 +134,10 @@ class McpToolExecutor {
         }
 
         return ReadAction.compute<TypeHierarchy, Exception> {
-            adapters.firstNotNullOfOrNull { adapter ->
+            (adapters.firstNotNullOfOrNull { adapter ->
                 adapter.getTypeHierarchy(project, typeName)
-            } ?: throw SymbolNotFoundException("Type not found: $typeName")
+            } ?: throw SymbolNotFoundException("Type not found: $typeName"))
+                .toOneBased()  // Convert to 1-based
         }
     }
 
@@ -160,3 +172,35 @@ class UnsupportedLanguageException(message: String) : Exception(message)
 class InvalidPositionException(message: String) : Exception(message)
 class SymbolNotFoundException(message: String) : Exception(message)
 class IndexNotReadyException(message: String) : Exception(message)
+
+// Extension functions for 0-based to 1-based conversion (MCP API uses 1-based)
+private fun LocationInfo.toOneBased() = copy(
+    line = line + 1,
+    column = column + 1,
+    endLine = endLine?.let { it + 1 },
+    endColumn = endColumn?.let { it + 1 }
+)
+
+private fun SymbolInfo.toOneBased() = copy(
+    location = location?.toOneBased(),
+    nameLocation = nameLocation?.toOneBased()
+)
+
+private fun SymbolNode.toOneBased(): SymbolNode = copy(
+    symbol = symbol.toOneBased(),
+    children = children.map { it.toOneBased() }
+)
+
+private fun FileSymbols.toOneBased() = copy(
+    imports = imports.map { it.copy(location = it.location.toOneBased()) },
+    symbols = symbols.map { it.toOneBased() }
+)
+
+private fun TypeRef.toOneBased() = copy(
+    location = location?.toOneBased()
+)
+
+private fun TypeHierarchy.toOneBased() = copy(
+    superTypes = superTypes.map { it.toOneBased() },
+    subTypes = subTypes.map { it.toOneBased() }
+)

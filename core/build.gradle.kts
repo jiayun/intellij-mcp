@@ -88,7 +88,8 @@ intellijPlatform {
         changeNotes = """
             <h3>1.0.1</h3>
             <ul>
-                <li>Add <code>nameLocation</code> field to symbol info - provides precise location of function/class name for accurate reference lookups (decorators no longer affect positioning)</li>
+                <li><b>Breaking:</b> Line/column numbers are now 1-based (matching editor display) instead of 0-based</li>
+                <li>Add <code>nameLocation</code> field to symbol info - provides precise location of function/class name for accurate reference lookups</li>
             </ul>
         """.trimIndent()
     }
