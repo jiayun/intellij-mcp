@@ -84,5 +84,12 @@ intellijPlatform {
             sinceBuild = "251"
             untilBuild = "253.*"
         }
+
+        changeNotes = """
+            <h3>1.0.1</h3>
+            <ul>
+                <li>Add <code>nameLocation</code> field to symbol info - provides precise location of function/class name for accurate reference lookups (decorators no longer affect positioning)</li>
+            </ul>
+        """.trimIndent()
     }
 }
