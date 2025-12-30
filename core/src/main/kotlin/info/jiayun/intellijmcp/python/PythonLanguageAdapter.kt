@@ -277,6 +277,7 @@ class PythonLanguageAdapter : LanguageAdapter {
             qualifiedName = pyClass.qualifiedName,
             documentation = pyClass.docStringValue,
             location = getLocation(project, pyClass),
+            nameLocation = pyClass.nameIdentifier?.let { getLocation(project, it) },
             decorators = pyClass.decoratorList?.decorators?.map { it.text },
             superTypes = pyClass.superClassExpressions.mapNotNull { it.text }
         )
@@ -293,6 +294,7 @@ class PythonLanguageAdapter : LanguageAdapter {
             signature = buildSignature(pyFunc),
             documentation = pyFunc.docStringValue,
             location = getLocation(project, pyFunc),
+            nameLocation = pyFunc.nameIdentifier?.let { getLocation(project, it) },
             returnType = pyFunc.annotation?.text,
             parameters = pyFunc.parameterList.parameters.map { param ->
                 ParameterInfo(

@@ -50,6 +50,7 @@ data class SymbolInfo(
     val signature: String? = null,
     val documentation: String? = null,
     val location: LocationInfo? = null,
+    val nameLocation: LocationInfo? = null, // Precise location of the symbol name (for find_references)
     val returnType: String? = null,
     val parameters: List<ParameterInfo>? = null,
     val modifiers: List<String>? = null,
