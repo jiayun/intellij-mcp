@@ -18,6 +18,8 @@
 
         <h3>Language Support</h3>
         <ul>
+            <li>JavaScript/TypeScript (requires JavaScript plugin)</li>
+            <li>Vue.js (requires Vue.js plugin)</li>
             <li>Python (requires Python plugin)</li>
             <li>Java (requires Java plugin)</li>
             <li>Kotlin (requires Kotlin plugin)</li>
@@ -35,6 +37,12 @@
 
     <!-- Optional Kotlin support - enabled when Kotlin plugin is installed -->
     <depends optional="true" config-file="kotlin-support.xml">org.jetbrains.kotlin</depends>
+
+    <!-- Optional JavaScript/TypeScript support - enabled when JavaScript plugin is installed -->
+    <depends optional="true" config-file="javascript-support.xml">JavaScript</depends>
+
+    <!-- Optional Vue.js support - enabled when Vue.js plugin is installed -->
+    <depends optional="true" config-file="vue-support.xml">org.jetbrains.plugins.vue</depends>
 
     <!-- Extension Point: Let language modules register adapters -->
     <extensionPoints>

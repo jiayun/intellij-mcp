@@ -17,6 +17,8 @@ dependencies {
         intellijIdeaUltimate("2025.3.1")
         bundledPlugin("com.intellij.java")
         bundledPlugin("org.jetbrains.kotlin")
+        bundledPlugin("JavaScript")
+        bundledPlugin("org.jetbrains.plugins.vue")
         // Python Community (provides base Python PSI classes)
         plugin("PythonCore:253.29346.138")
 
@@ -80,6 +82,8 @@ intellijPlatform {
 
             <h3>Supported Languages</h3>
             <ul>
+                <li>JavaScript/TypeScript (requires JavaScript plugin)</li>
+                <li>Vue.js (requires Vue.js plugin)</li>
                 <li>Python (requires Python plugin)</li>
                 <li>Java (requires Java plugin)</li>
                 <li>Kotlin (requires Kotlin plugin)</li>
@@ -99,6 +103,13 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.2.0</h3>
+            <ul>
+                <li><b>New:</b> JavaScript/TypeScript support - full support for JS, TS, JSX, TSX files</li>
+                <li><b>New:</b> Vue.js support - analyze Vue Single File Components (.vue)</li>
+                <li>Added WebStorm run configuration for frontend development testing</li>
+            </ul>
+
             <h3>1.1.0</h3>
             <ul>
                 <li><b>New:</b> Java language support - all features now work with Java code</li>
@@ -116,10 +127,16 @@ intellijPlatform {
 
 intellijPlatformTesting {
     runIde {
-        // Run with PyCharm Professional
+        // Run with PyCharm Professional (for Python testing)
         // Note: IntelliJ IDEA Community and PyCharm Community are no longer published since 2025.3
         register("runPyCharm") {
             type = IntelliJPlatformType.PyCharmProfessional
+            version = "2025.3.1"
+        }
+
+        // Run with WebStorm (for JavaScript/TypeScript/Vue.js testing)
+        register("runWebStorm") {
+            type = IntelliJPlatformType.WebStorm
             version = "2025.3.1"
         }
     }

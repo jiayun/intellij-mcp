@@ -1,0 +1,6 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="info.jiayun.intellij-mcp">
+        <languageAdapter
+            implementation="info.jiayun.intellijmcp.vue.VueLanguageAdapter"/>
+    </extensions>
+</idea-plugin>

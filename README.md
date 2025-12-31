@@ -12,15 +12,19 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 
 ## Supported Languages
 
-| Language | Status |
-|----------|--------|
-| Python   | ✅ Supported |
-| Java     | ✅ Supported |
-| Kotlin   | ✅ Supported |
+| Language | Status | File Extensions |
+|----------|--------|-----------------|
+| JavaScript/TypeScript | ✅ Supported | `.js`, `.mjs`, `.cjs`, `.ts`, `.mts`, `.cts`, `.jsx`, `.tsx` |
+| Vue.js | ✅ Supported | `.vue` |
+| Python | ✅ Supported | `.py`, `.pyi` |
+| Java | ✅ Supported | `.java` |
+| Kotlin | ✅ Supported | `.kt`, `.kts` |
 
 ## Requirements
 
 - JetBrains IDE (IntelliJ IDEA, PyCharm, WebStorm, etc.) version 2025.1+
+- For JavaScript/TypeScript support: JavaScript plugin (bundled in WebStorm, IntelliJ IDEA Ultimate)
+- For Vue.js support: Vue.js plugin (bundled in WebStorm, available in IntelliJ IDEA Ultimate)
 - For Python support: Python plugin installed
 - For Java support: Java plugin installed (bundled in IntelliJ IDEA)
 - For Kotlin support: Kotlin plugin installed (bundled in IntelliJ IDEA)
@@ -132,8 +136,11 @@ curl -X POST http://localhost:9876/mcp \
 # IntelliJ IDEA Ultimate (default)
 ./gradlew :core:runIde
 
-# PyCharm Professional
+# PyCharm Professional (for Python testing)
 ./gradlew :core:runPyCharm
+
+# WebStorm (for JavaScript/TypeScript/Vue.js testing)
+./gradlew :core:runWebStorm
 ```
 
 ## License

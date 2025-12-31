@@ -35,6 +35,9 @@ Output: `core/build/distributions/intellij-mcp-x.x.x.zip`
 - Registered via `plugin.xml` extension point `info.jiayun.intellij-mcp.languageAdapter`
 - Python adapter in `python/PythonLanguageAdapter.kt` uses Python PSI APIs (PyClass, PyFunction, etc.)
 - Java adapter in `java/JavaLanguageAdapter.kt` uses Java PSI APIs (PsiClass, PsiMethod, AllClassesSearch, etc.)
+- Kotlin adapter in `kotlin/KotlinLanguageAdapter.kt` uses Kotlin PSI APIs (KtClass, KtNamedFunction, etc.)
+- JavaScript/TypeScript adapter in `javascript/JavaScriptLanguageAdapter.kt` uses JavaScript PSI APIs (JSClass, JSFunction, JSVariable)
+- Vue.js adapter in `vue/VueLanguageAdapter.kt` handles `.vue` Single File Components
 
 **MCP Server** (`mcp/McpServer.kt`)
 - Ktor Netty server exposing JSON-RPC 2.0 endpoints
@@ -58,6 +61,9 @@ Output: `core/build/distributions/intellij-mcp-x.x.x.zip`
 - **1-based line/column numbers**: All position parameters use 1-based indexing (matching editor display)
 - Python support requires PythonCore plugin (bundled in PyCharm, optional in IntelliJ)
 - Java support requires Java plugin (bundled in IntelliJ IDEA, not available in PyCharm Community)
+- Kotlin support requires Kotlin plugin (bundled in IntelliJ IDEA)
+- JavaScript/TypeScript support requires JavaScript plugin (bundled in WebStorm, IntelliJ IDEA Ultimate)
+- Vue.js support requires Vue.js plugin (bundled in WebStorm, available in IntelliJ IDEA Ultimate)
 - IDE must be running with project open for MCP tools to work
 - Index must be ready (not in "dumb mode") for symbol operations
 
@@ -67,8 +73,11 @@ Output: `core/build/distributions/intellij-mcp-x.x.x.zip`
 
 ```kotlin
 intellijPlatform {
-    intellijIdeaUltimate("2025.3")
+    intellijIdeaUltimate("2025.3.1")
     bundledPlugin("com.intellij.java")
+    bundledPlugin("org.jetbrains.kotlin")
+    bundledPlugin("JavaScript")
+    bundledPlugin("org.jetbrains.plugins.vue")
     plugin("PythonCore:253.29346.138")
 }
 ```
