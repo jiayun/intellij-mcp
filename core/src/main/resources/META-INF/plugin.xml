@@ -56,6 +56,11 @@
             dynamic="true"/>
     </extensionPoints>
 
+    <!-- Declare K2 mode support for Kotlin plugin -->
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true"/>
+    </extensions>
+
     <extensions defaultExtensionNs="com.intellij">
         <!-- Application level services -->
         <applicationService
