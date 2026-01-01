@@ -17,6 +17,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 | JavaScript/TypeScript | ✅ Supported | `.js`, `.mjs`, `.cjs`, `.ts`, `.mts`, `.cts`, `.jsx`, `.tsx` |
 | Vue.js | ✅ Supported | `.vue` |
 | Python | ✅ Supported | `.py`, `.pyi` |
+| PHP | ✅ Supported | `.php`, `.phtml` |
 | Java | ✅ Supported | `.java` |
 | Kotlin | ✅ Supported | `.kt`, `.kts` |
 
@@ -26,6 +27,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 - For JavaScript/TypeScript support: JavaScript plugin (bundled in WebStorm, IntelliJ IDEA Ultimate)
 - For Vue.js support: Vue.js plugin (bundled in WebStorm, available in IntelliJ IDEA Ultimate)
 - For Python support: Python plugin installed
+- For PHP support: PHP plugin installed (bundled in PhpStorm, available in IntelliJ IDEA Ultimate)
 - For Java support: Java plugin installed (bundled in IntelliJ IDEA)
 - For Kotlin support: Kotlin plugin installed (bundled in IntelliJ IDEA)
 
@@ -138,6 +140,9 @@ curl -X POST http://localhost:9876/mcp \
 
 # PyCharm Professional (for Python testing)
 ./gradlew :core:runPyCharm
+
+# PhpStorm (for PHP testing)
+./gradlew :core:runPhpStorm
 
 # WebStorm (for JavaScript/TypeScript/Vue.js testing)
 ./gradlew :core:runWebStorm

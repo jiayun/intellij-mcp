@@ -28,6 +28,7 @@ enum class SymbolKind {
     CLASS,
     INTERFACE,
     ENUM,
+    TRAIT,
     FUNCTION,
     METHOD,
     PROPERTY,

@@ -1,0 +1,7 @@
+<idea-plugin>
+    <!-- PHP language adapter - loaded only when PHP plugin is available -->
+    <extensions defaultExtensionNs="info.jiayun.intellij-mcp">
+        <languageAdapter
+            implementation="info.jiayun.intellijmcp.php.PhpLanguageAdapter"/>
+    </extensions>
+</idea-plugin>

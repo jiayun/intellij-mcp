@@ -21,6 +21,7 @@
             <li>JavaScript/TypeScript (requires JavaScript plugin)</li>
             <li>Vue.js (requires Vue.js plugin)</li>
             <li>Python (requires Python plugin)</li>
+            <li>PHP (requires PHP plugin)</li>
             <li>Java (requires Java plugin)</li>
             <li>Kotlin (requires Kotlin plugin)</li>
         </ul>
@@ -43,6 +44,9 @@
 
     <!-- Optional Vue.js support - enabled when Vue.js plugin is installed -->
     <depends optional="true" config-file="vue-support.xml">org.jetbrains.plugins.vue</depends>
+
+    <!-- Optional PHP support - enabled when PHP plugin is installed -->
+    <depends optional="true" config-file="php-support.xml">com.jetbrains.php</depends>
 
     <!-- Extension Point: Let language modules register adapters -->
     <extensionPoints>
