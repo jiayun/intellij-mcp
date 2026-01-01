@@ -20,6 +20,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 | PHP | ✅ Supported | `.php`, `.phtml` |
 | Java | ✅ Supported | `.java` |
 | Kotlin | ✅ Supported | `.kt`, `.kts` |
+| Swift | ✅ Supported | `.swift` |
 
 ## Requirements
 
@@ -30,6 +31,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 - For PHP support: PHP plugin installed (bundled in PhpStorm, available in IntelliJ IDEA Ultimate)
 - For Java support: Java plugin installed (bundled in IntelliJ IDEA)
 - For Kotlin support: Kotlin plugin installed (bundled in IntelliJ IDEA)
+- For Swift support: **macOS only** - requires Xcode or Swift toolchain with SourceKit-LSP
 
 ## Installation
 
@@ -122,6 +124,34 @@ curl -X POST http://localhost:9876/mcp \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"find_symbol","arguments":{"name":"MyClass"}}}'
 ```
+
+## Swift Support (macOS Only)
+
+Swift support uses [SourceKit-LSP](https://github.com/swiftlang/sourcekit-lsp) for code analysis.
+
+### Prerequisites
+
+1. **macOS** - Swift support is only available on macOS
+2. **Xcode or Swift Toolchain** - One of the following:
+   - Install Xcode (recommended, includes SourceKit-LSP)
+   - Install Xcode Command Line Tools: `xcode-select --install`
+   - Install standalone Swift toolchain from [swift.org](https://swift.org/download/)
+
+### Supported Project Types
+
+- **SwiftPM projects** (with `Package.swift`) - Best support
+- **Xcode projects** (`.xcodeproj`) - Requires building the project first
+
+### Important Notes
+
+- **First-time indexing**: When opening a Swift project for the first time, SourceKit-LSP needs to index the project. This may take 10-30 seconds depending on project size. You'll see "Waiting for SourceKit-LSP indexing..." in the IDE logs during this time.
+- **Build your project first**: Run `swift build` before using code analysis for best results.
+
+### Limitations
+
+- `get_type_hierarchy` is not supported (SourceKit-LSP limitation)
+- Project must be built for best `find_references` results
+- `find_symbol` requires a non-empty search query
 
 ## Development
 

@@ -24,6 +24,7 @@
             <li>PHP (requires PHP plugin)</li>
             <li>Java (requires Java plugin)</li>
             <li>Kotlin (requires Kotlin plugin)</li>
+            <li>Swift (macOS only, requires Xcode or Swift toolchain)</li>
         </ul>
     ]]></description>
 
@@ -59,6 +60,12 @@
     <!-- Declare K2 mode support for Kotlin plugin -->
     <extensions defaultExtensionNs="org.jetbrains.kotlin">
         <supportsKotlinPluginMode supportsK2="true"/>
+    </extensions>
+
+    <!-- Swift language adapter - no optional dependency needed, platform detection in code -->
+    <extensions defaultExtensionNs="info.jiayun.intellij-mcp">
+        <languageAdapter
+            implementation="info.jiayun.intellijmcp.swift.SwiftLanguageAdapter"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -47,6 +47,10 @@ dependencies {
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+
+    // LSP4J for Swift language support (via SourceKit-LSP)
+    implementation("org.eclipse.lsp4j:org.eclipse.lsp4j:0.21.2")
+    implementation("org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.21.2")
 }
 
 tasks {
@@ -90,6 +94,7 @@ intellijPlatform {
                 <li>PHP (requires PHP plugin)</li>
                 <li>Java (requires Java plugin)</li>
                 <li>Kotlin (requires Kotlin plugin)</li>
+                <li>Swift (macOS only, requires Xcode or Swift toolchain)</li>
             </ul>
 
             <p>Source code: <a href="https://github.com/jiayun/intellij-mcp">GitHub</a></p>
@@ -106,6 +111,12 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.3.0</h3>
+            <ul>
+                <li><b>New:</b> Swift language support (macOS only) - uses SourceKit-LSP for code analysis</li>
+                <li>Requires Xcode or Swift toolchain installed on macOS</li>
+            </ul>
+
             <h3>1.2.0</h3>
             <ul>
                 <li><b>New:</b> PHP support - full support for PHP classes, functions, traits</li>
