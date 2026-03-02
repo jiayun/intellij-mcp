@@ -97,6 +97,7 @@ intellijPlatform {
                 <li>Java (requires Java plugin)</li>
                 <li>Kotlin (requires Kotlin plugin)</li>
                 <li>Rust (requires Rust plugin)</li>
+                <li>C# (requires Rider)</li>
                 <li>Swift (macOS only, requires Xcode or Swift toolchain)</li>
             </ul>
 
@@ -114,6 +115,12 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.5.0</h3>
+            <ul>
+                <li><b>New:</b> C# language support - find symbols, references, and file structure in C# code</li>
+                <li>Requires JetBrains Rider</li>
+            </ul>
+
             <h3>1.4.0</h3>
             <ul>
                 <li><b>New:</b> Rust language support - find symbols, references, and file structure in Rust code</li>
@@ -173,6 +180,12 @@ intellijPlatformTesting {
         // Run with RustRover (for Rust testing)
         register("runRustRover") {
             type = IntelliJPlatformType.RustRover
+            version = "2025.3.1"
+        }
+
+        // Run with Rider (for C# testing)
+        register("runRider") {
+            type = IntelliJPlatformType.Rider
             version = "2025.3.1"
         }
     }
