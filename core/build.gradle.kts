@@ -27,6 +27,8 @@ dependencies {
         plugin("com.jetbrains.rust:253.29346.139")
         // Go plugin from marketplace (GoLand features for IntelliJ IDEA)
         plugin("org.jetbrains.plugins.go:253.29346.240")
+        // Dart plugin from marketplace (bundled in Android Studio)
+        plugin("Dart:503.0.0")
 
         pluginVerifier()
         zipSigner()
@@ -102,6 +104,7 @@ intellijPlatform {
                 <li>Go (requires Go plugin)</li>
                 <li>Swift (macOS only, requires Xcode or Swift toolchain)</li>
                 <li>C# (requires csharp-ls or OmniSharp language server)</li>
+                <li>Dart (requires Dart plugin)</li>
             </ul>
 
             <p>Source code: <a href="https://github.com/jiayun/intellij-mcp">GitHub</a></p>
@@ -118,6 +121,12 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.7.0</h3>
+            <ul>
+                <li><b>New:</b> Dart language support - find symbols, references, file structure, and type hierarchy in Dart code</li>
+                <li>Requires Dart plugin (bundled in Android Studio, available in IntelliJ IDEA)</li>
+            </ul>
+
             <h3>1.6.0</h3>
             <ul>
                 <li><b>New:</b> Go language support - find symbols, references, and file structure in Go code</li>

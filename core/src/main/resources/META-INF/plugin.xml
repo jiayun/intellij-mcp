@@ -28,6 +28,7 @@
             <li>Go (requires Go plugin)</li>
             <li>Swift (macOS only, requires Xcode or Swift toolchain)</li>
             <li>C# (requires csharp-ls or OmniSharp language server, SDK-style projects only)</li>
+            <li>Dart (requires Dart plugin)</li>
         </ul>
     ]]></description>
 
@@ -57,6 +58,9 @@
 
     <!-- Optional Go support - enabled when Go plugin is installed -->
     <depends optional="true" config-file="go-support.xml">org.jetbrains.plugins.go</depends>
+
+    <!-- Optional Dart support - enabled when Dart plugin is installed -->
+    <depends optional="true" config-file="dart-support.xml">Dart</depends>
 
     <!-- Extension Point: Let language modules register adapters -->
     <extensionPoints>
