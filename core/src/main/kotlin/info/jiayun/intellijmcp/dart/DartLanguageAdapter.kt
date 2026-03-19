@@ -5,6 +5,7 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
+import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.psi.util.PsiTreeUtil
@@ -43,6 +44,59 @@ class DartLanguageAdapter : LanguageAdapter {
                         buildSymbolInfo(project, element, symbolKind)?.let { results.add(it) }
                     }
                 }
+        }
+
+        // Search for methods/fields/properties inside classes (DartComponentIndex only indexes top-level declarations)
+        if (kind == null || kind == SymbolKind.METHOD || kind == SymbolKind.FIELD || kind == SymbolKind.PROPERTY) {
+            val allDartFiles = com.intellij.psi.search.FilenameIndex.getAllFilesByExt(project, "dart", scope)
+            val seenLocations = results.map { it.location }.toMutableSet()
+
+            allDartFiles.forEach { virtualFile ->
+                val psiFile = PsiManager.getInstance(project).findFile(virtualFile) as? DartFile ?: return@forEach
+                PsiTreeUtil.findChildrenOfType(psiFile, DartClass::class.java).forEach { dartClass ->
+                    val body = PsiTreeUtil.findChildOfType(dartClass, DartClassBody::class.java) ?: return@forEach
+                    val members = body.classMembers ?: return@forEach
+
+                    if (kind == null || kind == SymbolKind.METHOD) {
+                        members.methodDeclarationList.filter { it.name == name }.forEach { method ->
+                            buildSymbolInfo(project, method, SymbolKind.METHOD)?.let { info ->
+                                if (info.location !in seenLocations) {
+                                    seenLocations.add(info.location)
+                                    results.add(info)
+                                }
+                            }
+                        }
+                    }
+                    if (kind == null || kind == SymbolKind.PROPERTY) {
+                        members.getterDeclarationList.filter { it.name == name }.forEach { getter ->
+                            buildSymbolInfo(project, getter, SymbolKind.PROPERTY)?.let { info ->
+                                if (info.location !in seenLocations) {
+                                    seenLocations.add(info.location)
+                                    results.add(info)
+                                }
+                            }
+                        }
+                        members.setterDeclarationList.filter { it.name == name }.forEach { setter ->
+                            buildSymbolInfo(project, setter, SymbolKind.PROPERTY)?.let { info ->
+                                if (info.location !in seenLocations) {
+                                    seenLocations.add(info.location)
+                                    results.add(info)
+                                }
+                            }
+                        }
+                    }
+                    if (kind == null || kind == SymbolKind.FIELD) {
+                        members.varDeclarationListList.forEach { varList ->
+                            buildVarSymbols(project, varList, SymbolKind.FIELD)
+                                .filter { it.name == name && it.location !in seenLocations }
+                                .forEach { info ->
+                                    seenLocations.add(info.location)
+                                    results.add(info)
+                                }
+                        }
+                    }
+                }
+            }
         }
 
         return results
@@ -101,9 +155,71 @@ class DartLanguageAdapter : LanguageAdapter {
             ?: throw IllegalArgumentException("No symbol at position")
 
         val scope = GlobalSearchScope.projectScope(project)
-        return ReferencesSearch.search(targetElement, scope)
+
+        // Try standard ReferencesSearch first
+        val results = ReferencesSearch.search(targetElement, scope)
             .findAll()
             .mapNotNull { ref -> getLocation(project, ref.element) }
+            .toMutableList()
+
+        // Fallback: manual PSI scan for Dart references
+        // ReferencesSearch often misses cross-file refs and method refs in Dart
+        if (results.isEmpty() || onlySameFileResults(results, filePath)) {
+            val targetName = (targetElement as? DartComponent)?.name
+                ?: (targetElement as? DartComponentName)?.name
+                ?: return results
+
+            val seenLocations = results.toMutableSet()
+            val allDartFiles = FilenameIndex.getAllFilesByExt(project, "dart", scope)
+            val targetFilePath = targetElement.containingFile?.virtualFile?.path
+
+            allDartFiles.forEach { virtualFile ->
+                val psiFile = PsiManager.getInstance(project).findFile(virtualFile) as? DartFile ?: return@forEach
+                PsiTreeUtil.findChildrenOfType(psiFile, DartReferenceExpression::class.java)
+                    .filter { it.text == targetName || it.text.endsWith(".$targetName") }
+                    .forEach { ref ->
+                        val resolved = ref.resolve()
+                        val isMatch = if (resolved != null) {
+                            isSameTarget(resolved, targetElement)
+                        } else {
+                            // Cross-file: resolve() returns null, use import heuristic
+                            targetFilePath != null && fileImportsTarget(psiFile, targetFilePath)
+                        }
+                        if (isMatch) {
+                            getLocation(project, ref)?.let { loc ->
+                                if (loc !in seenLocations) {
+                                    seenLocations.add(loc)
+                                    results.add(loc)
+                                }
+                            }
+                        }
+                    }
+            }
+        }
+
+        return results
+    }
+
+    private fun onlySameFileResults(results: List<LocationInfo>, filePath: String): Boolean {
+        return results.all { it.filePath == filePath }
+    }
+
+    private fun isSameTarget(resolved: PsiElement, target: PsiElement): Boolean {
+        if (resolved == target) return true
+        // DartComponentName vs parent declaration
+        if (resolved is DartComponentName && resolved.parent == target) return true
+        if (target is DartComponentName && target.parent == resolved) return true
+        if (resolved is DartComponentName && target is DartComponentName) return resolved == target
+        return false
+    }
+
+    private fun fileImportsTarget(dartFile: DartFile, targetFilePath: String): Boolean {
+        if (dartFile.virtualFile?.path == targetFilePath) return true
+        val targetFileName = targetFilePath.substringAfterLast('/')
+        return PsiTreeUtil.findChildrenOfType(dartFile, DartImportStatement::class.java).any { importStmt ->
+            val uri = importStmt.uriString
+            uri.endsWith(targetFileName) || uri.endsWith("/$targetFileName")
+        }
     }
 
     // ===== Get Symbol Info =====
@@ -115,7 +231,12 @@ class DartLanguageAdapter : LanguageAdapter {
     ): SymbolInfo? {
         val dartFile = getDartFile(project, filePath) ?: return null
         val element = dartFile.findElementAt(offset) ?: return null
-        val targetElement = findMeaningfulElement(element) ?: return null
+        var targetElement = findMeaningfulElement(element) ?: return null
+
+        // DartComponentName is the name identifier token; use parent declaration for symbol info
+        if (targetElement is DartComponentName) {
+            targetElement = targetElement.parent ?: return null
+        }
 
         val kind = getSymbolKind(targetElement)
         return buildSymbolInfo(project, targetElement, kind)
@@ -334,7 +455,9 @@ class DartLanguageAdapter : LanguageAdapter {
                 is DartFunctionTypeAlias,
                 is DartVarAccessDeclaration,
                 is DartVarDeclarationListPart,
-                is DartSimpleFormalParameter -> return current
+                is DartSimpleFormalParameter,
+                is DartComponentName,
+                is DartReferenceExpression -> return current
             }
             current = current.parent
         }
@@ -392,23 +515,23 @@ class DartLanguageAdapter : LanguageAdapter {
             is DartClassDefinition -> {
                 val name = element.name ?: ""
                 val typeParams = element.typeParameters?.text ?: ""
-                val superclass = element.superclass?.text?.let { " extends $it" } ?: ""
-                val mixins = element.mixins?.text?.let { " with $it" } ?: ""
-                val interfaces = element.interfaces?.text?.let { " implements $it" } ?: ""
+                val superclass = element.superclass?.text?.let { " $it" } ?: ""
+                val mixins = element.mixins?.text?.let { " $it" } ?: ""
+                val interfaces = element.interfaces?.text?.let { " $it" } ?: ""
                 "class $name$typeParams$superclass$mixins$interfaces"
             }
             is DartEnumDefinition -> {
                 val name = element.name ?: ""
                 val typeParams = element.typeParameters?.text ?: ""
-                val mixins = element.mixins?.text?.let { " with $it" } ?: ""
-                val interfaces = element.interfaces?.text?.let { " implements $it" } ?: ""
+                val mixins = element.mixins?.text?.let { " $it" } ?: ""
+                val interfaces = element.interfaces?.text?.let { " $it" } ?: ""
                 "enum $name$typeParams$mixins$interfaces"
             }
             is DartMixinDeclaration -> {
                 val name = element.name ?: ""
                 val typeParams = element.typeParameters?.text ?: ""
-                val onMixins = element.onMixins?.text?.let { " on $it" } ?: ""
-                val interfaces = element.interfaces?.text?.let { " implements $it" } ?: ""
+                val onMixins = element.onMixins?.text?.let { " $it" } ?: ""
+                val interfaces = element.interfaces?.text?.let { " $it" } ?: ""
                 "mixin $name$typeParams$onMixins$interfaces"
             }
             is DartFunctionDeclarationWithBody -> {
@@ -679,28 +802,11 @@ class DartLanguageAdapter : LanguageAdapter {
     }
 
     private fun buildClassMembers(project: Project, dartClass: DartClass): List<SymbolNode> {
-        val children = mutableListOf<SymbolNode>()
-
-        dartClass.methods.forEach { method ->
-            buildSymbolInfo(project, method, SymbolKind.METHOD)?.let {
-                children.add(SymbolNode(it))
-            }
-        }
-
-        dartClass.fields.forEach { field ->
-            buildSymbolInfo(project, field, SymbolKind.FIELD)?.let {
-                children.add(SymbolNode(it))
-            }
-        }
-
-        dartClass.constructors.forEach { constructor ->
-            val kind = SymbolKind.METHOD
-            buildSymbolInfo(project, constructor, kind)?.let {
-                children.add(SymbolNode(it))
-            }
-        }
-
-        return children
+        // Use classBody.classMembers to get only directly declared members,
+        // avoiding inherited Object methods (hashCode, noSuchMethod, etc.)
+        val body = PsiTreeUtil.findChildOfType(dartClass, DartClassBody::class.java) ?: return emptyList()
+        val members = body.classMembers ?: return emptyList()
+        return buildMemberSymbols(project, members)
     }
 
     private fun buildMemberSymbols(project: Project, members: DartClassMembers): List<SymbolNode> {
