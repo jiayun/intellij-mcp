@@ -264,9 +264,9 @@ class DartLanguageAdapter : LanguageAdapter {
             PsiTreeUtil.findChildrenOfType(psiFile, DartClass::class.java)
                 .filter { it.name != typeName }
                 .forEach { dartClass ->
-                    val isSubType = dartClass.superClass?.text?.contains(typeName) == true ||
-                        dartClass.implementsList.any { it.text.contains(typeName) } ||
-                        dartClass.mixinsList.any { it.text.contains(typeName) }
+                    val isSubType = dartClass.superClass?.text?.substringBefore('<')?.trim() == typeName ||
+                        dartClass.implementsList.any { it.text.substringBefore('<').trim() == typeName } ||
+                        dartClass.mixinsList.any { it.text.substringBefore('<').trim() == typeName }
 
                     if (isSubType) {
                         val name = dartClass.name ?: return@forEach
@@ -328,6 +328,8 @@ class DartLanguageAdapter : LanguageAdapter {
                 is DartSetterDeclaration,
                 is DartFactoryConstructorDeclaration,
                 is DartNamedConstructorDeclaration,
+                is DartExtensionDeclaration,
+                is DartExtensionTypeDeclaration,
                 is DartEnumConstantDeclaration,
                 is DartFunctionTypeAlias,
                 is DartVarAccessDeclaration,
