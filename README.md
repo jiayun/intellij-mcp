@@ -24,6 +24,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 | Go | ✅ Supported | `.go` |
 | Swift | ✅ Supported | `.swift` |
 | C# | ✅ Supported | `.cs` |
+| Dart | ✅ Supported | `.dart` |
 
 ## Requirements
 
@@ -38,6 +39,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 - For Go support: Go plugin installed (bundled in GoLand, available in IntelliJ IDEA Ultimate)
 - For Swift support: **macOS only** - requires Xcode or Swift toolchain with SourceKit-LSP
 - For C# support: requires [csharp-ls](https://github.com/razzmatazz/csharp-language-server) or [OmniSharp](https://github.com/OmniSharp/omnisharp-roslyn)
+- For Dart support: Dart plugin installed (bundled in Android Studio, available in IntelliJ IDEA)
 
 ## Installation
 
