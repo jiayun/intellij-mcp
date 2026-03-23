@@ -20,9 +20,10 @@ class JavaLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
         val results = mutableListOf<SymbolInfo>()
 
         // Find Class/Interface/Enum
@@ -67,7 +68,8 @@ class JavaLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         val javaFile = getJavaFile(project, filePath)
             ?: throw IllegalArgumentException("File not found: $filePath")
@@ -78,7 +80,7 @@ class JavaLanguageAdapter : LanguageAdapter {
         val targetElement = findMeaningfulElement(element)
             ?: throw IllegalArgumentException("No symbol at position")
 
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
         return ReferencesSearch.search(targetElement, scope)
             .findAll()
             .mapNotNull { ref -> getLocation(project, ref.element) }
@@ -147,9 +149,10 @@ class JavaLanguageAdapter : LanguageAdapter {
 
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
 
         // Find the class
         val targetClass = AllClassesSearch.search(scope, project).find { psiClass ->

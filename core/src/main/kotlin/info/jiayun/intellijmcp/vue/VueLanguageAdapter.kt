@@ -30,7 +30,8 @@ class VueLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
         val scope = GlobalSearchScope.projectScope(project)
         val results = mutableListOf<SymbolInfo>()
@@ -69,7 +70,8 @@ class VueLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         val vueFile = getVueFile(project, filePath)
             ?: throw IllegalArgumentException("File not found: $filePath")
@@ -176,7 +178,8 @@ class VueLanguageAdapter : LanguageAdapter {
 
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
         val scope = GlobalSearchScope.projectScope(project)
 

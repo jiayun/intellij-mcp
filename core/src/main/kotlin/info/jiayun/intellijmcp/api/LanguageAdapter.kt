@@ -64,7 +64,8 @@ interface LanguageAdapter {
     fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind? = null
+        kind: SymbolKind? = null,
+        includeLibraries: Boolean = false
     ): List<SymbolInfo>
 
     /**
@@ -78,7 +79,8 @@ interface LanguageAdapter {
     fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean = false
     ): List<LocationInfo>
 
     /**
@@ -116,7 +118,8 @@ interface LanguageAdapter {
      */
     fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean = false
     ): TypeHierarchy?
 
     /**

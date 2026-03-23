@@ -29,8 +29,10 @@ class JavaScriptLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
+        // JS adapter uses FilenameIndex which doesn't effectively search library symbols
         val scope = GlobalSearchScope.projectScope(project)
         val results = mutableListOf<SymbolInfo>()
 
@@ -70,7 +72,8 @@ class JavaScriptLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         val jsFile = getJsFile(project, filePath)
             ?: throw IllegalArgumentException("File not found: $filePath")
@@ -163,7 +166,8 @@ class JavaScriptLanguageAdapter : LanguageAdapter {
 
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
         val scope = GlobalSearchScope.projectScope(project)
 

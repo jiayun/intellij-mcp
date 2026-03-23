@@ -121,6 +121,13 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.8.0</h3>
+            <ul>
+                <li><b>New:</b> <code>includeLibraries</code> parameter for <code>find_symbol</code>, <code>find_references</code>, and <code>get_type_hierarchy</code> tools</li>
+                <li>When set to <code>true</code>, search scope expands to include project dependencies and libraries</li>
+                <li>Supported for Java, Kotlin, Python, PHP, Rust, Go, and Dart</li>
+            </ul>
+
             <h3>1.7.0</h3>
             <ul>
                 <li><b>New:</b> Dart language support - find symbols, references, file structure, and type hierarchy in Dart code</li>

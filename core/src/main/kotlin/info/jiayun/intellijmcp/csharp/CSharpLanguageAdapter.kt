@@ -70,7 +70,8 @@ class CSharpLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
         if (!CSharpLspClient.isAvailable()) {
             logger.info("C# find_symbol skipped: csharp-ls/OmniSharp not found in PATH or ~/.dotnet/tools")
@@ -152,7 +153,8 @@ class CSharpLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         if (!CSharpLspClient.isAvailable()) return emptyList()
 
@@ -258,7 +260,8 @@ class CSharpLanguageAdapter : LanguageAdapter {
     // ===== Get Type Hierarchy =====
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
         if (!CSharpLspClient.isAvailable()) return null
 

@@ -65,7 +65,8 @@ class SwiftLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
         if (!SwiftLspClient.isAvailable()) return emptyList()
         if (name.isBlank()) return emptyList()
@@ -132,7 +133,8 @@ class SwiftLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         if (!SwiftLspClient.isAvailable()) return emptyList()
 
@@ -250,7 +252,8 @@ class SwiftLanguageAdapter : LanguageAdapter {
     // ===== Get Type Hierarchy =====
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
         // SourceKit-LSP doesn't fully support LSP 3.17 type hierarchy yet
         // Return null to indicate this feature is not available

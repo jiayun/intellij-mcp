@@ -27,9 +27,10 @@ class DartLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
         val results = mutableListOf<SymbolInfo>()
 
         val files = DartComponentIndex.getAllFiles(name, scope)
@@ -143,7 +144,8 @@ class DartLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         val dartFile = getDartFile(project, filePath)
             ?: throw IllegalArgumentException("File not found: $filePath")
@@ -154,7 +156,7 @@ class DartLanguageAdapter : LanguageAdapter {
         val targetElement = findMeaningfulElement(element)
             ?: throw IllegalArgumentException("No symbol at position")
 
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
 
         // Try standard ReferencesSearch first
         val results = ReferencesSearch.search(targetElement, scope)
@@ -324,9 +326,10 @@ class DartLanguageAdapter : LanguageAdapter {
 
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
 
         var targetClass: DartClass? = null
 

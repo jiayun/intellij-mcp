@@ -79,6 +79,10 @@ class McpServer {
                         "projectPath" to mapOf(
                             "type" to "string",
                             "description" to "Optional: project root path. Uses active project if not provided."
+                        ),
+                        "includeLibraries" to mapOf(
+                            "type" to "boolean",
+                            "description" to "Optional: include symbols from project dependencies/libraries (default: false)"
                         )
                     ),
                     "required" to listOf("name")
@@ -105,6 +109,10 @@ class McpServer {
                         "projectPath" to mapOf(
                             "type" to "string",
                             "description" to "Optional: project root path"
+                        ),
+                        "includeLibraries" to mapOf(
+                            "type" to "boolean",
+                            "description" to "Optional: include references from project dependencies/libraries (default: false)"
                         )
                     ),
                     "required" to listOf("filePath", "line", "column")
@@ -172,6 +180,10 @@ class McpServer {
                         "projectPath" to mapOf(
                             "type" to "string",
                             "description" to "Optional: project root path"
+                        ),
+                        "includeLibraries" to mapOf(
+                            "type" to "boolean",
+                            "description" to "Optional: include types from project dependencies/libraries (default: false)"
                         )
                     ),
                     "required" to listOf("typeName")
@@ -341,14 +353,16 @@ class McpServer {
                 name = args["name"] as String,
                 kind = args["kind"] as? String,
                 language = args["language"] as? String,
-                projectPath = args["projectPath"] as? String
+                projectPath = args["projectPath"] as? String,
+                includeLibraries = args["includeLibraries"] as? Boolean ?: false
             )
 
             "find_references" -> executor.findReferences(
                 filePath = args["filePath"] as String,
                 line = (args["line"] as Number).toInt(),
                 column = (args["column"] as Number).toInt(),
-                projectPath = args["projectPath"] as? String
+                projectPath = args["projectPath"] as? String,
+                includeLibraries = args["includeLibraries"] as? Boolean ?: false
             )
 
             "get_symbol_info" -> executor.getSymbolInfo(
@@ -366,7 +380,8 @@ class McpServer {
             "get_type_hierarchy" -> executor.getTypeHierarchy(
                 typeName = args["typeName"] as String,
                 language = args["language"] as? String,
-                projectPath = args["projectPath"] as? String
+                projectPath = args["projectPath"] as? String,
+                includeLibraries = args["includeLibraries"] as? Boolean ?: false
             )
 
             else -> throw IllegalArgumentException("Unknown tool: $name")

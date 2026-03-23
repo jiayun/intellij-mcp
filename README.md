@@ -124,6 +124,12 @@ Note: intellij-mcp requires the JetBrains IDE to be running with the project ope
 | `get_file_symbols` | List all symbols in a file |
 | `get_type_hierarchy` | Get class inheritance hierarchy |
 
+### `includeLibraries` Parameter
+
+The `find_symbol`, `find_references`, and `get_type_hierarchy` tools support an optional `includeLibraries` parameter (default: `false`). When set to `true`, the search scope expands to include project dependencies and libraries (e.g., JDK classes, Python stdlib, Dart SDK, Cargo crates).
+
+Supported for: Java, Kotlin, Python, PHP, Rust, Go, Dart. Not applicable for JavaScript/TypeScript/Vue.js (FilenameIndex-based) or Swift/C# (LSP-based, scope controlled by language server).
+
 ## Example
 
 ```bash

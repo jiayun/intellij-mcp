@@ -26,9 +26,10 @@ class GoLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
         val results = mutableListOf<SymbolInfo>()
 
         FilenameIndex.getAllFilesByExt(project, "go", scope).forEach { virtualFile ->
@@ -70,7 +71,8 @@ class GoLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         val goFile = getGoFile(project, filePath)
             ?: throw IllegalArgumentException("File not found: $filePath")
@@ -81,7 +83,7 @@ class GoLanguageAdapter : LanguageAdapter {
         val targetElement = findMeaningfulElement(element)
             ?: throw IllegalArgumentException("No symbol at position")
 
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
         return ReferencesSearch.search(targetElement, scope)
             .findAll()
             .mapNotNull { ref -> getLocation(project, ref.element) }
@@ -194,9 +196,10 @@ class GoLanguageAdapter : LanguageAdapter {
 
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
 
         var targetType: GoTypeSpec? = null
 

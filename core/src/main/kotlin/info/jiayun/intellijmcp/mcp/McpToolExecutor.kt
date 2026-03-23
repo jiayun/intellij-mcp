@@ -29,7 +29,8 @@ class McpToolExecutor {
         name: String,
         kind: String?,
         language: String?,
-        projectPath: String?
+        projectPath: String?,
+        includeLibraries: Boolean = false
     ): List<SymbolInfo> {
         val project = projectResolver.resolve(projectPath)
 
@@ -52,7 +53,7 @@ class McpToolExecutor {
                 return@flatMap emptyList()
             }
             withReadActionIf(adapter.requiresReadAction) {
-                adapter.findSymbol(project, name, symbolKind)
+                adapter.findSymbol(project, name, symbolKind, includeLibraries)
             }
         }.map { it.toOneBased() }
     }
@@ -61,7 +62,8 @@ class McpToolExecutor {
         filePath: String,
         line: Int,
         column: Int,
-        projectPath: String?
+        projectPath: String?,
+        includeLibraries: Boolean = false
     ): List<LocationInfo> {
         val project = projectResolver.resolve(projectPath)
 
@@ -78,7 +80,7 @@ class McpToolExecutor {
         } ?: throw InvalidPositionException("Invalid position: $filePath:$line:$column")
 
         return withReadActionIf(adapter.requiresReadAction) {
-            adapter.findReferences(project, filePath, offset)
+            adapter.findReferences(project, filePath, offset, includeLibraries)
         }.map { it.toOneBased() }
     }
 
@@ -125,7 +127,8 @@ class McpToolExecutor {
     fun getTypeHierarchy(
         typeName: String,
         language: String?,
-        projectPath: String?
+        projectPath: String?,
+        includeLibraries: Boolean = false
     ): TypeHierarchy {
         val project = projectResolver.resolve(projectPath)
 
@@ -140,7 +143,7 @@ class McpToolExecutor {
                 return@firstNotNullOfOrNull null
             }
             withReadActionIf(adapter.requiresReadAction) {
-                adapter.getTypeHierarchy(project, typeName)
+                adapter.getTypeHierarchy(project, typeName, includeLibraries)
             }
         } ?: throw SymbolNotFoundException("Type not found: $typeName"))
             .toOneBased()

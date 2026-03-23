@@ -25,9 +25,10 @@ class KotlinLanguageAdapter : LanguageAdapter {
     override fun findSymbol(
         project: Project,
         name: String,
-        kind: SymbolKind?
+        kind: SymbolKind?,
+        includeLibraries: Boolean
     ): List<SymbolInfo> {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
         val results = mutableListOf<SymbolInfo>()
 
         // Find Class/Interface/Object/Enum
@@ -64,7 +65,8 @@ class KotlinLanguageAdapter : LanguageAdapter {
     override fun findReferences(
         project: Project,
         filePath: String,
-        offset: Int
+        offset: Int,
+        includeLibraries: Boolean
     ): List<LocationInfo> {
         val ktFile = getKtFile(project, filePath)
             ?: throw IllegalArgumentException("File not found: $filePath")
@@ -75,7 +77,7 @@ class KotlinLanguageAdapter : LanguageAdapter {
         val targetElement = findMeaningfulElement(element)
             ?: throw IllegalArgumentException("No symbol at position")
 
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
         return ReferencesSearch.search(targetElement, scope)
             .findAll()
             .mapNotNull { ref -> getLocation(project, ref.element) }
@@ -149,9 +151,10 @@ class KotlinLanguageAdapter : LanguageAdapter {
 
     override fun getTypeHierarchy(
         project: Project,
-        typeName: String
+        typeName: String,
+        includeLibraries: Boolean
     ): TypeHierarchy? {
-        val scope = GlobalSearchScope.projectScope(project)
+        val scope = if (includeLibraries) GlobalSearchScope.allScope(project) else GlobalSearchScope.projectScope(project)
 
         // Find the class by name
         val shortName = typeName.substringAfterLast('.')
