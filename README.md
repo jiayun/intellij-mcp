@@ -28,7 +28,7 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 
 ## Requirements
 
-- JetBrains IDE (IntelliJ IDEA, PyCharm, WebStorm, etc.) version 2025.1+
+- JetBrains IDE (IntelliJ IDEA, PyCharm, WebStorm, GoLand, Rider, etc.) version 2025.1+
 - For JavaScript/TypeScript support: JavaScript plugin (bundled in WebStorm, IntelliJ IDEA Ultimate)
 - For Vue.js support: Vue.js plugin (bundled in WebStorm, available in IntelliJ IDEA Ultimate)
 - For Python support: Python plugin installed

@@ -117,10 +117,15 @@ intellijPlatform {
 
         ideaVersion {
             sinceBuild = "251"
-            untilBuild = "253.*"
+            untilBuild = provider { null }
         }
 
         changeNotes = """
+            <h3>1.9.0</h3>
+            <ul>
+                <li><b>Fix:</b> Removed <code>until-build</code> restriction for forward compatibility with future IDE versions</li>
+            </ul>
+
             <h3>1.8.0</h3>
             <ul>
                 <li><b>New:</b> <code>includeLibraries</code> parameter for <code>find_symbol</code>, <code>find_references</code>, and <code>get_type_hierarchy</code> tools</li>
@@ -180,6 +185,12 @@ intellijPlatform {
                 <li>Add <code>nameLocation</code> field to symbol info - provides precise location of function/class name for accurate reference lookups</li>
             </ul>
         """.trimIndent()
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
+        }
     }
 }
 
