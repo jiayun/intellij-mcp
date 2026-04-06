@@ -136,7 +136,8 @@ data class TestResults(
     val failed: Int,
     val ignored: Int,
     val duration: Long,
-    val tests: List<TestCaseResult>
+    val tests: List<TestCaseResult>,
+    val message: String? = null
 )
 
 enum class TestRunStatus {

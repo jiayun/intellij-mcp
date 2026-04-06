@@ -121,6 +121,14 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.10.1</h3>
+            <ul>
+                <li><b>Fix:</b> <code>run_configuration</code> no longer times out on Rider Unit Tests (.NET)</li>
+                <li><b>Fix:</b> <code>list_run_configurations</code> no longer returns empty list when <code>type</code> is an empty string</li>
+                <li><b>Fix:</b> <code>get_test_results</code> gracefully degrades when structured results are unavailable (e.g., Rider .NET) instead of throwing an error</li>
+                <li><b>Known limitation:</b> Rider's .NET test runner uses ReSharper backend (RD Protocol) which does not expose structured test results to platform APIs. Structured results work with PyCharm, IntelliJ IDEA, WebStorm, GoLand, and other IDEs.</li>
+            </ul>
+
             <h3>1.10.0</h3>
             <ul>
                 <li><b>New:</b> <code>list_run_configurations</code> tool - list all run configurations defined in the IDE project</li>

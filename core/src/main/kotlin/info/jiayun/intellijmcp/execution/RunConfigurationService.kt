@@ -2,16 +2,19 @@ package info.jiayun.intellijmcp.execution
 
 import com.intellij.execution.ExecutionListener
 import com.intellij.execution.ExecutionManager
+import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
-import com.intellij.execution.ProgramRunnerUtil
+import com.intellij.execution.runners.ExecutionEnvironmentBuilder
+import com.intellij.execution.runners.ProgramRunner
 import com.intellij.execution.testframework.AbstractTestProxy
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
+import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.Logger
@@ -41,8 +44,9 @@ class RunConfigurationService(private val project: Project) {
 
     fun listConfigurations(type: String? = null): List<RunConfigurationInfo> {
         val runManager = RunManager.getInstance(project)
+        val filterType = type?.takeIf { it.isNotBlank() }
         return runManager.allSettings
-            .filter { type == null || it.type.displayName.equals(type, ignoreCase = true) }
+            .filter { filterType == null || it.type.displayName.equals(filterType, ignoreCase = true) }
             .map { settings ->
                 RunConfigurationInfo(
                     name = settings.name,
@@ -66,11 +70,14 @@ class RunConfigurationService(private val project: Project) {
         val exitCodeRef = AtomicInteger(-1)
         val latch = CountDownLatch(1)
 
-        // Listen for test results
+        // 1) Listen for SM Test Runner results
         val testConnection = project.messageBus.connect()
         testConnection.subscribe(SMTRunnerEventsListener.TEST_STATUS, object : SMTRunnerEventsListener {
-            override fun onTestingStarted(testsRoot: SMTestProxy.SMRootTestProxy) {}
+            override fun onTestingStarted(testsRoot: SMTestProxy.SMRootTestProxy) {
+                logger.info("MCP: onTestingStarted for $name")
+            }
             override fun onTestingFinished(testsRoot: SMTestProxy.SMRootTestProxy) {
+                logger.info("MCP: onTestingFinished for $name, tests=${testsRoot.allTests.size}")
                 testRootRef.set(testsRoot)
             }
             override fun onTestsCountInSuite(count: Int) {}
@@ -88,35 +95,100 @@ class RunConfigurationService(private val project: Project) {
             override fun onSuiteTreeStarted(suite: SMTestProxy) {}
         })
 
-        // Listen for process termination
+        // 2) ExecutionListener as fallback — processTerminated with exitCode
         val executionConnection = project.messageBus.connect()
         executionConnection.subscribe(ExecutionManager.EXECUTION_TOPIC, object : ExecutionListener {
-            override fun processStarted(executorId: String, env: ExecutionEnvironment, handler: ProcessHandler) {
-                if (env.runnerAndConfigurationSettings?.name == name) {
-                    processHandlerRef.set(handler)
-                    handler.addProcessListener(object : ProcessAdapter() {
-                        override fun processTerminated(event: ProcessEvent) {
-                            exitCodeRef.set(event.exitCode)
-                            latch.countDown()
-                        }
-                    })
+            override fun processTerminated(
+                executorId: String,
+                env: ExecutionEnvironment,
+                handler: ProcessHandler,
+                exitCode: Int
+            ) {
+                logger.info("MCP: ExecutionListener.processTerminated exitCode=$exitCode")
+                if (latch.count > 0) {
+                    processHandlerRef.compareAndSet(null, handler)
+                    exitCodeRef.set(exitCode)
+                    latch.countDown()
                 }
             }
         })
 
-        // Start execution on EDT
-        ApplicationManager.getApplication().invokeAndWait {
-            ProgramRunnerUtil.executeConfiguration(settings, executor)
+        // 3) ProgramRunner.Callback — primary mechanism for getting ProcessHandler
+        val callback = object : ProgramRunner.Callback {
+            override fun processStarted(descriptor: RunContentDescriptor?) {
+                logger.info("MCP: ProgramRunner.Callback.processStarted for $name, descriptor=${descriptor != null}")
+                val handler = descriptor?.processHandler
+                if (handler != null) {
+                    processHandlerRef.set(handler)
+                    handler.addProcessListener(object : ProcessAdapter() {
+                        override fun processTerminated(event: ProcessEvent) {
+                            logger.info("MCP: ProcessAdapter.processTerminated exitCode=${event.exitCode}")
+                            exitCodeRef.set(event.exitCode)
+                            latch.countDown()
+                        }
+                    })
+                    // Handle already-terminated process
+                    if (handler.isProcessTerminated) {
+                        exitCodeRef.set(handler.exitCode ?: -1)
+                        latch.countDown()
+                    }
+                } else {
+                    // Rider Unit Tests: descriptor is null, no ProcessHandler available.
+                    // Count down so we don't timeout — tests are running but we can't track completion.
+                    logger.info("MCP: processStarted but no ProcessHandler available for $name, releasing latch")
+                    latch.countDown()
+                }
+            }
+
+            override fun processNotStarted() {
+                logger.warn("MCP: ProgramRunner.Callback.processNotStarted for $name")
+                latch.countDown()
+            }
+
+            override fun processNotStarted(e: Throwable?) {
+                logger.warn("MCP: ProgramRunner.Callback.processNotStarted with error for $name", e)
+                latch.countDown()
+            }
         }
 
-        // Wait for completion
+        // 4) Build environment with callback and execute
+        ApplicationManager.getApplication().invokeAndWait {
+            val env = ExecutionEnvironmentBuilder
+                .createOrNull(executor, settings)
+                ?.build(callback)
+            if (env != null) {
+                ProgramRunnerUtil.executeConfigurationAsync(env, true, true, callback)
+            } else {
+                logger.warn("MCP: Failed to create ExecutionEnvironment for $name")
+                latch.countDown()
+            }
+        }
+
+        // 5) Wait for completion
         val completed = latch.await(timeout, TimeUnit.MILLISECONDS)
 
-        // Clean up listeners
+        // 6) Grace period — wait for SM Test Runner events or process to settle
+        //    For Rider: processStarted fires with null descriptor immediately,
+        //    but tests may still be running. Poll for test results.
+        val graceDeadline = System.currentTimeMillis() + (timeout - (System.currentTimeMillis() - (executionId.substringAfterLast('-').toLongOrNull() ?: 0))).coerceIn(0, timeout)
+        val maxGrace = 30_000L // max 30s grace for Rider-style runners
+        val graceEnd = System.currentTimeMillis() + maxGrace.coerceAtMost(graceDeadline - System.currentTimeMillis())
+        if (completed && processHandlerRef.get() == null) {
+            // No ProcessHandler — likely Rider. Wait for test results with polling.
+            logger.info("MCP: No ProcessHandler, waiting for test results via polling (up to ${maxGrace}ms)")
+            while (System.currentTimeMillis() < graceEnd && testRootRef.get() == null) {
+                Thread.sleep(500)
+            }
+        } else {
+            // Standard case — short grace for SM Test Runner events
+            Thread.sleep(500)
+        }
+
+        // 7) Clean up listeners
         testConnection.disconnect()
         executionConnection.disconnect()
 
-        // Store results
+        // 8) Store results
         val record = ExecutionRecord(
             executionId = executionId,
             configurationName = name,
@@ -135,7 +207,6 @@ class RunConfigurationService(private val project: Project) {
         }
 
         if (!completed) {
-            // Kill the process on timeout
             processHandlerRef.get()?.destroyProcess()
             throw ExecutionTimeoutException("Execution timed out after ${timeout}ms: $name")
         }
@@ -160,7 +231,26 @@ class RunConfigurationService(private val project: Project) {
             ?: throw NoTestResultsException("No test results found for execution: $id")
 
         val root = record.testRoot
-            ?: throw NoTestResultsException("No test results for execution: $id (not a test configuration?)")
+        if (root == null) {
+            // No SM Test Runner results — return minimal result based on exit code
+            val status = when {
+                record.exitCode == null -> TestRunStatus.ERROR
+                record.exitCode == 0 -> TestRunStatus.PASSED
+                else -> TestRunStatus.FAILED
+            }
+            return TestResults(
+                executionId = id,
+                configurationName = record.configurationName,
+                status = status,
+                totalTests = 0,
+                passed = 0,
+                failed = 0,
+                ignored = 0,
+                duration = 0,
+                tests = emptyList(),
+                message = "Structured test results not available for this test framework. Exit code: ${record.exitCode}"
+            )
+        }
 
         val allLeafTests = root.allTests.filter { it.isLeaf }
         val tests = allLeafTests

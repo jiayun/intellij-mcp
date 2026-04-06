@@ -6,7 +6,7 @@ plugins {
 
 allprojects {
     group = "info.jiayun.intellijmcp"
-    version = "1.10.0"
+    version = "1.10.1"
 
     repositories {
         mavenCentral()

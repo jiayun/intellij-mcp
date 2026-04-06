@@ -216,6 +216,7 @@ class McpToolExecutor {
         val project = projectResolver.resolve(projectPath)
         return RunConfigurationService.getInstance(project).getTestResults(executionId, includeOutput, failedOnly)
     }
+
 }
 
 class UnsupportedLanguageException(message: String) : Exception(message)
