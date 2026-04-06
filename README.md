@@ -10,7 +10,9 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 - **List File Symbols** - List all symbols in a file with hierarchy
 - **Get Type Hierarchy** - Get inheritance hierarchy for classes
 - **Run Configurations** - List and execute IDE run configurations (tests, applications, etc.)
-- **Test Results** - Get structured test results with pass/fail status, duration, failure messages, and stack traces
+- **Test Results** - Get structured test results with pass/fail status, duration, failure messages, and stack traces*
+
+\* Structured test results require SM Test Runner support. Rider's .NET test runner uses ReSharper backend which does not expose structured results to platform APIs. See [Known Limitations](#test-execution-limitations).
 
 ## Supported Languages
 
@@ -200,6 +202,20 @@ dotnet tool install --global csharp-ls
 - `get_type_hierarchy` **is supported** for C# (unlike Swift)
 - Cross-platform support (Windows, macOS, Linux)
 
+
+## Test Execution Limitations
+
+The `run_configuration` and `get_test_results` tools work best with IDEs that use the standard SM Test Runner framework:
+
+| IDE | Run Tests | Structured Results |
+|-----|-----------|-------------------|
+| IntelliJ IDEA (JUnit, TestNG) | ✅ | ✅ |
+| PyCharm (pytest, unittest) | ✅ | ✅ |
+| WebStorm (Jest, Mocha, Vitest) | ✅ | ✅ |
+| GoLand (go test) | ✅ | ✅ |
+| Rider (.NET xUnit, NUnit, TUnit) | ✅ Triggers execution | ❌ ReSharper backend |
+
+**Rider limitation**: Rider's .NET test runner communicates through the ReSharper backend via RD Protocol, which does not expose structured test results to IntelliJ Platform APIs. Tests will execute successfully in the IDE, but `get_test_results` returns a degraded response without individual test details. As a workaround, agents can run `dotnet test` directly for structured output.
 
 ## Development
 
