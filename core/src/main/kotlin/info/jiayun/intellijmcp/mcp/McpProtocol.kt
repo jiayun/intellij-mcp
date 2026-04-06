@@ -32,6 +32,10 @@ data class McpError(
         const val UNSUPPORTED_LANGUAGE = -32003
         const val INDEX_NOT_READY = -32004
         const val SYMBOL_NOT_FOUND = -32005
+        const val CONFIGURATION_NOT_FOUND = -32006
+        const val EXECUTION_FAILED = -32007
+        const val EXECUTION_TIMEOUT = -32008
+        const val NO_TEST_RESULTS = -32009
     }
 }
 

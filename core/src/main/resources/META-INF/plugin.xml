@@ -14,6 +14,8 @@
             <li>Get detailed symbol information (type, documentation, signature)</li>
             <li>List all symbols in a file</li>
             <li>Get type hierarchy (inheritance)</li>
+            <li>List and execute IDE run configurations</li>
+            <li>Get structured test results (pass/fail, duration, failure messages, stack traces)</li>
         </ul>
 
         <h3>Language Support</h3>
@@ -92,6 +94,10 @@
             serviceImplementation="info.jiayun.intellijmcp.mcp.McpServer"/>
         <applicationService
             serviceImplementation="info.jiayun.intellijmcp.settings.PluginSettings"/>
+
+        <!-- Project level services -->
+        <projectService
+            serviceImplementation="info.jiayun.intellijmcp.execution.RunConfigurationService"/>
 
         <!-- Status bar -->
         <statusBarWidgetFactory

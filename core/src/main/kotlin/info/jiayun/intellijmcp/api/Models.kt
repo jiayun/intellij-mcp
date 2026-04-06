@@ -110,3 +110,49 @@ data class TypeRef(
     val qualifiedName: String?,
     val location: LocationInfo?
 )
+
+// ===== Run Configuration & Test Results =====
+
+data class RunConfigurationInfo(
+    val name: String,
+    val type: String,
+    val isTemporary: Boolean = false,
+    val isShared: Boolean = false
+)
+
+data class ExecutionResult(
+    val exitCode: Int?,
+    val success: Boolean,
+    val timedOut: Boolean = false,
+    val executionId: String
+)
+
+data class TestResults(
+    val executionId: String,
+    val configurationName: String,
+    val status: TestRunStatus,
+    val totalTests: Int,
+    val passed: Int,
+    val failed: Int,
+    val ignored: Int,
+    val duration: Long,
+    val tests: List<TestCaseResult>
+)
+
+enum class TestRunStatus {
+    PASSED, FAILED, ERROR, IN_PROGRESS, TERMINATED
+}
+
+data class TestCaseResult(
+    val name: String,
+    val suite: String? = null,
+    val status: TestCaseStatus,
+    val duration: Long,
+    val errorMessage: String? = null,
+    val stackTrace: String? = null,
+    val output: String? = null
+)
+
+enum class TestCaseStatus {
+    PASSED, FAILED, ERROR, IGNORED, IN_PROGRESS
+}

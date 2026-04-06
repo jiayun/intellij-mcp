@@ -9,6 +9,8 @@ Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol
 - **Get Symbol Info** - Get detailed information (type, documentation, signature)
 - **List File Symbols** - List all symbols in a file with hierarchy
 - **Get Type Hierarchy** - Get inheritance hierarchy for classes
+- **Run Configurations** - List and execute IDE run configurations (tests, applications, etc.)
+- **Test Results** - Get structured test results with pass/fail status, duration, failure messages, and stack traces
 
 ## Supported Languages
 
@@ -123,6 +125,9 @@ Note: intellij-mcp requires the JetBrains IDE to be running with the project ope
 | `get_symbol_info` | Get detailed symbol information |
 | `get_file_symbols` | List all symbols in a file |
 | `get_type_hierarchy` | Get class inheritance hierarchy |
+| `list_run_configurations` | List all run configurations in the IDE project |
+| `run_configuration` | Execute a run configuration by name |
+| `get_test_results` | Get structured test results from a test execution |
 
 ### `includeLibraries` Parameter
 

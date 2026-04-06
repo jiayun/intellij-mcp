@@ -121,6 +121,15 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.10.0</h3>
+            <ul>
+                <li><b>New:</b> <code>list_run_configurations</code> tool - list all run configurations defined in the IDE project</li>
+                <li><b>New:</b> <code>run_configuration</code> tool - execute a run configuration by name and wait for completion</li>
+                <li><b>New:</b> <code>get_test_results</code> tool - get structured test results (test names, pass/fail status, duration, failure messages, stack traces)</li>
+                <li>Enables AI agents to run tests through the IDE and inspect results, completing the edit → test → iterate workflow</li>
+                <li>Works with all test frameworks supported by the IDE (JUnit, pytest, Jest, Go test, etc.)</li>
+            </ul>
+
             <h3>1.9.0</h3>
             <ul>
                 <li><b>Fix:</b> Removed <code>until-build</code> restriction for forward compatibility with future IDE versions</li>

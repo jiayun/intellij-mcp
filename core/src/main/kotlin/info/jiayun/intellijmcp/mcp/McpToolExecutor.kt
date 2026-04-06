@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import info.jiayun.intellijmcp.api.*
+import info.jiayun.intellijmcp.execution.RunConfigurationService
 import info.jiayun.intellijmcp.project.ProjectResolver
 
 class McpToolExecutor {
@@ -185,6 +186,35 @@ class McpToolExecutor {
         if (DumbService.getInstance(project).isDumb) {
             throw IndexNotReadyException("IDE is still indexing. Please wait.")
         }
+    }
+
+    // ===== Run Configuration & Test Results =====
+
+    fun listRunConfigurations(
+        projectPath: String?,
+        type: String? = null
+    ): List<RunConfigurationInfo> {
+        val project = projectResolver.resolve(projectPath)
+        return RunConfigurationService.getInstance(project).listConfigurations(type)
+    }
+
+    fun runConfiguration(
+        name: String,
+        projectPath: String?,
+        timeout: Long = 60_000
+    ): ExecutionResult {
+        val project = projectResolver.resolve(projectPath)
+        return RunConfigurationService.getInstance(project).runConfiguration(name, timeout)
+    }
+
+    fun getTestResults(
+        projectPath: String?,
+        executionId: String? = null,
+        includeOutput: Boolean = false,
+        failedOnly: Boolean = false
+    ): TestResults {
+        val project = projectResolver.resolve(projectPath)
+        return RunConfigurationService.getInstance(project).getTestResults(executionId, includeOutput, failedOnly)
     }
 }
 

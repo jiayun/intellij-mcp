@@ -14,6 +14,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.*
 import info.jiayun.intellijmcp.api.*
+import info.jiayun.intellijmcp.execution.*
 import info.jiayun.intellijmcp.project.*
 import info.jiayun.intellijmcp.settings.PluginSettings
 
@@ -188,6 +189,70 @@ class McpServer {
                     ),
                     "required" to listOf("typeName")
                 )
+            ),
+            McpToolDefinition(
+                name = "list_run_configurations",
+                description = "List all run configurations defined in the IDE project (tests, applications, etc.).",
+                inputSchema = mapOf(
+                    "type" to "object",
+                    "properties" to mapOf(
+                        "projectPath" to mapOf(
+                            "type" to "string",
+                            "description" to "Optional: project root path. Uses active project if not provided."
+                        ),
+                        "type" to mapOf(
+                            "type" to "string",
+                            "description" to "Optional: filter by configuration type (e.g. 'JUnit', 'pytest', 'npm', 'Gradle')"
+                        )
+                    )
+                )
+            ),
+            McpToolDefinition(
+                name = "run_configuration",
+                description = "Execute a run configuration by name and wait for it to complete. Use list_run_configurations to discover available configurations. Returns an executionId that can be used with get_test_results.",
+                inputSchema = mapOf(
+                    "type" to "object",
+                    "properties" to mapOf(
+                        "name" to mapOf(
+                            "type" to "string",
+                            "description" to "Name of the run configuration to execute"
+                        ),
+                        "projectPath" to mapOf(
+                            "type" to "string",
+                            "description" to "Optional: project root path"
+                        ),
+                        "timeout" to mapOf(
+                            "type" to "integer",
+                            "description" to "Optional: timeout in milliseconds (default: 60000)"
+                        )
+                    ),
+                    "required" to listOf("name")
+                )
+            ),
+            McpToolDefinition(
+                name = "get_test_results",
+                description = "Get structured test results from a test execution. Returns test names, pass/fail status, duration, failure messages, and stack traces. Use after run_configuration to inspect test outcomes.",
+                inputSchema = mapOf(
+                    "type" to "object",
+                    "properties" to mapOf(
+                        "projectPath" to mapOf(
+                            "type" to "string",
+                            "description" to "Optional: project root path"
+                        ),
+                        "executionId" to mapOf(
+                            "type" to "string",
+                            "description" to "Optional: execution ID from run_configuration. Uses latest execution if not provided."
+                        ),
+                        "includeOutput" to mapOf(
+                            "type" to "boolean",
+                            "description" to "Optional: include stdout/stderr for each test (default: false)"
+                        ),
+                        "failedOnly" to mapOf(
+                            "type" to "boolean",
+                            "description" to "Optional: only return failed tests (default: false)"
+                        )
+                    )
+                )
             )
         )
     }
@@ -337,6 +402,12 @@ class McpServer {
             McpResponse(id = request.id, error = McpError(McpError.INDEX_NOT_READY, e.message ?: ""))
         } catch (e: SymbolNotFoundException) {
             McpResponse(id = request.id, error = McpError(McpError.SYMBOL_NOT_FOUND, e.message ?: ""))
+        } catch (e: ConfigurationNotFoundException) {
+            McpResponse(id = request.id, error = McpError(McpError.CONFIGURATION_NOT_FOUND, e.message ?: ""))
+        } catch (e: ExecutionTimeoutException) {
+            McpResponse(id = request.id, error = McpError(McpError.EXECUTION_TIMEOUT, e.message ?: ""))
+        } catch (e: NoTestResultsException) {
+            McpResponse(id = request.id, error = McpError(McpError.NO_TEST_RESULTS, e.message ?: ""))
         } catch (e: Exception) {
             logger.error("Tool execution failed: $toolName", e)
             McpResponse(id = request.id, error = McpError(McpError.INTERNAL_ERROR, e.message ?: "Unknown error"))
@@ -382,6 +453,24 @@ class McpServer {
                 language = args["language"] as? String,
                 projectPath = args["projectPath"] as? String,
                 includeLibraries = args["includeLibraries"] as? Boolean ?: false
+            )
+
+            "list_run_configurations" -> executor.listRunConfigurations(
+                projectPath = args["projectPath"] as? String,
+                type = args["type"] as? String
+            )
+
+            "run_configuration" -> executor.runConfiguration(
+                name = args["name"] as String,
+                projectPath = args["projectPath"] as? String,
+                timeout = (args["timeout"] as? Number)?.toLong() ?: 60_000
+            )
+
+            "get_test_results" -> executor.getTestResults(
+                projectPath = args["projectPath"] as? String,
+                executionId = args["executionId"] as? String,
+                includeOutput = args["includeOutput"] as? Boolean ?: false,
+                failedOnly = args["failedOnly"] as? Boolean ?: false
             )
 
             else -> throw IllegalArgumentException("Unknown tool: $name")
