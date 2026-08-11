@@ -57,9 +57,17 @@ dependencies {
     // LSP4J for Swift (SourceKit-LSP) and C# (csharp-ls/OmniSharp) language support
     implementation("org.eclipse.lsp4j:org.eclipse.lsp4j:0.21.2")
     implementation("org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.21.2")
+
+    testImplementation(kotlin("test-junit5"))
+    testImplementation("io.ktor:ktor-server-test-host:2.3.12")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
+
     buildPlugin {
         archiveBaseName.set("intellij-mcp")
     }
@@ -121,6 +129,13 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.10.2</h3>
+            <ul>
+                <li><b>Fix:</b> Preserve JSON-RPC request IDs as their original string or integer JSON values across <code>initialize</code>, <code>tools/list</code>, <code>tools/call</code>, and error responses</li>
+                <li><b>Fix:</b> Prevent integer IDs such as <code>0</code> from being serialized as <code>0.0</code>, restoring compatibility with Codex's Rust MCP client and avoiding precision loss for large integer IDs</li>
+                <li><b>Fix:</b> Return no JSON-RPC response for notifications and reject null or fractional request IDs as invalid requests</li>
+            </ul>
+
             <h3>1.10.1</h3>
             <ul>
                 <li><b>Fix:</b> <code>run_configuration</code> no longer times out on Rider Unit Tests (.NET)</li>

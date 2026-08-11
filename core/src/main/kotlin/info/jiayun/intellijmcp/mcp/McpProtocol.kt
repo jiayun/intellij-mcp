@@ -1,15 +1,20 @@
 package info.jiayun.intellijmcp.mcp
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+
 data class McpRequest(
     val jsonrpc: String = "2.0",
-    val id: Any?,
+    /** The original JSON string or integer node. Null means that this is a notification. */
+    val id: JsonElement?,
     val method: String,
-    val params: Map<String, Any?>? = null
+    val params: JsonObject? = null
 )
 
 data class McpResponse(
     val jsonrpc: String = "2.0",
-    val id: Any?,
+    /** Reuses the request's original JSON node so its type and numeric precision are preserved. */
+    val id: JsonElement?,
     val result: Any? = null,
     val error: McpError? = null
 )

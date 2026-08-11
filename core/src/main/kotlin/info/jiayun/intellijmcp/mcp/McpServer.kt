@@ -5,6 +5,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.Logger
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -23,6 +24,7 @@ class McpServer {
 
     private val logger = Logger.getInstance(McpServer::class.java)
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
+    private val jsonRpcCodec = McpJsonRpcCodec(gson)
     private val executor = McpToolExecutor()
 
     private var server: NettyApplicationEngine? = null
@@ -285,25 +287,13 @@ class McpServer {
                     call.respondText(gson.toJson(info), ContentType.Application.Json)
                 }
 
-                post("/mcp") {
-                    val body = call.receiveText()
-                    logger.debug("MCP Request: $body")
-
-                    val response = try {
-                        val request = gson.fromJson(body, McpRequest::class.java)
-                        handleRequest(request)
-                    } catch (e: Exception) {
-                        logger.error("Failed to parse request", e)
-                        McpResponse(
-                            id = 0,
-                            error = McpError(McpError.PARSE_ERROR, "Parse error: ${e.message}")
-                        )
-                    }
-
-                    val responseJson = gson.toJson(response)
-                    logger.debug("MCP Response: $responseJson")
-                    call.respondText(responseJson, ContentType.Application.Json)
-                }
+                mcpEndpoint(
+                    codec = jsonRpcCodec,
+                    onRequest = { logger.debug("MCP Request: $it") },
+                    onResponse = { logger.debug("MCP Response: $it") },
+                    onError = { logger.error("Failed to process request", it) },
+                    handler = ::handleRequest
+                )
 
                 get("/sse") {
                     call.response.cacheControl(CacheControl.NoCache(null))
@@ -334,7 +324,7 @@ class McpServer {
 
     // ===== Request handling =====
 
-    private fun handleRequest(request: McpRequest): McpResponse {
+    private fun handleRequest(request: McpRequest): McpResponse? {
         return when (request.method) {
             "initialize" -> handleInitialize(request)
             "initialized" -> McpResponse(id = request.id, result = emptyMap<String, Any>())
@@ -376,13 +366,25 @@ class McpServer {
             error = McpError(McpError.INVALID_PARAMS, "Missing params")
         )
 
-        val toolName = params["name"] as? String ?: return McpResponse(
+        val toolNameElement = params.get("name")
+        val toolName = if (toolNameElement?.isJsonPrimitive == true && toolNameElement.asJsonPrimitive.isString) {
+            toolNameElement.asString
+        } else null
+        if (toolName == null) return McpResponse(
             id = request.id,
             error = McpError(McpError.INVALID_PARAMS, "Missing tool name")
         )
 
-        @Suppress("UNCHECKED_CAST")
-        val arguments = params["arguments"] as? Map<String, Any?> ?: emptyMap()
+        val argumentsElement = params.get("arguments")
+        if (argumentsElement != null && !argumentsElement.isJsonObject) {
+            return McpResponse(
+                id = request.id,
+                error = McpError(McpError.INVALID_PARAMS, "arguments must be an object")
+            )
+        }
+        val arguments: Map<String, Any?> = argumentsElement?.let {
+            gson.fromJson(it, object : TypeToken<Map<String, Any?>>() {}.type)
+        } ?: emptyMap()
 
         return try {
             val result = executeTool(toolName, arguments)

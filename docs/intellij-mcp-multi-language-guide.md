@@ -644,16 +644,20 @@ class LanguageAdapterRegistry {
 
 package info.jiayun.intellijmcp.mcp
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+
 data class McpRequest(
     val jsonrpc: String = "2.0",
-    val id: Any,
+    // 保留 parser 產生的原始 JSON node；null 代表 notification 沒有 id
+    val id: JsonElement?,
     val method: String,
-    val params: Map<String, Any?>? = null
+    val params: JsonObject? = null
 )
 
 data class McpResponse(
     val jsonrpc: String = "2.0",
-    val id: Any,
+    val id: JsonElement?,
     val result: Any? = null,
     val error: McpError? = null
 )
@@ -1148,25 +1152,13 @@ class McpServer {
                     call.respondText(gson.toJson(info), ContentType.Application.Json)
                 }
                 
-                post("/mcp") {
-                    val body = call.receiveText()
-                    logger.debug("MCP Request: $body")
-                    
-                    val response = try {
-                        val request = gson.fromJson(body, McpRequest::class.java)
-                        handleRequest(request)
-                    } catch (e: Exception) {
-                        logger.error("Failed to parse request", e)
-                        McpResponse(
-                            id = 0,
-                            error = McpError(McpError.PARSE_ERROR, "Parse error: ${e.message}")
-                        )
-                    }
-                    
-                    val responseJson = gson.toJson(response)
-                    logger.debug("MCP Response: $responseJson")
-                    call.respondText(responseJson, ContentType.Application.Json)
-                }
+                mcpEndpoint(
+                    codec = McpJsonRpcCodec(gson),
+                    onRequest = { logger.debug("MCP Request: $it") },
+                    onResponse = { logger.debug("MCP Response: $it") },
+                    onError = { logger.error("Failed to process request", it) },
+                    handler = ::handleRequest
+                )
                 
                 get("/sse") {
                     call.response.cacheControl(CacheControl.NoCache(null))
@@ -1197,7 +1189,7 @@ class McpServer {
     
     // ===== Request 處理 =====
     
-    private fun handleRequest(request: McpRequest): McpResponse {
+    private fun handleRequest(request: McpRequest): McpResponse? {
         return when (request.method) {
             "initialize" -> handleInitialize(request)
             "initialized" -> McpResponse(id = request.id, result = emptyMap<String, Any>())
