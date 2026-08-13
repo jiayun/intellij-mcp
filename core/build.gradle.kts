@@ -129,6 +129,11 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.10.3</h3>
+            <ul>
+                <li><b>Fix:</b> Restore Rust language adapter binary compatibility with IntelliJ IDEA 2026.2 by removing references to Rust plugin Kotlin file-facade APIs that were removed upstream</li>
+            </ul>
+
             <h3>1.10.2</h3>
             <ul>
                 <li><b>Fix:</b> Preserve JSON-RPC request IDs as their original string or integer JSON values across <code>initialize</code>, <code>tools/list</code>, <code>tools/call</code>, and error responses</li>
@@ -221,7 +226,9 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            recommended()
+            create(IntelliJPlatformType.IntellijIdeaUltimate, "2026.2.1") {
+                useInstaller = false
+            }
         }
     }
 }

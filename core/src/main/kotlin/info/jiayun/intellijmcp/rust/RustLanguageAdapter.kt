@@ -105,8 +105,7 @@ class RustLanguageAdapter : LanguageAdapter {
             is RsEnumItem -> buildSymbolInfo(project, targetElement, SymbolKind.ENUM)
             is RsTraitItem -> buildSymbolInfo(project, targetElement, SymbolKind.TRAIT)
             is RsFunction -> {
-                val isMethod = targetElement.owner is RsAbstractableOwner.Impl ||
-                               targetElement.owner is RsAbstractableOwner.Trait
+                val isMethod = isAssociatedFunction(targetElement)
                 buildSymbolInfo(project, targetElement, if (isMethod) SymbolKind.METHOD else SymbolKind.FUNCTION)
             }
             is RsConstant -> buildSymbolInfo(project, targetElement, SymbolKind.CONSTANT)
@@ -202,7 +201,7 @@ class RustLanguageAdapter : LanguageAdapter {
 
         return TypeHierarchy(
             typeName = target.name ?: "",
-            qualifiedName = (target as? RsQualifiedNamedElement)?.qualifiedName,
+            qualifiedName = buildQualifiedName(target),
             kind = kind,
             superTypes = superTypes,
             subTypes = subTypes
@@ -288,7 +287,7 @@ class RustLanguageAdapter : LanguageAdapter {
             name = name,
             kind = kind,
             language = languageId,
-            qualifiedName = (element as? RsQualifiedNamedElement)?.qualifiedName,
+            qualifiedName = buildQualifiedName(element),
             signature = buildSignature(element),
             documentation = getDocumentation(element),
             location = getLocation(project, element),
@@ -312,6 +311,39 @@ class RustLanguageAdapter : LanguageAdapter {
             modifiers = getModifiers(element),
             annotations = getAttributes(element)
         )
+    }
+
+    /**
+     * Avoid Rust plugin extension properties such as RsAbstractable.owner. Those properties
+     * compile to calls on Kotlin file-facade classes which are not stable across IDE releases.
+     */
+    private fun isAssociatedFunction(function: RsFunction): Boolean {
+        var ancestor = function.parent
+        while (ancestor != null && ancestor !is RsFile) {
+            when (ancestor) {
+                is RsImplItem, is RsTraitItem -> return true
+                is RsFunction -> return false
+            }
+            ancestor = ancestor.parent
+        }
+        return false
+    }
+
+    /**
+     * Builds a useful qualified name from stable PSI parent/name APIs instead of the Rust
+     * plugin's RsQualifiedNamedElement.qualifiedName extension, whose generated file-facade
+     * class was removed in the 2026.2 Rust plugin.
+     */
+    private fun buildQualifiedName(element: RsNamedElement): String? {
+        val segments = mutableListOf<String>()
+        var current: PsiElement? = element
+        while (current != null && current !is RsFile) {
+            if (current is RsNamedElement) {
+                current.name?.takeIf { it.isNotBlank() }?.let(segments::add)
+            }
+            current = current.parent
+        }
+        return segments.asReversed().joinToString("::").takeIf { it.isNotEmpty() }
     }
 
     private fun buildSignature(element: RsNamedElement): String? {
