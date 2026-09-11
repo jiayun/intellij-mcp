@@ -34,13 +34,9 @@ class JavaScriptIntelligenceBackend(language: String) : IdeIntelligenceBackend(l
         val loaded = java.util.concurrent.CompletableFuture<Unit>()
         try {
             context.deadline.await(onEdt(context) {
-                val manager = com.intellij.openapi.fileEditor.ex.FileEditorManagerEx.getInstanceEx(context.project)
+                val manager = FileEditorManager.getInstance(context.project)
                 if(!manager.isFileOpen(context.file)) {
-                    val optionsType = com.intellij.openapi.fileEditor.impl.FileEditorOpenOptions::class.java
-                    val options = optionsType.getConstructor().newInstance().withRequestFocus(false).withSelectAsCurrent(true)
-                    val method = manager.javaClass.methods.first { it.name == "openFile" && it.parameterCount == 3 &&
-                        it.parameterTypes[2] == optionsType }
-                    method.invoke(manager,context.file,null,options)
+                    manager.openFile(context.file,false)
                     opened.set(manager.isFileOpen(context.file))
                     val editor = manager.getEditors(context.file).filterIsInstance<com.intellij.openapi.fileEditor.TextEditor>().firstOrNull()?.editor
                     if(editor != null) manager.runWhenLoaded(editor) { loaded.complete(Unit) } else loaded.complete(Unit)

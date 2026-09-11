@@ -1,0 +1,53 @@
+{
+  "command": "./gradlew :core:test :core:buildPlugin :core:smokeHarnessJar --offline --no-configuration-cache",
+  "suites": [
+    {
+      "suite": "info.jiayun.intellijmcp.intelligence.IdeIntelligenceFixtureTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "info.jiayun.intellijmcp.intelligence.IntelligenceTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "info.jiayun.intellijmcp.intelligence.LspIntelligenceStateTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "info.jiayun.intellijmcp.intelligence.LspTransportTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "info.jiayun.intellijmcp.mcp.McpHttpEndpointTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "info.jiayun.intellijmcp.rust.RustBinaryCompatibilityTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "totals": {
+    "tests": 51,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

@@ -26,6 +26,10 @@ class McpServer {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
     private val jsonRpcCodec = McpJsonRpcCodec(gson)
     private val executor = McpToolExecutor()
+    private val pluginVersion: String by lazy {
+        (McpServer::class.java.classLoader as? com.intellij.ide.plugins.cl.PluginAwareClassLoader)
+            ?.pluginDescriptor?.version ?: "unknown"
+    }
 
     private var server: NettyApplicationEngine? = null
 
@@ -281,7 +285,7 @@ class McpServer {
                 get("/info") {
                     val info = mapOf(
                         "name" to "intellij-mcp",
-                        "version" to "1.0.0",
+                        "version" to pluginVersion,
                         "languages" to LanguageAdapterRegistry.getInstance().getSupportedLanguages()
                     )
                     call.respondText(gson.toJson(info), ContentType.Application.Json)
@@ -327,7 +331,7 @@ class McpServer {
     private fun handleRequest(request: McpRequest): McpResponse? {
         return when (request.method) {
             "initialize" -> handleInitialize(request)
-            "initialized" -> McpResponse(id = request.id, result = emptyMap<String, Any>())
+            "initialized", "notifications/initialized" -> McpResponse(id = request.id, result = emptyMap<String, Any>())
             "tools/list" -> handleToolsList(request)
             "tools/call" -> handleToolCall(request)
             else -> McpResponse(
@@ -344,7 +348,7 @@ class McpServer {
                 "protocolVersion" to "2024-11-05",
                 "serverInfo" to mapOf(
                     "name" to "intellij-mcp",
-                    "version" to "1.0.0"
+                    "version" to pluginVersion
                 ),
                 "capabilities" to mapOf(
                     "tools" to mapOf("listChanged" to false)

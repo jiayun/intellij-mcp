@@ -16,6 +16,17 @@
       "needle": "callee()",
       "direction": "incoming",
       "rootSameAs": 0
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "ambiguous_caller.py",
+      "needle": "candidate()",
+      "direction": "incoming",
+      "status": "partial",
+      "edgeCount": 0,
+      "contains": [
+        "Ambiguous"
+      ]
     }
   ]
 }

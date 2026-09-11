@@ -1,0 +1,259 @@
+{
+  "language": "python",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "worker.py",
+        "needle": "callee():",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/worker.py:7:5:def callee():     return 1",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.py:2:5:def caller():     return callee()",
+            "symbol": {
+              "name": "caller",
+              "signature": "def caller():     return callee()",
+              "location": {
+                "filePath": "<fixture>/caller.py",
+                "line": 2,
+                "column": 5,
+                "endLine": 2,
+                "endColumn": 11
+              },
+              "language": "python"
+            }
+          },
+          {
+            "id": "<fixture>/worker.py:5:9:def work(self):         return callee()",
+            "symbol": {
+              "name": "work",
+              "signature": "def work(self):         return callee()",
+              "location": {
+                "filePath": "<fixture>/worker.py",
+                "line": 5,
+                "column": 9,
+                "endLine": 5,
+                "endColumn": 13
+              },
+              "language": "python"
+            }
+          },
+          {
+            "id": "<fixture>/worker.py:7:5:def callee():     return 1",
+            "symbol": {
+              "name": "callee",
+              "signature": "def callee():     return 1",
+              "location": {
+                "filePath": "<fixture>/worker.py",
+                "line": 7,
+                "column": 5,
+                "endLine": 7,
+                "endColumn": 11
+              },
+              "language": "python"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.py:2:5:def caller():     return callee()",
+            "to": "<fixture>/worker.py:7:5:def callee():     return 1",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/worker.py:5:9:def work(self):         return callee()",
+            "to": "<fixture>/worker.py:7:5:def callee():     return 1",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "caller.py",
+        "needle": "caller():",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/caller.py:2:5:def caller():     return callee()",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.py:2:5:def caller():     return callee()",
+            "symbol": {
+              "name": "caller",
+              "signature": "def caller():     return callee()",
+              "location": {
+                "filePath": "<fixture>/caller.py",
+                "line": 2,
+                "column": 5,
+                "endLine": 2,
+                "endColumn": 11
+              },
+              "language": "python"
+            }
+          },
+          {
+            "id": "<fixture>/worker.py:7:5:def callee():     return 1",
+            "symbol": {
+              "name": "callee",
+              "signature": "def callee():     return 1",
+              "location": {
+                "filePath": "<fixture>/worker.py",
+                "line": 7,
+                "column": 5,
+                "endLine": 7,
+                "endColumn": 11
+              },
+              "language": "python"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.py:2:5:def caller():     return callee()",
+            "to": "<fixture>/worker.py:7:5:def callee():     return 1",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "worker.py",
+        "needle": "work(self):",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work",
+          "signature": "def work(self):         raise NotImplementedError",
+          "location": {
+            "filePath": "<fixture>/worker.py",
+            "line": 2,
+            "column": 9,
+            "endLine": 2,
+            "endColumn": 13
+          },
+          "language": "python"
+        },
+        "implementations": [
+          {
+            "name": "work",
+            "signature": "def work(self):         return callee()",
+            "location": {
+              "filePath": "<fixture>/worker.py",
+              "line": 5,
+              "column": 9,
+              "endLine": 5,
+              "endColumn": 13
+            },
+            "language": "python"
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE DefinitionsScopedSearch"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.py",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.py",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.py",
+        "replace": [
+          "return 1",
+          "return ("
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.py",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "\u0027)\u0027 expected",
+              "location": {
+                "filePath": "<fixture>/worker.py",
+                "line": 8,
+                "column": 13,
+                "endLine": 8,
+                "endColumn": 13
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.py",
+        "replace": [
+          "return 1",
+          "return 1"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.py",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

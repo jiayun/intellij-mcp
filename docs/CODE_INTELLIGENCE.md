@@ -1,4 +1,4 @@
-# Code intelligence tools (1.11.0)
+# Code intelligence tools (1.11.1)
 
 All three tools accept an optional `projectPath`, use absolute file paths and **1-based UTF-16 line/column coordinates**, and return JSON inside the existing MCP text content. The request timeout defaults to 30,000 ms and must be between 1 and 60,000 ms. One deadline covers preparation and every file/graph request. No tool saves IDE documents or changes inspections.
 
@@ -61,6 +61,8 @@ JS/TS services receive unopened documents before diagnostics; each suspended con
 ## Verification
 
 See [verification results](verification/code-intelligence.md) for actual executed checks and unverified combinations, and [fixture instructions](fixtures/README.md) for the SDK-backed IDE matrix. Compiling against 2025.3.1 while retaining `since-build=251` is not by itself proof of 2025.1 compatibility.
+
+The [1.11.1 verification supplement](verification/1.11.1/README.md) covers the public API migration for Vue and Python; the original 1.11.0 reports remain historical evidence for the full language matrix.
 
 ```sh
 ./gradlew :core:test :core:buildPlugin

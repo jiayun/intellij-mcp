@@ -4,7 +4,7 @@ Usage: run_ide_smoke.py IDE_HOME FIXTURE REPORT [--plugins EXTRA_PLUGIN_DIRECTOR
 SDK paths are supplied as MCP_GO_SDK, MCP_DART_SDK, MCP_RUST_BIN and MCP_PYTHON.
 """
 import argparse,json,os,pathlib,shutil,subprocess,tempfile,zipfile,sys
-p=argparse.ArgumentParser(); p.add_argument('ide'); p.add_argument('fixture'); p.add_argument('report'); p.add_argument('--plugins'); p.add_argument('--license-file'); p.add_argument('--ui', action='store_true'); p.add_argument('--rust-fallback', action='store_true'); a=p.parse_args()
+p=argparse.ArgumentParser(); p.add_argument('ide'); p.add_argument('fixture'); p.add_argument('report'); p.add_argument('--plugins'); p.add_argument('--license-file'); p.add_argument('--ui', action='store_true'); p.add_argument('--rust-fallback', action='store_true'); p.add_argument('--mcp', action='store_true'); a=p.parse_args()
 repo=pathlib.Path(__file__).resolve().parent.parent
 ide=pathlib.Path(a.ide).resolve()
 info_path=next(x for x in [ide/'Resources/product-info.json',ide/'product-info.json'] if x.exists())
@@ -15,7 +15,7 @@ if a.license_file:
  (sandbox/'config').mkdir()
  (sandbox/'config'/license_file.name).symlink_to(license_file)
 plugins=sandbox/'plugins'; plugins.mkdir()
-with zipfile.ZipFile(repo/'core/build/distributions/intellij-mcp-1.11.0.zip') as z: z.extractall(plugins)
+with zipfile.ZipFile(repo/'core/build/distributions/intellij-mcp-1.11.1.zip') as z: z.extractall(plugins)
 harness=plugins/'smoke/lib'; harness.mkdir(parents=True); shutil.copy(repo/'core/build/smoke/mcp-smoke-harness.jar',harness)
 if a.plugins:
  for source in pathlib.Path(a.plugins).iterdir():
@@ -46,7 +46,8 @@ if not java.exists():
 args=[str(java),'-Xmx2500m']
 for arg in launch.get('additionalJvmArguments',[]):
  args.append(arg.replace('$APP_PACKAGE/Contents',str(ide)).replace('$APP_PACKAGE',str(ide.parent) if ide.name=='Contents' else str(ide)).replace('$IDE_HOME',str(ide)))
-args += [f'-Didea.home.path={ide}',f'-Didea.config.path={sandbox}/config',f'-Didea.system.path={sandbox}/system',f'-Didea.log.path={sandbox}/log',f'-Didea.plugins.path={plugins}','-Djava.awt.headless=true','-Didea.is.internal=true','-Didea.trust.all.projects=true','-Dide.show.tips.on.startup.default.value=false','-Didea.initially.ask.config=never','-Didea.fatal.error.notification=disabled']
+args += [f'-Didea.home.path={ide}',f'-Didea.config.path={sandbox}/config',f'-Didea.system.path={sandbox}/system',f'-Didea.log.path={sandbox}/log',f'-Didea.plugins.path={plugins}','-Djava.awt.headless=true','-Didea.is.internal=true','-Didea.trust.all.projects=true','-Dide.show.tips.on.startup.default.value=false','-Didea.initially.ask.config=never','-Dide.experimental.ui.onboarding=false','-Didea.fatal.error.notification=disabled']
+if a.mcp: args += [f'-Dmcp.smoke.client={repo}/scripts/mcp_smoke_client.py',f'-Dmcp.smoke.python={sys.executable}']
 if a.ui: args += ['-Djava.awt.headless=false','-Dmcp.smoke.ui=true']
 args += ['-cp',os.pathsep.join(str(ide/'lib'/x) for x in launch['bootClassPathJarNames']),launch.get('mainClass','com.intellij.idea.Main'),'mcp-smoke',str(fixture),str(pathlib.Path(a.report).resolve())]
 print(f'Sandbox: {sandbox}',flush=True)

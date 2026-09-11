@@ -8,6 +8,7 @@
 - [docs/CODE_INTELLIGENCE.md](docs/CODE_INTELLIGENCE.md)：diagnostics、call hierarchy、implementations 的參數、回傳狀態及語言限制。
 - [docs/fixtures/README.md](docs/fixtures/README.md)：真實 IDE／SDK fixture 的準備與執行方式。
 - [docs/verification/code-intelligence.md](docs/verification/code-intelligence.md)：已執行的驗證、環境版本、已知限制與未驗證組合。
+- [docs/verification/1.11.1/README.md](docs/verification/1.11.1/README.md)：Vue／Python 公開 API 遷移的補充驗證；修正版報告與 artifact metadata 按版本保留。
 
 ## 檔案地圖
 
@@ -26,6 +27,7 @@
 | `scripts/run_ide_smoke.py` | 單一 fixture：複製專案、隔離 IDE config／plugins，執行後輸出 JSON 與 log。 |
 | `scripts/run_smoke_matrix.py` | 依序執行多個 fixture，即使某組失敗仍記錄後續結果與 summary。 |
 | `scripts/lsp_smoke.py` | 直接對已安裝 LSP server 做協定 smoke；不能取代正式 plugin 的 IDE 整合測試。 |
+| `scripts/mcp_smoke_client.py` | 外部 HTTP MCP client；runner 加 `--mcp` 後，用正式 server 驗證初始化、工具存取及回傳。 |
 | `docs/fixtures/` | 可重現的各語言小型專案。每組 `smoke.json` 定義查詢、未存檔修改及預期結果。 |
 | `docs/verification/` | 經整理的測試與 verifier 證據；不是執行時依賴。 |
 
@@ -69,6 +71,8 @@
    ```
 
    binary verifier、受控協定測試、真實 SDK／IDE fixture 是不同證據。保留各自實際環境；反射載入的 API 特別需要真實 fixture 驗證。
+
+   MCP transport／dispatch／序列化或對外能力變更，另外以 runner 的 `--mcp` 模式做端到端驗證。確認報告包含 `transport` 與 `mcpExchanges`；不能把直接呼叫 `IntelligenceService` 的結果當成外部 MCP 實測。
 
 4. 純文件、ignore 或 fixture lockfile 整理不需重跑整個 IDE 矩陣。執行對應格式、連結、lockfile 檢查即可；通過的測試只在新變更或未解決疑慮需要時重跑。
 

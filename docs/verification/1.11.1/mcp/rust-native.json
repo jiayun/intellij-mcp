@@ -1,0 +1,1529 @@
+{
+  "language": "rust",
+  "ide": "2026.2.2",
+  "adapters": [
+    "swift",
+    "csharp",
+    "javascript",
+    "vue",
+    "rust"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "src/lib.rs",
+        "needle": "callee()",
+        "direction": "incoming",
+        "occurrence": 1,
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+        "nodes": [
+          {
+            "id": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "symbol": {
+              "name": "caller",
+              "signature": "pub fn caller() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/caller.rs",
+                "line": 1,
+                "column": 8,
+                "endLine": 1,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "symbol": {
+              "name": "work",
+              "signature": "fn work(\u0026self) -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 4,
+                "column": 31,
+                "endLine": 4,
+                "endColumn": 35
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "symbol": {
+              "name": "callee",
+              "signature": "pub fn callee() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 8,
+                "endLine": 5,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "src/caller.rs",
+        "needle": "caller()",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+        "nodes": [
+          {
+            "id": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "symbol": {
+              "name": "caller",
+              "signature": "pub fn caller() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/caller.rs",
+                "line": 1,
+                "column": 8,
+                "endLine": 1,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "symbol": {
+              "name": "callee",
+              "signature": "pub fn callee() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 8,
+                "endLine": 5,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "src/lib.rs",
+        "needle": "work(\u0026self)",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work",
+          "signature": "fn work(\u0026self) -\u003e i32;",
+          "location": {
+            "filePath": "<fixture>/src/lib.rs",
+            "line": 2,
+            "column": 23,
+            "endLine": 2,
+            "endColumn": 27
+          },
+          "language": "rust"
+        },
+        "implementations": [
+          {
+            "name": "work",
+            "signature": "fn work(\u0026self) -\u003e i32 ",
+            "location": {
+              "filePath": "<fixture>/src/lib.rs",
+              "line": 4,
+              "column": 31,
+              "endLine": 4,
+              "endColumn": 35
+            },
+            "language": "rust"
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE DefinitionsScopedSearch"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "src/lib.rs",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/src/lib.rs",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "src/lib.rs",
+        "replace": [
+          "{ 1 }",
+          "{ missing_symbol }"
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/src/lib.rs",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "Cannot find value `missing_symbol` in this scope [E0425]",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 26,
+                "endLine": 5,
+                "endColumn": 40
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "src/lib.rs",
+        "replace": [
+          "{ 1 }",
+          "{ 1 }"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/src/lib.rs",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    }
+  ],
+  "transport": "external Python client -\u003e MCP HTTP/JSON-RPC -\u003e production IDE backend",
+  "mcpExchanges": [
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/list",
+        "id": "tools-list"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "tools-list",
+        "result": {
+          "tools": [
+            {
+              "name": "list_projects",
+              "description": "List all currently open projects in the IDE.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            {
+              "name": "get_supported_languages",
+              "description": "Get supported languages and diagnostics, implementations, incoming/outgoing capability states without starting language servers.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional project root for current capability state"
+                  }
+                }
+              }
+            },
+            {
+              "name": "find_symbol",
+              "description": "Find symbol (class, function, variable) definition by name.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Symbol name to find"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "class",
+                      "interface",
+                      "function",
+                      "method",
+                      "variable",
+                      "field",
+                      "property"
+                    ],
+                    "description": "Optional: filter by symbol kind"
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": [
+                      "swift",
+                      "csharp",
+                      "javascript",
+                      "vue",
+                      "rust"
+                    ],
+                    "description": "Optional: limit search to specific language"
+                  },
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path. Uses active project if not provided."
+                  },
+                  "includeLibraries": {
+                    "type": "boolean",
+                    "description": "Optional: include symbols from project dependencies/libraries (default: false)"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            {
+              "name": "find_references",
+              "description": "Find all references to the symbol at the given location.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "filePath": {
+                    "type": "string",
+                    "description": "Absolute file path"
+                  },
+                  "line": {
+                    "type": "integer",
+                    "description": "1-based line number"
+                  },
+                  "column": {
+                    "type": "integer",
+                    "description": "1-based column number"
+                  },
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path"
+                  },
+                  "includeLibraries": {
+                    "type": "boolean",
+                    "description": "Optional: include references from project dependencies/libraries (default: false)"
+                  }
+                },
+                "required": [
+                  "filePath",
+                  "line",
+                  "column"
+                ]
+              }
+            },
+            {
+              "name": "get_symbol_info",
+              "description": "Get detailed information about the symbol at the given location.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "filePath": {
+                    "type": "string",
+                    "description": "Absolute file path"
+                  },
+                  "line": {
+                    "type": "integer",
+                    "description": "1-based line number"
+                  },
+                  "column": {
+                    "type": "integer",
+                    "description": "1-based column number"
+                  },
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path"
+                  }
+                },
+                "required": [
+                  "filePath",
+                  "line",
+                  "column"
+                ]
+              }
+            },
+            {
+              "name": "get_file_symbols",
+              "description": "List all symbols in a file. Supported extensions: .swift, .cs, .js, .mjs, .cjs, .ts, .mts, .cts, .jsx, .tsx, .vue, .rs",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "filePath": {
+                    "type": "string",
+                    "description": "Absolute file path"
+                  },
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path"
+                  }
+                },
+                "required": [
+                  "filePath"
+                ]
+              }
+            },
+            {
+              "name": "get_type_hierarchy",
+              "description": "Get the type hierarchy (base types and subtypes) for a class/interface.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "typeName": {
+                    "type": "string",
+                    "description": "Type name (can be qualified name)"
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": [
+                      "swift",
+                      "csharp",
+                      "javascript",
+                      "vue",
+                      "rust"
+                    ],
+                    "description": "Optional: specify language if type name is ambiguous"
+                  },
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path"
+                  },
+                  "includeLibraries": {
+                    "type": "boolean",
+                    "description": "Optional: include types from project dependencies/libraries (default: false)"
+                  }
+                },
+                "required": [
+                  "typeName"
+                ]
+              }
+            },
+            {
+              "name": "list_run_configurations",
+              "description": "List all run configurations defined in the IDE project (tests, applications, etc.).",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path. Uses active project if not provided."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Optional: filter by configuration type (e.g. \u0027JUnit\u0027, \u0027pytest\u0027, \u0027npm\u0027, \u0027Gradle\u0027)"
+                  }
+                }
+              }
+            },
+            {
+              "name": "run_configuration",
+              "description": "Execute a run configuration by name and wait for it to complete. Use list_run_configurations to discover available configurations. Returns an executionId that can be used with get_test_results.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the run configuration to execute"
+                  },
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "description": "Optional: timeout in milliseconds (default: 60000)"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            {
+              "name": "get_test_results",
+              "description": "Get structured test results from a test execution. Returns test names, pass/fail status, duration, failure messages, and stack traces. Use after run_configuration to inspect test outcomes.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional: project root path"
+                  },
+                  "executionId": {
+                    "type": "string",
+                    "description": "Optional: execution ID from run_configuration. Uses latest execution if not provided."
+                  },
+                  "includeOutput": {
+                    "type": "boolean",
+                    "description": "Optional: include stdout/stderr for each test (default: false)"
+                  },
+                  "failedOnly": {
+                    "type": "boolean",
+                    "description": "Optional: only return failed tests (default: false)"
+                  }
+                }
+              }
+            },
+            {
+              "name": "get_diagnostics",
+              "description": "Analyze specified files with enabled IDE inspections or language server. Per-file status distinguishes clean results from incomplete analysis.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional absolute project root"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "default": 30000,
+                    "minimum": 1,
+                    "maximum": 60000
+                  },
+                  "filePaths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  },
+                  "minSeverity": {
+                    "type": "string",
+                    "enum": [
+                      "error",
+                      "warning",
+                      "information",
+                      "hint"
+                    ],
+                    "default": "warning"
+                  }
+                },
+                "required": [
+                  "filePaths"
+                ]
+              }
+            },
+            {
+              "name": "find_implementations",
+              "description": "Find IDE/LSP implementations and overrides at a declaration or usage. Excludes the target and deduplicates declarations; includes analysis status and truncation.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional absolute project root"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "default": 30000,
+                    "minimum": 1,
+                    "maximum": 60000
+                  },
+                  "filePath": {
+                    "type": "string",
+                    "description": "Absolute file path; unsaved IDE content takes precedence"
+                  },
+                  "line": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "1-based line"
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "1-based UTF-16 column"
+                  },
+                  "includeLibraries": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "default": 200,
+                    "minimum": 1,
+                    "maximum": 1000
+                  }
+                },
+                "required": [
+                  "filePath",
+                  "line",
+                  "column"
+                ]
+              }
+            },
+            {
+              "name": "get_call_hierarchy",
+              "description": "Get incoming/outgoing calls as declaration nodes and directed edges. Recursive edges are retained. Vue script only; older Rust supports direct resolved calls; csharp-ls outgoing requires 0.27.0+. See get_supported_languages for backend limitations.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "projectPath": {
+                    "type": "string",
+                    "description": "Optional absolute project root"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "default": 30000,
+                    "minimum": 1,
+                    "maximum": 60000
+                  },
+                  "filePath": {
+                    "type": "string",
+                    "description": "Absolute file path; unsaved IDE content takes precedence"
+                  },
+                  "line": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "1-based line"
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "1-based UTF-16 column"
+                  },
+                  "includeLibraries": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "incoming",
+                      "outgoing"
+                    ]
+                  },
+                  "depth": {
+                    "type": "integer",
+                    "default": 1,
+                    "minimum": 1,
+                    "maximum": 3
+                  },
+                  "maxNodes": {
+                    "type": "integer",
+                    "default": 100,
+                    "minimum": 1,
+                    "maximum": 500
+                  }
+                },
+                "required": [
+                  "filePath",
+                  "line",
+                  "column",
+                  "direction"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "list_projects",
+          "arguments": {}
+        },
+        "id": 9223372036854775808123
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 9223372036854775808123,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "[\n  {\n    \"name\": \"project\",\n    \"basePath\": \"<fixture>\",\n    \"isActive\": true\n  }\n]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_supported_languages",
+          "arguments": {
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": -1
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": -1,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "[\n  {\n    \"id\": \"swift\",\n    \"name\": \"Swift\",\n    \"extensions\": [\n      \"swift\"\n    ],\n    \"capabilities\": {\n      \"diagnostics\": {\n        \"status\": \"unknown\",\n        \"backend\": \"swift LSP\",\n        \"limitations\": [\n          \"Pull preferred; unversioned push results are partial\"\n        ]\n      },\n      \"implementations\": {\n        \"status\": \"unknown\",\n        \"backend\": \"swift LSP\",\n        \"limitations\": []\n      },\n      \"incoming\": {\n        \"status\": \"unknown\",\n        \"backend\": \"swift LSP\",\n        \"limitations\": []\n      },\n      \"outgoing\": {\n        \"status\": \"unknown\",\n        \"backend\": \"swift LSP\",\n        \"limitations\": []\n      }\n    }\n  },\n  {\n    \"id\": \"csharp\",\n    \"name\": \"C#\",\n    \"extensions\": [\n      \"cs\"\n    ],\n    \"capabilities\": {\n      \"diagnostics\": {\n        \"status\": \"unknown\",\n        \"backend\": \"csharp LSP\",\n        \"limitations\": [\n          \"Pull preferred; unversioned push results are partial\"\n        ]\n      },\n      \"implementations\": {\n        \"status\": \"unknown\",\n        \"backend\": \"csharp LSP\",\n        \"limitations\": []\n      },\n      \"incoming\": {\n        \"status\": \"unknown\",\n        \"backend\": \"csharp LSP\",\n        \"limitations\": []\n      },\n      \"outgoing\": {\n        \"status\": \"unknown\",\n        \"backend\": \"csharp LSP\",\n        \"limitations\": [\n          \"csharp-ls outgoing requires a reported version \\u003e\\u003d 0.27.0; OmniSharp follows capabilities\"\n        ]\n      }\n    }\n  },\n  {\n    \"id\": \"javascript\",\n    \"name\": \"JavaScript/TypeScript\",\n    \"extensions\": [\n      \"js\",\n      \"mjs\",\n      \"cjs\",\n      \"ts\",\n      \"mts\",\n      \"cts\",\n      \"jsx\",\n      \"tsx\"\n    ],\n    \"capabilities\": {\n      \"diagnostics\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE CodeSmellDetector + language services\",\n        \"limitations\": [\n          \"Enabled IDE inspections only; CodeSmellDetector exposes warning/error diagnostics\",\n          \"Requires the configured JS/TS/Vue service; unsaved TypeScript configuration reports not_ready\"\n        ]\n      },\n      \"implementations\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE DefinitionsScopedSearch\",\n        \"limitations\": []\n      },\n      \"incoming\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE native hierarchy\",\n        \"limitations\": []\n      },\n      \"outgoing\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE native hierarchy\",\n        \"limitations\": []\n      }\n    }\n  },\n  {\n    \"id\": \"vue\",\n    \"name\": \"Vue.js\",\n    \"extensions\": [\n      \"vue\"\n    ],\n    \"capabilities\": {\n      \"diagnostics\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE CodeSmellDetector + language services\",\n        \"limitations\": [\n          \"Enabled IDE inspections only; CodeSmellDetector exposes warning/error diagnostics\",\n          \"Requires the configured JS/TS/Vue service; unsaved TypeScript configuration reports not_ready\"\n        ]\n      },\n      \"implementations\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE DefinitionsScopedSearch\",\n        \"limitations\": [\n          \"script/script setup only; template relationships excluded\"\n        ]\n      },\n      \"incoming\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE native hierarchy\",\n        \"limitations\": [\n          \"script/script setup only; template relationships excluded\"\n        ]\n      },\n      \"outgoing\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE native hierarchy\",\n        \"limitations\": [\n          \"script/script setup only; template relationships excluded\"\n        ]\n      }\n    }\n  },\n  {\n    \"id\": \"rust\",\n    \"name\": \"Rust\",\n    \"extensions\": [\n      \"rs\"\n    ],\n    \"capabilities\": {\n      \"diagnostics\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE CodeSmellDetector\",\n        \"limitations\": [\n          \"Enabled IDE inspections only; CodeSmellDetector exposes warning/error diagnostics\"\n        ]\n      },\n      \"implementations\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE DefinitionsScopedSearch\",\n        \"limitations\": [\n          \"Native hierarchy when installed; older plugins: resolved direct calls only, no function pointers, dynamic dispatch or macro expansion\"\n        ]\n      },\n      \"incoming\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE native hierarchy\",\n        \"limitations\": [\n          \"Native hierarchy when installed; older plugins: resolved direct calls only, no function pointers, dynamic dispatch or macro expansion\"\n        ]\n      },\n      \"outgoing\": {\n        \"status\": \"available\",\n        \"backend\": \"IDE native hierarchy\",\n        \"limitations\": [\n          \"Native hierarchy when installed; older plugins: resolved direct calls only, no function pointers, dynamic dispatch or macro expansion\"\n        ]\n      }\n    }\n  }\n]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_diagnostics",
+          "arguments": {
+            "filePaths": [],
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "invalid-0"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "invalid-0",
+        "error": {
+          "code": -32602,
+          "message": "filePaths must contain absolute paths"
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "find_implementations",
+          "arguments": {
+            "filePath": "<fixture>/src/lib.rs",
+            "line": 0,
+            "column": 1,
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "invalid-1"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "invalid-1",
+        "error": {
+          "code": -32602,
+          "message": "line must be a positive integer"
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_call_hierarchy",
+          "arguments": {
+            "filePath": "<fixture>/src/lib.rs",
+            "line": 1,
+            "column": 1,
+            "direction": "sideways",
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "invalid-2"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "invalid-2",
+        "error": {
+          "code": -32602,
+          "message": "direction must be incoming or outgoing"
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_call_hierarchy",
+          "arguments": {
+            "timeout": 60000,
+            "filePath": "<fixture>/src/lib.rs",
+            "line": 5,
+            "column": 8,
+            "direction": "incoming",
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "query"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "query",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"complete\",\n  \"root\": \"<fixture>/src/lib.rs:5:8:pub fn callee() -\\u003e i32 \",\n  \"nodes\": [\n    {\n      \"id\": \"<fixture>/src/caller.rs:1:8:pub fn caller() -\\u003e i32 \",\n      \"symbol\": {\n        \"name\": \"caller\",\n        \"signature\": \"pub fn caller() -\\u003e i32 \",\n        \"location\": {\n          \"filePath\": \"<fixture>/src/caller.rs\",\n          \"line\": 1,\n          \"column\": 8,\n          \"endLine\": 1,\n          \"endColumn\": 14\n        },\n        \"language\": \"rust\"\n      }\n    },\n    {\n      \"id\": \"<fixture>/src/lib.rs:4:31:fn work(\\u0026self) -\\u003e i32 \",\n      \"symbol\": {\n        \"name\": \"work\",\n        \"signature\": \"fn work(\\u0026self) -\\u003e i32 \",\n        \"location\": {\n          \"filePath\": \"<fixture>/src/lib.rs\",\n          \"line\": 4,\n          \"column\": 31,\n          \"endLine\": 4,\n          \"endColumn\": 35\n        },\n        \"language\": \"rust\"\n      }\n    },\n    {\n      \"id\": \"<fixture>/src/lib.rs:5:8:pub fn callee() -\\u003e i32 \",\n      \"symbol\": {\n        \"name\": \"callee\",\n        \"signature\": \"pub fn callee() -\\u003e i32 \",\n        \"location\": {\n          \"filePath\": \"<fixture>/src/lib.rs\",\n          \"line\": 5,\n          \"column\": 8,\n          \"endLine\": 5,\n          \"endColumn\": 14\n        },\n        \"language\": \"rust\"\n      }\n    }\n  ],\n  \"edges\": [\n    {\n      \"from\": \"<fixture>/src/caller.rs:1:8:pub fn caller() -\\u003e i32 \",\n      \"to\": \"<fixture>/src/lib.rs:5:8:pub fn callee() -\\u003e i32 \",\n      \"callLocations\": []\n    },\n    {\n      \"from\": \"<fixture>/src/lib.rs:4:31:fn work(\\u0026self) -\\u003e i32 \",\n      \"to\": \"<fixture>/src/lib.rs:5:8:pub fn callee() -\\u003e i32 \",\n      \"callLocations\": []\n    }\n  ],\n  \"truncated\": false,\n  \"backend\": \"IDE native hierarchy\"\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_call_hierarchy",
+          "arguments": {
+            "timeout": 60000,
+            "filePath": "<fixture>/src/caller.rs",
+            "line": 1,
+            "column": 8,
+            "direction": "outgoing",
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "query"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "query",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"not_ready\",\n  \"reason\": \"IDE indexing is in progress\",\n  \"nodes\": [],\n  \"edges\": [],\n  \"truncated\": false\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_call_hierarchy",
+          "arguments": {
+            "timeout": 60000,
+            "filePath": "<fixture>/src/caller.rs",
+            "line": 1,
+            "column": 8,
+            "direction": "outgoing",
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "query"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "query",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"complete\",\n  \"root\": \"<fixture>/src/caller.rs:1:8:pub fn caller() -\\u003e i32 \",\n  \"nodes\": [\n    {\n      \"id\": \"<fixture>/src/caller.rs:1:8:pub fn caller() -\\u003e i32 \",\n      \"symbol\": {\n        \"name\": \"caller\",\n        \"signature\": \"pub fn caller() -\\u003e i32 \",\n        \"location\": {\n          \"filePath\": \"<fixture>/src/caller.rs\",\n          \"line\": 1,\n          \"column\": 8,\n          \"endLine\": 1,\n          \"endColumn\": 14\n        },\n        \"language\": \"rust\"\n      }\n    },\n    {\n      \"id\": \"<fixture>/src/lib.rs:5:8:pub fn callee() -\\u003e i32 \",\n      \"symbol\": {\n        \"name\": \"callee\",\n        \"signature\": \"pub fn callee() -\\u003e i32 \",\n        \"location\": {\n          \"filePath\": \"<fixture>/src/lib.rs\",\n          \"line\": 5,\n          \"column\": 8,\n          \"endLine\": 5,\n          \"endColumn\": 14\n        },\n        \"language\": \"rust\"\n      }\n    }\n  ],\n  \"edges\": [\n    {\n      \"from\": \"<fixture>/src/caller.rs:1:8:pub fn caller() -\\u003e i32 \",\n      \"to\": \"<fixture>/src/lib.rs:5:8:pub fn callee() -\\u003e i32 \",\n      \"callLocations\": []\n    }\n  ],\n  \"truncated\": false,\n  \"backend\": \"IDE native hierarchy\"\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "find_implementations",
+          "arguments": {
+            "timeout": 60000,
+            "filePath": "<fixture>/src/lib.rs",
+            "line": 2,
+            "column": 23,
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "query"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "query",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"complete\",\n  \"target\": {\n    \"name\": \"work\",\n    \"signature\": \"fn work(\\u0026self) -\\u003e i32;\",\n    \"location\": {\n      \"filePath\": \"<fixture>/src/lib.rs\",\n      \"line\": 2,\n      \"column\": 23,\n      \"endLine\": 2,\n      \"endColumn\": 27\n    },\n    \"language\": \"rust\"\n  },\n  \"implementations\": [\n    {\n      \"name\": \"work\",\n      \"signature\": \"fn work(\\u0026self) -\\u003e i32 \",\n      \"location\": {\n        \"filePath\": \"<fixture>/src/lib.rs\",\n        \"line\": 4,\n        \"column\": 31,\n        \"endLine\": 4,\n        \"endColumn\": 35\n      },\n      \"language\": \"rust\"\n    }\n  ],\n  \"truncated\": false,\n  \"backend\": \"IDE DefinitionsScopedSearch\"\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_diagnostics",
+          "arguments": {
+            "timeout": 60000,
+            "filePaths": [
+              "<fixture>/src/lib.rs"
+            ],
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "query"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "query",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "[\n  {\n    \"filePath\": \"<fixture>/src/lib.rs\",\n    \"status\": \"complete\",\n    \"diagnostics\": [],\n    \"backend\": \"IDE CodeSmellDetector\"\n  }\n]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_diagnostics",
+          "arguments": {
+            "timeout": 60000,
+            "filePaths": [
+              "<fixture>/src/lib.rs"
+            ],
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "query"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "query",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "[\n  {\n    \"filePath\": \"<fixture>/src/lib.rs\",\n    \"status\": \"complete\",\n    \"diagnostics\": [\n      {\n        \"severity\": \"error\",\n        \"message\": \"Cannot find value `missing_symbol` in this scope [E0425]\",\n        \"location\": {\n          \"filePath\": \"<fixture>/src/lib.rs\",\n          \"line\": 5,\n          \"column\": 26,\n          \"endLine\": 5,\n          \"endColumn\": 40\n        },\n        \"source\": \"IDE inspections\"\n      }\n    ],\n    \"backend\": \"IDE CodeSmellDetector\"\n  }\n]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "intellij-mcp-external-smoke",
+            "version": "1.0"
+          }
+        },
+        "id": 0
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "serverInfo": {
+            "name": "intellij-mcp",
+            "version": "1.11.1"
+          },
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      },
+      "httpStatus": 204
+    },
+    {
+      "request": {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+          "name": "get_diagnostics",
+          "arguments": {
+            "timeout": 60000,
+            "filePaths": [
+              "<fixture>/src/lib.rs"
+            ],
+            "projectPath": "<fixture>"
+          }
+        },
+        "id": "query"
+      },
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "query",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "[\n  {\n    \"filePath\": \"<fixture>/src/lib.rs\",\n    \"status\": \"complete\",\n    \"diagnostics\": [],\n    \"backend\": \"IDE CodeSmellDetector\"\n  }\n]"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "mcpProbe": {
+    "tools": [
+      "list_projects",
+      "get_supported_languages",
+      "find_symbol",
+      "find_references",
+      "get_symbol_info",
+      "get_file_symbols",
+      "get_type_hierarchy",
+      "list_run_configurations",
+      "run_configuration",
+      "get_test_results",
+      "get_diagnostics",
+      "find_implementations",
+      "get_call_hierarchy"
+    ],
+    "projects": [
+      {
+        "name": "project",
+        "basePath": "<fixture>",
+        "isActive": true
+      }
+    ],
+    "supportedLanguages": [
+      {
+        "id": "swift",
+        "name": "Swift",
+        "extensions": [
+          "swift"
+        ],
+        "capabilities": {
+          "diagnostics": {
+            "status": "unknown",
+            "backend": "swift LSP",
+            "limitations": [
+              "Pull preferred; unversioned push results are partial"
+            ]
+          },
+          "implementations": {
+            "status": "unknown",
+            "backend": "swift LSP",
+            "limitations": []
+          },
+          "incoming": {
+            "status": "unknown",
+            "backend": "swift LSP",
+            "limitations": []
+          },
+          "outgoing": {
+            "status": "unknown",
+            "backend": "swift LSP",
+            "limitations": []
+          }
+        }
+      },
+      {
+        "id": "csharp",
+        "name": "C#",
+        "extensions": [
+          "cs"
+        ],
+        "capabilities": {
+          "diagnostics": {
+            "status": "unknown",
+            "backend": "csharp LSP",
+            "limitations": [
+              "Pull preferred; unversioned push results are partial"
+            ]
+          },
+          "implementations": {
+            "status": "unknown",
+            "backend": "csharp LSP",
+            "limitations": []
+          },
+          "incoming": {
+            "status": "unknown",
+            "backend": "csharp LSP",
+            "limitations": []
+          },
+          "outgoing": {
+            "status": "unknown",
+            "backend": "csharp LSP",
+            "limitations": [
+              "csharp-ls outgoing requires a reported version \u003e\u003d 0.27.0; OmniSharp follows capabilities"
+            ]
+          }
+        }
+      },
+      {
+        "id": "javascript",
+        "name": "JavaScript/TypeScript",
+        "extensions": [
+          "js",
+          "mjs",
+          "cjs",
+          "ts",
+          "mts",
+          "cts",
+          "jsx",
+          "tsx"
+        ],
+        "capabilities": {
+          "diagnostics": {
+            "status": "available",
+            "backend": "IDE CodeSmellDetector + language services",
+            "limitations": [
+              "Enabled IDE inspections only; CodeSmellDetector exposes warning/error diagnostics",
+              "Requires the configured JS/TS/Vue service; unsaved TypeScript configuration reports not_ready"
+            ]
+          },
+          "implementations": {
+            "status": "available",
+            "backend": "IDE DefinitionsScopedSearch",
+            "limitations": []
+          },
+          "incoming": {
+            "status": "available",
+            "backend": "IDE native hierarchy",
+            "limitations": []
+          },
+          "outgoing": {
+            "status": "available",
+            "backend": "IDE native hierarchy",
+            "limitations": []
+          }
+        }
+      },
+      {
+        "id": "vue",
+        "name": "Vue.js",
+        "extensions": [
+          "vue"
+        ],
+        "capabilities": {
+          "diagnostics": {
+            "status": "available",
+            "backend": "IDE CodeSmellDetector + language services",
+            "limitations": [
+              "Enabled IDE inspections only; CodeSmellDetector exposes warning/error diagnostics",
+              "Requires the configured JS/TS/Vue service; unsaved TypeScript configuration reports not_ready"
+            ]
+          },
+          "implementations": {
+            "status": "available",
+            "backend": "IDE DefinitionsScopedSearch",
+            "limitations": [
+              "script/script setup only; template relationships excluded"
+            ]
+          },
+          "incoming": {
+            "status": "available",
+            "backend": "IDE native hierarchy",
+            "limitations": [
+              "script/script setup only; template relationships excluded"
+            ]
+          },
+          "outgoing": {
+            "status": "available",
+            "backend": "IDE native hierarchy",
+            "limitations": [
+              "script/script setup only; template relationships excluded"
+            ]
+          }
+        }
+      },
+      {
+        "id": "rust",
+        "name": "Rust",
+        "extensions": [
+          "rs"
+        ],
+        "capabilities": {
+          "diagnostics": {
+            "status": "available",
+            "backend": "IDE CodeSmellDetector",
+            "limitations": [
+              "Enabled IDE inspections only; CodeSmellDetector exposes warning/error diagnostics"
+            ]
+          },
+          "implementations": {
+            "status": "available",
+            "backend": "IDE DefinitionsScopedSearch",
+            "limitations": [
+              "Native hierarchy when installed; older plugins: resolved direct calls only, no function pointers, dynamic dispatch or macro expansion"
+            ]
+          },
+          "incoming": {
+            "status": "available",
+            "backend": "IDE native hierarchy",
+            "limitations": [
+              "Native hierarchy when installed; older plugins: resolved direct calls only, no function pointers, dynamic dispatch or macro expansion"
+            ]
+          },
+          "outgoing": {
+            "status": "available",
+            "backend": "IDE native hierarchy",
+            "limitations": [
+              "Native hierarchy when installed; older plugins: resolved direct calls only, no function pointers, dynamic dispatch or macro expansion"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "passed": true
+}

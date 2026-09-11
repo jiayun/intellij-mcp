@@ -1,5 +1,7 @@
 # Code intelligence verification — 2026-09-11
 
+This report records **1.11.0**. See the [1.11.1 supplement](1.11.1/README.md) for the internal API fixes, their regression checks and the new artifact. Results and hashes below belong to the original release.
+
 The three tools are implemented in plugin **1.11.0**. The final build passed **51 tests**, and **142 SDK-backed checks across 31 fixture runs passed**, covering every language adapter. Reports record actual tool results, including expected `partial` and `unsupported` responses; a passing fixture does not imply every backend supports every operation.
 
 ## Executed checks

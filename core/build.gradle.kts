@@ -159,6 +159,13 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.11.1</h3>
+            <ul>
+                <li>Report the installed plugin version through MCP initialization and recognize the standard initialized notification</li>
+                <li>Replace internal Vue editor APIs with the public file editor lifecycle API</li>
+                <li>Resolve Python imports through the public multiResolve API, preserving ranking and reporting ambiguous targets</li>
+            </ul>
+
             <h3>1.11.0</h3>
             <ul>
                 <li>New file diagnostics, call hierarchy, and implementation search tools with explicit completeness and limits</li>

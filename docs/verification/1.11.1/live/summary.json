@@ -1,0 +1,44 @@
+[
+  {
+    "fixture": "python-semantics",
+    "passed": true,
+    "checks": 3,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "python",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-editor",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-script",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-volar",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  }
+]

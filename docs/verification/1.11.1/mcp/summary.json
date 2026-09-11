@@ -1,0 +1,158 @@
+{
+  "transport": "external MCP HTTP/JSON-RPC",
+  "fixtures": [
+    {
+      "fixture": "csharp",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "csharp-026",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "csharp-omnisharp",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "dart",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "dart-crlf",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "go",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "java",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 30
+    },
+    {
+      "fixture": "javascript",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "javascript-js",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "kotlin",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "php",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "python",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "python-semantics",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 3,
+      "httpExchanges": 17
+    },
+    {
+      "fixture": "rust-fallback",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 29
+    },
+    {
+      "fixture": "rust-native",
+      "ide": "2026.2.2",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 29
+    },
+    {
+      "fixture": "swift",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 38
+    },
+    {
+      "fixture": "vue",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "vue-editor",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "vue-script",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    },
+    {
+      "fixture": "vue-semantics",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 2,
+      "httpExchanges": 14
+    },
+    {
+      "fixture": "vue-volar",
+      "ide": "2025.3.1",
+      "passed": true,
+      "queries": 6,
+      "httpExchanges": 26
+    }
+  ],
+  "totals": {
+    "fixtures": 21,
+    "languageQueries": 119,
+    "additionalJavaQueries": 2,
+    "httpExchanges": 547
+  }
+}

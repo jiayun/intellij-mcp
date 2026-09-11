@@ -2,6 +2,16 @@
 
 These fixtures run the built production ZIP through a separate, test-only IDE plugin. They are not added to the shipping plugin. Each `smoke.json` states the expected queries and statuses; deliberately limited backends can pass by returning the expected `partial` or `unsupported` result.
 
+## Full MCP HTTP acceptance
+
+Add `--mcp` to either runner command below to start the production MCP server on a temporary port in the isolated IDE. `scripts/mcp_smoke_client.py` runs as an external Python process, connects to `127.0.0.1`, performs MCP initialization and sends `tools/call` through the real HTTP/JSON-RPC endpoint. The IDE harness still prepares SDKs and edits unsaved Documents, but it does not execute tool queries directly in this mode.
+
+Each run verifies the advertised plugin version, health/info endpoints, `tools/list`, `list_projects`, `get_supported_languages`, unknown capabilities before LSP startup, invalid parameters, notification responses and integer/string request IDs. Java also checks graph truncation and a diagnostics batch with one missing file. All fixture assertions run against the decoded MCP text-content response, including unsaved error/fix and Vue editor cleanup. Reports identify the transport and retain JSON-RPC exchanges.
+
+Without `--mcp`, queries call `IntelligenceService` directly. Keep the two kinds of evidence distinct: neither direct-service fixtures nor in-memory HTTP handler tests alone prove the complete external MCP path. The client currently exercises protocol version `2024-11-05`, matching the server's advertised version; it is not a test of every third-party MCP client application.
+
+The runner suppresses new-UI onboarding only in its disposable IDE configuration so modal onboarding cannot stall Cargo/project indexing. Server shutdown and client-process cleanup occur after the run; the user's normal IDE MCP settings are not changed.
+
 Build first:
 
 ```sh

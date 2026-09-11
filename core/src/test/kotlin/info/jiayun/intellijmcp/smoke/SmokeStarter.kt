@@ -31,6 +31,7 @@ class SmokeStarter : ApplicationStarter {
         val gson = GsonBuilder().setPrettyPrinting().create()
         val report = linkedMapOf<String, Any?>()
         var exit = 1
+        var mcp: McpSmokeSession? = null
         try {
             PluginSettings.getInstance().autoStart = false
             val plan = gson.fromJson(Files.readString(root.resolve("smoke.json")), JsonObject::class.java)
@@ -56,7 +57,16 @@ class SmokeStarter : ApplicationStarter {
             report["adapters"] = LanguageAdapterRegistry.getInstance().getSupportedLanguages()
             val results = mutableListOf<Any>()
             val observedRoots = mutableListOf<String?>()
+            var firstCallArguments: Map<String,Any?>? = null
             report["checks"] = results
+            System.getProperty("mcp.smoke.client")?.let { client ->
+                mcp = McpSmokeSession(client,root)
+                report["transport"] = "external Python client -> MCP HTTP/JSON-RPC -> production IDE backend"
+                report["mcpExchanges"] = mcp!!.exchanges
+                report["mcpProbe"] = mcp!!.probe(plan.getAsJsonArray("checks")[0].asJsonObject["file"].asString)
+            }
+            fun query(tool: String, arguments: Map<String,Any?>) =
+                mcp?.query(tool,arguments) ?: gson.toJsonTree(IntelligenceService(project).execute(tool,arguments))
             for (entry in plan.getAsJsonArray("checks")) {
                 val check = entry.asJsonObject
                 val path = root.resolve(check["file"].asString).toString()
@@ -90,13 +100,14 @@ class SmokeStarter : ApplicationStarter {
                         println("SMOKE THREAD ${thread.name} ${thread.state}\n"+trace.joinToString("\n"))
                     } } catch(_: InterruptedException) {}
                 }.apply { isDaemon = true; start() }
-                var json = try { gson.toJsonTree(IntelligenceService(project).execute(tool,arguments)) } finally { watchdog.interrupt() }
+                if(tool == "get_call_hierarchy" && firstCallArguments == null) firstCallArguments = arguments.toMap()
+                var json = try { query(tool,arguments) } finally { watchdog.interrupt() }
                 val readyBy = System.nanoTime()+TimeUnit.SECONDS.toNanos(60)
                 while(json.toString().contains("\"status\":\"not_ready\"") && System.nanoTime()<readyBy) {
                     println("SMOKE waiting for backend: $json")
                     Thread.sleep(300)
                     DumbService.getInstance(project).waitForSmartMode()
-                    json = gson.toJsonTree(IntelligenceService(project).execute(tool,arguments))
+                    json = query(tool,arguments)
                 }
                 if(language == "vue" && tool == "get_diagnostics" && !plan.has("openFiles")) edt {
                     require(!com.intellij.openapi.fileEditor.FileEditorManager.getInstance(project).isFileOpen(file)) { "Temporary Vue editor was not closed" }
@@ -118,7 +129,11 @@ class SmokeStarter : ApplicationStarter {
                 if(check.has("names")) for(name in check.getAsJsonArray("names")) require(name.asString in names) { "Missing symbol $name in $names" }
                 if(check.has("excludeNames")) for(name in check.getAsJsonArray("excludeNames")) require(name.asString !in names) { "Unexpected symbol $name in $names" }
                 if(tool == "find_implementations") require(json.asJsonObject.getAsJsonArray("implementations").size() > 0) { "No implementations" }
-                if(tool == "get_call_hierarchy" && allowed != "unsupported") require(json.asJsonObject.getAsJsonArray("edges").size() > 0) { "No call edges" }
+                if(tool == "get_call_hierarchy") {
+                    val edges = json.asJsonObject.getAsJsonArray("edges").size()
+                    if(check.has("edgeCount")) require(edges == check["edgeCount"].asInt) { "Unexpected call edge count: $edges" }
+                    else if(allowed != "unsupported") require(edges > 0) { "No call edges" }
+                }
                 if(check.has("contains")) for (expected in check.getAsJsonArray("contains"))
                     require(json.toString().contains(expected.asString)) { "Missing ${expected.asString}" }
                 if(check.has("diagnosticError")) {
@@ -126,6 +141,8 @@ class SmokeStarter : ApplicationStarter {
                     require(errors == check["diagnosticError"].asBoolean) { "Unexpected error diagnostics" }
                 }
             }
+            if(mcp != null && language == "java" && firstCallArguments != null)
+                report["mcpPostProbe"] = mcp!!.postProbe(firstCallArguments!!)
             report["passed"] = true
             exit = 0
         } catch(t: Throwable) {
@@ -133,6 +150,7 @@ class SmokeStarter : ApplicationStarter {
             report["passed"] = false
             report["error"] = t.stackTraceToString()
         } finally {
+            mcp?.close()
             Files.writeString(reportPath,gson.toJson(report))
             // This process and its configuration are dedicated to the smoke run.
             kotlin.system.exitProcess(exit)
