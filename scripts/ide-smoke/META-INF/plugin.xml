@@ -1,0 +1,18 @@
+<idea-plugin>
+  <id>info.jiayun.intellij-mcp.smoke</id>
+  <name>Code Intelligence Smoke Harness</name>
+  <version>1.0</version>
+  <vendor>Local tests</vendor>
+  <depends>com.intellij.modules.platform</depends>
+  <depends>info.jiayun.intellij-mcp</depends>
+  <depends optional="true">com.jetbrains.rust</depends>
+  <depends optional="true">org.jetbrains.plugins.go</depends>
+  <depends optional="true">Dart</depends>
+  <depends optional="true">com.intellij.java</depends>
+  <depends optional="true">PythonCore</depends>
+  <depends optional="true">com.jetbrains.php</depends>
+  <depends optional="true">org.jetbrains.plugins.vue</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <appStarter id="mcp-smoke" implementation="info.jiayun.intellijmcp.smoke.SmokeStarter"/>
+  </extensions>
+</idea-plugin>

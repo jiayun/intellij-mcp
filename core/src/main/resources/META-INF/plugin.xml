@@ -14,6 +14,7 @@
             <li>Get detailed symbol information (type, documentation, signature)</li>
             <li>List all symbols in a file</li>
             <li>Get type hierarchy (inheritance)</li>
+            <li>Get file diagnostics, incoming/outgoing calls, and implementations with analysis status</li>
             <li>List and execute IDE run configurations</li>
             <li>Get structured test results (pass/fail, duration, failure messages, stack traces)</li>
         </ul>
@@ -41,7 +42,7 @@
     <depends optional="true" config-file="python-support.xml">PythonCore</depends>
 
     <!-- Optional Java support - enabled when Java plugin is installed -->
-    <depends optional="true" config-file="java-support.xml">com.intellij.modules.java</depends>
+    <depends optional="true" config-file="java-support.xml">com.intellij.java</depends>
 
     <!-- Optional Kotlin support - enabled when Kotlin plugin is installed -->
     <depends optional="true" config-file="kotlin-support.xml">org.jetbrains.kotlin</depends>

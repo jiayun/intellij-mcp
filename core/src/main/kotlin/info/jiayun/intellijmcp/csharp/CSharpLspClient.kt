@@ -24,7 +24,7 @@ class CSharpLspClient(private val project: Project) : Disposable {
     private var server: LanguageServer? = null
     private var initialized = false
     private var initializedAt: Long = 0
-    private val openDocuments = mutableSetOf<String>()
+    val intelligenceState = info.jiayun.intellijmcp.intelligence.LspIntelligenceState()
     private var stderrReader: Thread? = null
     private var executorService: ExecutorService? = null
     private var languageClient: CSharpLanguageClient? = null
@@ -90,7 +90,8 @@ class CSharpLspClient(private val project: Project) : Disposable {
     }
 
     @Synchronized
-    fun ensureInitialized(): LanguageServer {
+    fun ensureInitialized(deadline: info.jiayun.intellijmcp.intelligence.Deadline? = null): LanguageServer {
+        deadline?.check()
         if (initialized && server != null && process?.isAlive == true) {
             return server!!
         }
@@ -98,6 +99,7 @@ class CSharpLspClient(private val project: Project) : Disposable {
         val binary = findCSharpLsp()
             ?: throw IllegalStateException("C# Language Server not found. Install csharp-ls: dotnet tool install --global csharp-ls")
 
+        intelligenceState.csharpLs = binary.type == LspServerType.CSHARP_LS
         logger.info("Starting C# LSP (${binary.type}): ${binary.path}")
 
         val workDir = project.basePath?.let { File(it) }
@@ -128,7 +130,8 @@ class CSharpLspClient(private val project: Project) : Disposable {
         }
 
         // Create LSP launcher
-        val client = CSharpLanguageClient()
+        intelligenceState.clear()
+        val client = CSharpLanguageClient(intelligenceState)
         languageClient = client
         executorService = Executors.newCachedThreadPool { runnable ->
             Thread(runnable, "CSharp-LSP-worker").apply { isDaemon = true }
@@ -150,6 +153,10 @@ class CSharpLspClient(private val project: Project) : Disposable {
             rootUri = project.basePath?.let { pathToUri(it) }
             capabilities = ClientCapabilities().apply {
                 textDocument = TextDocumentClientCapabilities().apply {
+                    implementation = ImplementationCapabilities().apply { dynamicRegistration = true }
+                    callHierarchy = CallHierarchyCapabilities().apply { dynamicRegistration = true }
+                    diagnostic = DiagnosticCapabilities().apply { dynamicRegistration = true }
+                    publishDiagnostics = PublishDiagnosticsCapabilities().apply { versionSupport = true }
                     hover = HoverCapabilities()
                     definition = DefinitionCapabilities()
                     references = ReferencesCapabilities()
@@ -165,13 +172,16 @@ class CSharpLspClient(private val project: Project) : Disposable {
         }
 
         try {
-            val initResult = server!!.initialize(initParams).get(30, TimeUnit.SECONDS)
+            val initialization = server!!.initialize(initParams)
+            val initResult = if(deadline != null) deadline.await(initialization) else initialization.get(30, TimeUnit.SECONDS)
+            intelligenceState.capabilities = initResult.capabilities
+            intelligenceState.serverInfo = initResult.serverInfo
             logger.info("C# LSP initialized: ${initResult.serverInfo?.name ?: "unknown"}")
             server!!.initialized(InitializedParams())
             initialized = true
             initializedAt = System.currentTimeMillis()
 
-            waitForIndexing()
+            if(deadline == null) waitForIndexing()
         } catch (e: Exception) {
             logger.error("Failed to initialize C# LSP", e)
             dispose()
@@ -259,32 +269,16 @@ class CSharpLspClient(private val project: Project) : Disposable {
     // ===== Document Lifecycle =====
 
     fun openDocument(filePath: String) {
-        if (filePath in openDocuments) return
-
-        val file = File(filePath)
-        if (!file.exists()) return
-
-        val uri = pathToUri(filePath)
-        val content = file.readText()
-
-        val params = DidOpenTextDocumentParams(
-            TextDocumentItem(uri, "csharp", 1, content)
-        )
-
-        ensureInitialized().textDocumentService.didOpen(params)
-        openDocuments.add(filePath)
+        val remote = ensureInitialized()
+        val content = info.jiayun.intellijmcp.intelligence.psiRead {
+            val file = com.intellij.openapi.vfs.LocalFileSystem.getInstance().findFileByPath(filePath)
+            file?.let { com.intellij.openapi.fileEditor.FileDocumentManager.getInstance().getDocument(it)?.text }
+        } ?: File(filePath).readText()
+        intelligenceState.sync(remote,filePath,"csharp",content)
     }
 
     fun closeDocument(filePath: String) {
-        if (filePath !in openDocuments) return
-
-        val uri = pathToUri(filePath)
-        val params = DidCloseTextDocumentParams(
-            TextDocumentIdentifier(uri)
-        )
-
-        server?.textDocumentService?.didClose(params)
-        openDocuments.remove(filePath)
+        intelligenceState.close(server,filePath)
     }
 
     // ===== LSP Methods =====
@@ -374,32 +368,16 @@ class CSharpLspClient(private val project: Project) : Disposable {
 
     // ===== URI Helpers =====
 
-    private fun pathToUri(path: String): String {
-        // On Windows: file:///C:/path/to/file
-        // On Unix: file:///path/to/file
-        return if (isWindows && path.length >= 2 && path[1] == ':') {
-            "file:///${path.replace('\\', '/')}"
-        } else {
-            "file://$path"
-        }
-    }
+    private fun pathToUri(path: String): String = info.jiayun.intellijmcp.intelligence.lspDocumentUri(path)
 
-    fun uriToPath(uri: String): String {
-        val path = uri.removePrefix("file://")
-        // On Windows, URI looks like file:///C:/path, remove extra leading slash
-        return if (isWindows && path.length >= 3 && path[0] == '/' && path[2] == ':') {
-            path.substring(1)
-        } else {
-            path
-        }
-    }
+    fun uriToPath(uri: String): String = info.jiayun.intellijmcp.intelligence.lspUriToPath(uri)
 
     // ===== Dispose =====
 
     override fun dispose() {
         logger.info("Disposing CSharpLspClient")
 
-        openDocuments.toList().forEach { closeDocument(it) }
+        intelligenceState.clear(server)
 
         try {
             server?.shutdown()?.get(5, TimeUnit.SECONDS)
@@ -425,7 +403,7 @@ class CSharpLspClient(private val project: Project) : Disposable {
         server = null
         languageClient = null
         initialized = false
-        openDocuments.clear()
+        intelligenceState.clear()
     }
 }
 

@@ -7,6 +7,7 @@ import info.jiayun.intellijmcp.settings.PluginSettings
 
 class McpStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
+        if (com.intellij.openapi.application.ApplicationManager.getApplication().isUnitTestMode) return
         val settings = PluginSettings.getInstance()
         val server = McpServer.getInstance()
 

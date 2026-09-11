@@ -18,6 +18,8 @@ import com.jetbrains.lang.dart.ide.index.DartComponentIndex
 
 class DartLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { DartIntelligenceBackend() }
+
     override val languageId = "dart"
     override val languageDisplayName = "Dart"
     override val supportedExtensions = setOf("dart")

@@ -21,6 +21,8 @@ import info.jiayun.intellijmcp.api.*
  */
 class VueLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { info.jiayun.intellijmcp.javascript.JavaScriptIntelligenceBackend(languageId) }
+
     override val languageId = "vue"
     override val languageDisplayName = "Vue.js"
     override val supportedExtensions = setOf("vue")

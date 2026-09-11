@@ -24,7 +24,7 @@ class SwiftLspClient(private val project: Project) : Disposable {
     private var server: LanguageServer? = null
     private var initialized = false
     private var initializedAt: Long = 0
-    private val openDocuments = mutableSetOf<String>()
+    val intelligenceState = info.jiayun.intellijmcp.intelligence.LspIntelligenceState()
     private var stderrReader: Thread? = null
     private var executorService: ExecutorService? = null
 
@@ -75,7 +75,8 @@ class SwiftLspClient(private val project: Project) : Disposable {
     }
 
     @Synchronized
-    fun ensureInitialized(): LanguageServer {
+    fun ensureInitialized(deadline: info.jiayun.intellijmcp.intelligence.Deadline? = null): LanguageServer {
+        deadline?.check()
         if (initialized && server != null && process?.isAlive == true) {
             return server!!
         }
@@ -110,7 +111,8 @@ class SwiftLspClient(private val project: Project) : Disposable {
         }
 
         // Create LSP launcher with dedicated thread pool
-        val client = SwiftLanguageClient()
+        intelligenceState.clear()
+        val client = SwiftLanguageClient(intelligenceState)
         executorService = Executors.newCachedThreadPool { runnable ->
             Thread(runnable, "SourceKit-LSP-worker").apply { isDaemon = true }
         }
@@ -130,9 +132,13 @@ class SwiftLspClient(private val project: Project) : Disposable {
 
         // Initialize server
         val initParams = InitializeParams().apply {
-            rootUri = project.basePath?.let { "file://$it" }
+            rootUri = project.basePath?.let { info.jiayun.intellijmcp.intelligence.lspDocumentUri(it) }
             capabilities = ClientCapabilities().apply {
                 textDocument = TextDocumentClientCapabilities().apply {
+                    implementation = ImplementationCapabilities().apply { dynamicRegistration = true }
+                    callHierarchy = CallHierarchyCapabilities().apply { dynamicRegistration = true }
+                    diagnostic = DiagnosticCapabilities().apply { dynamicRegistration = true }
+                    publishDiagnostics = PublishDiagnosticsCapabilities().apply { versionSupport = true }
                     hover = HoverCapabilities()
                     definition = DefinitionCapabilities()
                     references = ReferencesCapabilities()
@@ -147,14 +153,17 @@ class SwiftLspClient(private val project: Project) : Disposable {
         }
 
         try {
-            val initResult = server!!.initialize(initParams).get(30, TimeUnit.SECONDS)
+            val initialization = server!!.initialize(initParams)
+            val initResult = if(deadline != null) deadline.await(initialization) else initialization.get(30, TimeUnit.SECONDS)
+            intelligenceState.capabilities = initResult.capabilities
+            intelligenceState.serverInfo = initResult.serverInfo
             logger.info("SourceKit-LSP initialized: ${initResult.serverInfo?.name ?: "unknown"}")
             server!!.initialized(InitializedParams())
             initialized = true
             initializedAt = System.currentTimeMillis()
 
             // Wait for LSP to be ready (indexing may take time)
-            waitForIndexing()
+            if(deadline == null) waitForIndexing()
         } catch (e: Exception) {
             logger.error("Failed to initialize SourceKit-LSP", e)
             dispose()
@@ -210,35 +219,19 @@ class SwiftLspClient(private val project: Project) : Disposable {
      * Open a document (required before making requests on it)
      */
     fun openDocument(filePath: String) {
-        if (filePath in openDocuments) return
-
-        val file = File(filePath)
-        if (!file.exists()) return
-
-        val uri = "file://$filePath"
-        val content = file.readText()
-
-        val params = DidOpenTextDocumentParams(
-            TextDocumentItem(uri, "swift", 1, content)
-        )
-
-        ensureInitialized().textDocumentService.didOpen(params)
-        openDocuments.add(filePath)
+        val remote = ensureInitialized()
+        val content = info.jiayun.intellijmcp.intelligence.psiRead {
+            val file = com.intellij.openapi.vfs.LocalFileSystem.getInstance().findFileByPath(filePath)
+            file?.let { com.intellij.openapi.fileEditor.FileDocumentManager.getInstance().getDocument(it)?.text }
+        } ?: File(filePath).readText()
+        intelligenceState.sync(remote,filePath,"swift",content)
     }
 
     /**
      * Close a document
      */
     fun closeDocument(filePath: String) {
-        if (filePath !in openDocuments) return
-
-        val uri = "file://$filePath"
-        val params = DidCloseTextDocumentParams(
-            TextDocumentIdentifier(uri)
-        )
-
-        server?.textDocumentService?.didClose(params)
-        openDocuments.remove(filePath)
+        intelligenceState.close(server,filePath)
     }
 
     /**
@@ -246,7 +239,7 @@ class SwiftLspClient(private val project: Project) : Disposable {
      */
     fun documentSymbol(filePath: String): CompletableFuture<List<Either<SymbolInformation, DocumentSymbol>>> {
         openDocument(filePath)
-        val uri = "file://$filePath"
+        val uri = info.jiayun.intellijmcp.intelligence.lspDocumentUri(filePath)
         val params = DocumentSymbolParams(TextDocumentIdentifier(uri))
         return ensureInitialized().textDocumentService.documentSymbol(params)
     }
@@ -258,7 +251,7 @@ class SwiftLspClient(private val project: Project) : Disposable {
      */
     fun references(filePath: String, line: Int, column: Int): CompletableFuture<List<Location>> {
         openDocument(filePath)
-        val uri = "file://$filePath"
+        val uri = info.jiayun.intellijmcp.intelligence.lspDocumentUri(filePath)
         val params = ReferenceParams(
             TextDocumentIdentifier(uri),
             Position(line, column),
@@ -274,7 +267,7 @@ class SwiftLspClient(private val project: Project) : Disposable {
      */
     fun definition(filePath: String, line: Int, column: Int): CompletableFuture<Either<List<Location>, List<LocationLink>>> {
         openDocument(filePath)
-        val uri = "file://$filePath"
+        val uri = info.jiayun.intellijmcp.intelligence.lspDocumentUri(filePath)
         val params = DefinitionParams(
             TextDocumentIdentifier(uri),
             Position(line, column)
@@ -289,7 +282,7 @@ class SwiftLspClient(private val project: Project) : Disposable {
      */
     fun hover(filePath: String, line: Int, column: Int): CompletableFuture<Hover?> {
         openDocument(filePath)
-        val uri = "file://$filePath"
+        val uri = info.jiayun.intellijmcp.intelligence.lspDocumentUri(filePath)
         val params = HoverParams(
             TextDocumentIdentifier(uri),
             Position(line, column)
@@ -312,7 +305,7 @@ class SwiftLspClient(private val project: Project) : Disposable {
         logger.info("Disposing SwiftLspClient")
 
         // Close all open documents
-        openDocuments.toList().forEach { closeDocument(it) }
+        intelligenceState.clear(server)
 
         // Shutdown server
         try {
@@ -341,6 +334,6 @@ class SwiftLspClient(private val project: Project) : Disposable {
         process = null
         server = null
         initialized = false
-        openDocuments.clear()
+        intelligenceState.clear()
     }
 }

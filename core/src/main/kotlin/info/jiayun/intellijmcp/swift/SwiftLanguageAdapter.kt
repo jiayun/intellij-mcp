@@ -35,6 +35,12 @@ class SwiftLanguageAdapter : LanguageAdapter {
     override val supportedExtensions = setOf("swift")
 
     // Cache of LSP clients per project (by project base path)
+    override val intelligence by lazy {
+        info.jiayun.intellijmcp.intelligence.LspIntelligenceBackend(languageId,
+            { project -> clients[project.basePath ?: project.name]?.intelligenceState },
+            { project, deadline -> getClient(project).let { it.ensureInitialized(deadline) to it.intelligenceState } })
+    }
+
     private val clients = ConcurrentHashMap<String, SwiftLspClient>()
 
     companion object {
@@ -57,7 +63,11 @@ class SwiftLanguageAdapter : LanguageAdapter {
             ?: throw IllegalStateException("Project has no base path")
 
         return clients.computeIfAbsent(key) {
-            SwiftLspClient(project)
+            SwiftLspClient(project).also { client ->
+                com.intellij.openapi.util.Disposer.register(project, com.intellij.openapi.Disposable {
+                    clients.remove(key,client); client.dispose()
+                })
+            }
         }
     }
 
@@ -333,7 +343,7 @@ class SwiftLanguageAdapter : LanguageAdapter {
     private fun locationToLocationInfo(location: Location): LocationInfo {
         val uri = location.uri
         val filePath = if (uri.startsWith("file://")) {
-            uri.removePrefix("file://")
+            info.jiayun.intellijmcp.intelligence.lspUriToPath(uri)
         } else {
             uri
         }
@@ -369,7 +379,7 @@ class SwiftLanguageAdapter : LanguageAdapter {
             lspSymbol.location.isRight -> {
                 val wsLocation = lspSymbol.location.right
                 val uri = wsLocation.uri
-                val filePath = if (uri.startsWith("file://")) uri.removePrefix("file://") else uri
+                val filePath = if (uri.startsWith("file://")) info.jiayun.intellijmcp.intelligence.lspUriToPath(uri) else uri
                 LocationInfo(
                     filePath = filePath,
                     line = 0,

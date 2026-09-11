@@ -19,6 +19,10 @@ dependencies {
         bundledPlugin("org.jetbrains.kotlin")
         bundledPlugin("JavaScript")
         bundledPlugin("org.jetbrains.plugins.vue")
+        // Required by the language plugins' backend modules in the development/test sandbox.
+        bundledPlugin("intellij.webpack")
+        bundledPlugin("org.intellij.plugins.postcss")
+        bundledPlugin("org.toml.lang")
         // Python Community (provides base Python PSI classes)
         plugin("PythonCore:253.29346.138")
         // PHP plugin from marketplace
@@ -30,12 +34,15 @@ dependencies {
         // Dart plugin from marketplace (bundled in Android Studio)
         plugin("Dart:503.0.0")
 
+        testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
+
         pluginVerifier()
         zipSigner()
     }
 
     // JSON processing
-    implementation("com.google.code.gson:gson:2.11.0")
+    compileOnly("com.google.code.gson:gson:2.11.0")
+    testCompileOnly("com.google.code.gson:gson:2.11.0")
 
     // HTTP Server - exclude slf4j to avoid conflict with IntelliJ's SLF4J
     implementation("io.ktor:ktor-server-core:2.3.12") {
@@ -52,7 +59,7 @@ dependencies {
     }
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
     // LSP4J for Swift (SourceKit-LSP) and C# (csharp-ls/OmniSharp) language support
     implementation("org.eclipse.lsp4j:org.eclipse.lsp4j:0.21.2")
@@ -61,6 +68,26 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
     testImplementation("io.ktor:ktor-server-test-host:2.3.12")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+}
+
+// IntelliJ owns the coroutine runtime. Bundling Ktor's older transitive copy breaks IDE services.
+configurations.matching { it.name in setOf("runtimeClasspath", "testRuntimeClasspath", "intellijPlatformTestClasspath", "intellijPlatformComposedJar") }.configureEach {
+    // Dart's public Analysis Server API exposes Gson types owned by the IDE classloader.
+    exclude(group = "com.google.code.gson", module = "gson")
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core")
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core-jvm")
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk7")
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk8")
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
+}
+
+// Ktor 2 is intentionally packaged with this plugin. Compile its inline APIs against the
+// same jars, ahead of IntelliJ's own Ktor 3 classes (notably typeInfo/setBody).
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    val sourceClasspath = configurations.named(if (name == "compileTestKotlin") "testCompileClasspath" else "compileClasspath")
+    libraries.setFrom(sourceClasspath.map { it.files.sortedBy { file -> if (file.name.startsWith("ktor-")) 0 else 1 } })
+    if (name == "compileTestKotlin") libraries.from(sourceSets.main.get().output)
 }
 
 tasks {
@@ -90,6 +117,9 @@ intellijPlatform {
                 <li><b>Find References</b> - Find all usages of a symbol across the project</li>
                 <li><b>Get Symbol Info</b> - Get type information, documentation, and signatures</li>
                 <li><b>List File Symbols</b> - List all symbols in a file with hierarchy</li>
+                <li><b>Get Diagnostics</b> - Analyze specified files, including unsaved IDE contents</li>
+                <li><b>Get Call Hierarchy</b> - Incoming/outgoing call graph with limits and completeness status</li>
+                <li><b>Find Implementations</b> - Find implementations and overrides at a declaration or usage</li>
                 <li><b>Get Type Hierarchy</b> - Get inheritance hierarchy for classes</li>
             </ul>
 
@@ -129,6 +159,13 @@ intellijPlatform {
         }
 
         changeNotes = """
+            <h3>1.11.0</h3>
+            <ul>
+                <li>New file diagnostics, call hierarchy, and implementation search tools with explicit completeness and limits</li>
+                <li>Versioned Swift/C# document synchronization, diagnostics, and dynamic LSP capability tracking</li>
+                <li>Native language hierarchy backends, K2 support, and runtime Rust hierarchy compatibility</li>
+            </ul>
+
             <h3>1.10.3</h3>
             <ul>
                 <li><b>Fix:</b> Restore Rust language adapter binary compatibility with IntelliJ IDEA 2026.2 by removing references to Rust plugin Kotlin file-facade APIs that were removed upstream</li>
@@ -226,8 +263,11 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            create(IntelliJPlatformType.IntellijIdeaUltimate, "2026.2.1") {
-                useInstaller = false
+            val localIde = providers.gradleProperty("verificationIdePath").orNull
+            if (localIde == null) {
+                listOf("2025.1", "2025.3.1", "2026.2.1").forEach { ideVersion ->
+                    create(IntelliJPlatformType.IntellijIdeaUltimate, ideVersion) { useInstaller = false }
+                }
             }
         }
     }
@@ -272,4 +312,19 @@ intellijPlatformTesting {
             version = "2025.3.1"
         }
     }
+}
+
+// 2.10.x's local-IDE dependency helper rejects an already configured build SDK.
+// Pass the verification distribution directly to the verifier task instead.
+tasks.named<org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask>("verifyPlugin") {
+    providers.gradleProperty("verificationIdePath").orNull?.let { ides.setFrom(file(it)) }
+}
+
+// A separate, non-shipping plugin for exercising the built ZIP inside real IDE processes.
+tasks.register<Jar>("smokeHarnessJar") {
+    dependsOn(tasks.compileTestKotlin)
+    archiveFileName.set("mcp-smoke-harness.jar")
+    destinationDirectory.set(layout.buildDirectory.dir("smoke"))
+    from(sourceSets.test.get().output) { include("info/jiayun/intellijmcp/smoke/**") }
+    from(rootProject.layout.projectDirectory.dir("scripts/ide-smoke")) { include("META-INF/plugin.xml") }
 }

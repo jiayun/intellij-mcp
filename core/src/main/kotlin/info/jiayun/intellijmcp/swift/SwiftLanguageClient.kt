@@ -8,17 +8,26 @@ import java.util.concurrent.CompletableFuture
 /**
  * LSP client implementation for receiving callbacks from SourceKit-LSP
  */
-class SwiftLanguageClient : LanguageClient {
+class SwiftLanguageClient(private val intelligence: info.jiayun.intellijmcp.intelligence.LspIntelligenceState = info.jiayun.intellijmcp.intelligence.LspIntelligenceState()) : LanguageClient {
 
     private val logger = Logger.getInstance(SwiftLanguageClient::class.java)
+
+    override fun registerCapability(params: RegistrationParams): CompletableFuture<Void> {
+        intelligence.register(params)
+        return CompletableFuture.completedFuture(null)
+    }
+
+    override fun unregisterCapability(params: UnregistrationParams): CompletableFuture<Void> {
+        intelligence.unregister(params)
+        return CompletableFuture.completedFuture(null)
+    }
 
     override fun telemetryEvent(obj: Any?) {
         logger.debug("Telemetry event: $obj")
     }
 
     override fun publishDiagnostics(diagnostics: PublishDiagnosticsParams?) {
-        // We don't need diagnostics for MCP operations
-        logger.debug("Diagnostics received for: ${diagnostics?.uri}")
+        diagnostics?.let { intelligence.publish(it) }
     }
 
     override fun showMessage(messageParams: MessageParams?) {

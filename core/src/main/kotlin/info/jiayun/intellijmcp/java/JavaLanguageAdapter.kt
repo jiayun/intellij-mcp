@@ -11,6 +11,8 @@ import info.jiayun.intellijmcp.api.*
 
 class JavaLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { info.jiayun.intellijmcp.intelligence.IdeIntelligenceBackend(languageId) }
+
     override val languageId = "java"
     override val languageDisplayName = "Java"
     override val supportedExtensions = setOf("java")

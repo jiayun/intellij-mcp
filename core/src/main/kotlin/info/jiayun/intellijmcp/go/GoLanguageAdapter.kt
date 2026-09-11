@@ -17,6 +17,8 @@ import com.goide.psi.*
 
 class GoLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { GoIntelligenceBackend() }
+
     override val languageId = "go"
     override val languageDisplayName = "Go"
     override val supportedExtensions = setOf("go")

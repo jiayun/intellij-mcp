@@ -15,6 +15,8 @@ import info.jiayun.intellijmcp.api.*
 
 class JavaScriptLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { info.jiayun.intellijmcp.javascript.JavaScriptIntelligenceBackend(languageId) }
+
     override val languageId = "javascript"
     override val languageDisplayName = "JavaScript/TypeScript"
     override val supportedExtensions = setOf(

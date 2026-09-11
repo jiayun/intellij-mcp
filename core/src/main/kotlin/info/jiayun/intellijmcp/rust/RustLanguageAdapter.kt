@@ -17,6 +17,8 @@ import org.rust.lang.core.psi.ext.*
 
 class RustLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { RustIntelligenceBackend() }
+
     override val languageId = "rust"
     override val languageDisplayName = "Rust"
     override val supportedExtensions = setOf("rs")

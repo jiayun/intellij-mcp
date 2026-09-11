@@ -24,6 +24,8 @@ import info.jiayun.intellijmcp.api.*
 
 class PhpLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { PhpIntelligenceBackend() }
+
     override val languageId = "php"
     override val languageDisplayName = "PHP"
     override val supportedExtensions = setOf("php", "phtml")

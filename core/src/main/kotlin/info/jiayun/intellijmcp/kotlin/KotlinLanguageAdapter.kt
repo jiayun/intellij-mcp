@@ -16,6 +16,8 @@ import org.jetbrains.kotlin.psi.*
 
 class KotlinLanguageAdapter : LanguageAdapter {
 
+    override val intelligence by lazy { info.jiayun.intellijmcp.intelligence.IdeIntelligenceBackend(languageId) }
+
     override val languageId = "kotlin"
     override val languageDisplayName = "Kotlin"
     override val supportedExtensions = setOf("kt", "kts")

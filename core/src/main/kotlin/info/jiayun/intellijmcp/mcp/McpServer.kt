@@ -53,10 +53,10 @@ class McpServer {
             ),
             McpToolDefinition(
                 name = "get_supported_languages",
-                description = "Get list of supported programming languages.",
+                description = "Get supported languages and diagnostics, implementations, incoming/outgoing capability states without starting language servers.",
                 inputSchema = mapOf(
                     "type" to "object",
-                    "properties" to emptyMap<String, Any>()
+                    "properties" to mapOf("projectPath" to mapOf("type" to "string", "description" to "Optional project root for current capability state"))
                 )
             ),
             McpToolDefinition(
@@ -256,7 +256,7 @@ class McpServer {
                     )
                 )
             )
-        )
+        ) + IntelligenceTools.definitions
     }
 
     // ===== Server lifecycle =====
@@ -410,6 +410,8 @@ class McpServer {
             McpResponse(id = request.id, error = McpError(McpError.EXECUTION_TIMEOUT, e.message ?: ""))
         } catch (e: NoTestResultsException) {
             McpResponse(id = request.id, error = McpError(McpError.NO_TEST_RESULTS, e.message ?: ""))
+        } catch (e: IllegalArgumentException) {
+            McpResponse(id = request.id, error = McpError(McpError.INVALID_PARAMS, e.message ?: "Invalid parameters"))
         } catch (e: Exception) {
             logger.error("Tool execution failed: $toolName", e)
             McpResponse(id = request.id, error = McpError(McpError.INTERNAL_ERROR, e.message ?: "Unknown error"))
@@ -420,7 +422,9 @@ class McpServer {
         return when (name) {
             "list_projects" -> executor.listProjects()
 
-            "get_supported_languages" -> executor.getSupportedLanguages()
+            "get_supported_languages" -> executor.getSupportedLanguages(args["projectPath"] as? String)
+
+            in IntelligenceTools.names -> executor.executeIntelligence(name,args)
 
             "find_symbol" -> executor.findSymbol(
                 name = args["name"] as String,

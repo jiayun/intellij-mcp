@@ -9,19 +9,24 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  * LSP client implementation for receiving callbacks from C# Language Server
  */
-class CSharpLanguageClient : LanguageClient {
+class CSharpLanguageClient(private val intelligence: info.jiayun.intellijmcp.intelligence.LspIntelligenceState = info.jiayun.intellijmcp.intelligence.LspIntelligenceState()) : LanguageClient {
 
     private val logger = Logger.getInstance(CSharpLanguageClient::class.java)
 
     /** Critical errors reported by the LSP server (MSBuild failures, etc.). Thread-safe. */
     val errors = CopyOnWriteArrayList<String>()
 
+    override fun unregisterCapability(params: UnregistrationParams): CompletableFuture<Void> {
+        intelligence.unregister(params)
+        return CompletableFuture.completedFuture(null)
+    }
+
     override fun telemetryEvent(obj: Any?) {
         logger.debug("Telemetry event: $obj")
     }
 
     override fun publishDiagnostics(diagnostics: PublishDiagnosticsParams?) {
-        logger.debug("Diagnostics received for: ${diagnostics?.uri}")
+        diagnostics?.let { intelligence.publish(it) }
     }
 
     override fun showMessage(messageParams: MessageParams?) {
@@ -34,7 +39,7 @@ class CSharpLanguageClient : LanguageClient {
     }
 
     override fun registerCapability(params: RegistrationParams): CompletableFuture<Void> {
-        logger.debug("Register capability: ${params.registrations.map { it.method }}")
+        intelligence.register(params)
         return CompletableFuture.completedFuture(null)
     }
 

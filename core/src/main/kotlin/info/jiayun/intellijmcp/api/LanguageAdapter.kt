@@ -12,6 +12,9 @@ import com.intellij.psi.PsiFile
  */
 interface LanguageAdapter {
 
+    val intelligence: info.jiayun.intellijmcp.intelligence.IntelligenceBackend
+        get() = info.jiayun.intellijmcp.intelligence.UnsupportedIntelligence
+
     companion object {
         val EP_NAME: ExtensionPointName<LanguageAdapter> =
             ExtensionPointName.create("info.jiayun.intellij-mcp.languageAdapter")

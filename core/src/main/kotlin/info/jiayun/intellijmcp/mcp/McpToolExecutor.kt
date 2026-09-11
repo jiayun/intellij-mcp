@@ -16,14 +16,21 @@ class McpToolExecutor {
         return projectResolver.listProjects()
     }
 
-    fun getSupportedLanguages(): List<Map<String, Any>> {
+    fun getSupportedLanguages(projectPath: String? = null): List<Map<String, Any>> {
+        val project = if(projectPath != null) projectResolver.resolve(projectPath) else runCatching { projectResolver.resolve(null) }.getOrNull()
         return registry.getAllAdapters().map { adapter ->
             mapOf(
                 "id" to adapter.languageId,
                 "name" to adapter.languageDisplayName,
-                "extensions" to adapter.supportedExtensions.toList()
+                "extensions" to adapter.supportedExtensions.toList(),
+                "capabilities" to adapter.intelligence.capabilities(project)
             )
         }
+    }
+
+    fun executeIntelligence(name: String, args: Map<String,Any?>): Any {
+        require(args["projectPath"] == null || args["projectPath"] is String) { "projectPath must be a string" }
+        return info.jiayun.intellijmcp.intelligence.IntelligenceService(projectResolver.resolve(args["projectPath"] as? String)).execute(name,args)
     }
 
     fun findSymbol(

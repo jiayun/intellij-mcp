@@ -34,20 +34,19 @@ class CSharpLanguageAdapter : LanguageAdapter {
     override val languageDisplayName = "C#"
     override val supportedExtensions = setOf("cs")
 
+    override val intelligence by lazy {
+        info.jiayun.intellijmcp.intelligence.LspIntelligenceBackend(languageId,
+            { project -> clients[project.basePath ?: project.name]?.intelligenceState },
+            { project, deadline -> getClient(project).let { it.ensureInitialized(deadline) to it.intelligenceState } })
+    }
+
     private val clients = ConcurrentHashMap<String, CSharpLspClient>()
 
     companion object {
         private const val LSP_TIMEOUT_SECONDS = 30L
         private val isWindows = System.getProperty("os.name")?.lowercase()?.contains("win") == true
 
-        fun uriToPathStatic(uri: String): String {
-            val path = uri.removePrefix("file://")
-            return if (isWindows && path.length >= 3 && path[0] == '/' && path[2] == ':') {
-                path.substring(1)
-            } else {
-                path
-            }
-        }
+        fun uriToPathStatic(uri: String): String = info.jiayun.intellijmcp.intelligence.lspUriToPath(uri)
     }
 
     override fun supports(file: VirtualFile): Boolean {
@@ -63,7 +62,13 @@ class CSharpLanguageAdapter : LanguageAdapter {
     private fun getClient(project: Project): CSharpLspClient {
         val key = project.basePath
             ?: throw IllegalStateException("Project has no base path")
-        return clients.computeIfAbsent(key) { CSharpLspClient(project) }
+        return clients.computeIfAbsent(key) {
+            CSharpLspClient(project).also { client ->
+                com.intellij.openapi.util.Disposer.register(project, com.intellij.openapi.Disposable {
+                    clients.remove(key,client); client.dispose()
+                })
+            }
+        }
     }
 
     // ===== Find Symbol =====
