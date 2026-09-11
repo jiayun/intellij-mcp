@@ -6,6 +6,8 @@ build/
 .kotlin
 
 ### IntelliJ IDEA ###
+.idea/misc.xml
+.idea/workspace.xml
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
@@ -45,3 +47,13 @@ bin/
 ### IntelliJ Platform Gradle Plugin ###
 .intellijPlatform/
 .claude/
+
+# Real language fixture generated artifacts
+docs/fixtures/**/target/
+docs/fixtures/**/obj/
+docs/fixtures/**/.dart_tool/
+docs/fixtures/**/.idea/
+docs/fixtures/**/.build/
+docs/fixtures/**/.swiftpm/
+docs/fixtures/**/node_modules/
+docs/fixtures/**/__pycache__/

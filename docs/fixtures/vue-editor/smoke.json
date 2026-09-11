@@ -1,0 +1,57 @@
+{
+  "language": "vue",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.vue",
+      "needle": "callee():",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.vue",
+      "needle": "caller():",
+      "direction": "outgoing",
+      "contains": [
+        "callee"
+      ]
+    },
+    {
+      "tool": "find_implementations",
+      "file": "Worker.vue",
+      "needle": "work():",
+      "contains": [
+        "work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.vue",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.vue",
+      "replace": [
+        "return 1",
+        "return missing_symbol"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.vue",
+      "replace": [
+        "return 1",
+        "return 1"
+      ],
+      "diagnosticError": false
+    }
+  ],
+  "openFiles": [
+    "Worker.vue"
+  ]
+}

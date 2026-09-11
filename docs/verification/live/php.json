@@ -1,0 +1,297 @@
+{
+  "language": "php",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "worker.php",
+        "needle": "callee():",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/worker.php:5:10:function callee(): int ",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.php:3:10:function caller(): int ",
+            "symbol": {
+              "name": "caller",
+              "signature": "function caller(): int ",
+              "location": {
+                "filePath": "<fixture>/caller.php",
+                "line": 3,
+                "column": 10,
+                "endLine": 3,
+                "endColumn": 16
+              },
+              "language": "php"
+            }
+          },
+          {
+            "id": "<fixture>/worker.php:4:63:public function work(): int ",
+            "symbol": {
+              "name": "work",
+              "signature": "public function work(): int ",
+              "location": {
+                "filePath": "<fixture>/worker.php",
+                "line": 4,
+                "column": 63,
+                "endLine": 4,
+                "endColumn": 67
+              },
+              "language": "php"
+            }
+          },
+          {
+            "id": "<fixture>/worker.php:5:10:function callee(): int ",
+            "symbol": {
+              "name": "callee",
+              "signature": "function callee(): int ",
+              "location": {
+                "filePath": "<fixture>/worker.php",
+                "line": 5,
+                "column": 10,
+                "endLine": 5,
+                "endColumn": 16
+              },
+              "language": "php"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.php:3:10:function caller(): int ",
+            "to": "<fixture>/worker.php:5:10:function callee(): int ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/worker.php:4:63:public function work(): int ",
+            "to": "<fixture>/worker.php:5:10:function callee(): int ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "caller.php",
+        "needle": "caller():",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/caller.php:3:10:function caller(): int ",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.php:3:10:function caller(): int ",
+            "symbol": {
+              "name": "caller",
+              "signature": "function caller(): int ",
+              "location": {
+                "filePath": "<fixture>/caller.php",
+                "line": 3,
+                "column": 10,
+                "endLine": 3,
+                "endColumn": 16
+              },
+              "language": "php"
+            }
+          },
+          {
+            "id": "<fixture>/worker.php:5:10:function callee(): int ",
+            "symbol": {
+              "name": "callee",
+              "signature": "function callee(): int ",
+              "location": {
+                "filePath": "<fixture>/worker.php",
+                "line": 5,
+                "column": 10,
+                "endLine": 5,
+                "endColumn": 16
+              },
+              "language": "php"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.php:3:10:function caller(): int ",
+            "to": "<fixture>/worker.php:5:10:function callee(): int ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "worker.php",
+        "needle": "work():",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work",
+          "signature": "public function work(): int;",
+          "location": {
+            "filePath": "<fixture>/worker.php",
+            "line": 2,
+            "column": 36,
+            "endLine": 2,
+            "endColumn": 40
+          },
+          "language": "php"
+        },
+        "implementations": [
+          {
+            "name": "work",
+            "signature": "public function work(): int ",
+            "location": {
+              "filePath": "<fixture>/worker.php",
+              "line": 4,
+              "column": 63,
+              "endLine": 4,
+              "endColumn": 67
+            },
+            "language": "php"
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE DefinitionsScopedSearch"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.php",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.php",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "warning",
+              "message": "Interface name doesn\u0027t match the containing file name",
+              "location": {
+                "filePath": "<fixture>/worker.php",
+                "line": 2,
+                "column": 11,
+                "endLine": 2,
+                "endColumn": 17
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.php",
+        "replace": [
+          "return 1",
+          "return ("
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.php",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "warning",
+              "message": "Interface name doesn\u0027t match the containing file name",
+              "location": {
+                "filePath": "<fixture>/worker.php",
+                "line": 2,
+                "column": 11,
+                "endLine": 2,
+                "endColumn": 17
+              },
+              "source": "IDE inspections"
+            },
+            {
+              "severity": "error",
+              "message": "Expected: expression",
+              "location": {
+                "filePath": "<fixture>/worker.php",
+                "line": 5,
+                "column": 34,
+                "endLine": 5,
+                "endColumn": 35
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.php",
+        "replace": [
+          "return 1",
+          "return 1"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.php",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "warning",
+              "message": "Interface name doesn\u0027t match the containing file name",
+              "location": {
+                "filePath": "<fixture>/worker.php",
+                "line": 2,
+                "column": 11,
+                "endLine": 2,
+                "endColumn": 17
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

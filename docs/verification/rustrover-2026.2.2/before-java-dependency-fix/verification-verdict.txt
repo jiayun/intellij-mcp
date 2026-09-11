@@ -1,0 +1,1 @@
+67 compatibility problems, some of which may be caused by absence of optional dependencies in the target IDE RR-262.10315.167. 1 usage of scheduled for removal API and 31 usages of deprecated API. 30 usages of experimental API

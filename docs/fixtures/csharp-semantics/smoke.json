@@ -1,0 +1,21 @@
+{
+  "language": "csharp",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.cs",
+      "needle": "Callee() {",
+      "direction": "incoming",
+      "contains": [
+        "Run"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Caller.cs",
+      "needle": "Callee();",
+      "direction": "incoming",
+      "rootSameAs": 0
+    }
+  ]
+}

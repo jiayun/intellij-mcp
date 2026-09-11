@@ -1,0 +1,1 @@
+fun caller(): Int = callee()

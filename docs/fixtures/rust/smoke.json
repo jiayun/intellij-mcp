@@ -1,0 +1,55 @@
+{
+  "language": "rust",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "src/lib.rs",
+      "needle": "callee()",
+      "direction": "incoming",
+      "occurrence": 1,
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "src/caller.rs",
+      "needle": "caller()",
+      "direction": "outgoing",
+      "contains": [
+        "callee"
+      ]
+    },
+    {
+      "tool": "find_implementations",
+      "file": "src/lib.rs",
+      "needle": "work(&self)",
+      "contains": [
+        "work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "src/lib.rs",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "src/lib.rs",
+      "replace": [
+        "{ 1 }",
+        "{ missing_symbol }"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "src/lib.rs",
+      "replace": [
+        "{ 1 }",
+        "{ 1 }"
+      ],
+      "diagnosticError": false
+    }
+  ]
+}

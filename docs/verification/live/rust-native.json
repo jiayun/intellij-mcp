@@ -1,0 +1,254 @@
+{
+  "language": "rust",
+  "ide": "2026.2.2",
+  "adapters": [
+    "swift",
+    "csharp",
+    "javascript",
+    "vue",
+    "rust"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "src/lib.rs",
+        "needle": "callee()",
+        "direction": "incoming",
+        "occurrence": 1,
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+        "nodes": [
+          {
+            "id": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "symbol": {
+              "name": "caller",
+              "signature": "pub fn caller() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/caller.rs",
+                "line": 1,
+                "column": 8,
+                "endLine": 1,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "symbol": {
+              "name": "work",
+              "signature": "fn work(\u0026self) -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 4,
+                "column": 31,
+                "endLine": 4,
+                "endColumn": 35
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "symbol": {
+              "name": "callee",
+              "signature": "pub fn callee() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 8,
+                "endLine": 5,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "src/caller.rs",
+        "needle": "caller()",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+        "nodes": [
+          {
+            "id": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "symbol": {
+              "name": "caller",
+              "signature": "pub fn caller() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/caller.rs",
+                "line": 1,
+                "column": 8,
+                "endLine": 1,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "symbol": {
+              "name": "callee",
+              "signature": "pub fn callee() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 8,
+                "endLine": 5,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "src/lib.rs",
+        "needle": "work(\u0026self)",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work",
+          "signature": "fn work(\u0026self) -\u003e i32;",
+          "location": {
+            "filePath": "<fixture>/src/lib.rs",
+            "line": 2,
+            "column": 23,
+            "endLine": 2,
+            "endColumn": 27
+          },
+          "language": "rust"
+        },
+        "implementations": [
+          {
+            "name": "work",
+            "signature": "fn work(\u0026self) -\u003e i32 ",
+            "location": {
+              "filePath": "<fixture>/src/lib.rs",
+              "line": 4,
+              "column": 31,
+              "endLine": 4,
+              "endColumn": 35
+            },
+            "language": "rust"
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE DefinitionsScopedSearch"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "src/lib.rs",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/src/lib.rs",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "src/lib.rs",
+        "replace": [
+          "{ 1 }",
+          "{ missing_symbol }"
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/src/lib.rs",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "Cannot find value `missing_symbol` in this scope [E0425]",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 26,
+                "endLine": 5,
+                "endColumn": 40
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "src/lib.rs",
+        "replace": [
+          "{ 1 }",
+          "{ 1 }"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/src/lib.rs",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

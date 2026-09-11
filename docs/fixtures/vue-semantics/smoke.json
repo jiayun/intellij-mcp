@@ -1,0 +1,22 @@
+{
+  "language": "vue",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.vue",
+      "needle": "callee():",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.vue",
+      "needle": "callee();",
+      "direction": "incoming",
+      "rootSameAs": 0,
+      "occurrence": 1
+    }
+  ]
+}

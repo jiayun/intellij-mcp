@@ -1,0 +1,210 @@
+{
+  "language": "javascript",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "worker.ts",
+        "needle": "callee():",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/worker.ts:3:17:export function callee(): number ",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.ts:1:1:import ",
+            "symbol": {
+              "name": "caller.ts",
+              "signature": "import ",
+              "location": {
+                "filePath": "<fixture>/caller.ts",
+                "line": 1,
+                "column": 1,
+                "endLine": 3,
+                "endColumn": 1
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/caller.ts:2:17:export function caller(): number ",
+            "symbol": {
+              "name": "caller",
+              "signature": "export function caller(): number ",
+              "location": {
+                "filePath": "<fixture>/caller.ts",
+                "line": 2,
+                "column": 17,
+                "endLine": 2,
+                "endColumn": 23
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/worker.ts:2:43:work(): number ",
+            "symbol": {
+              "name": "work",
+              "signature": "work(): number ",
+              "location": {
+                "filePath": "<fixture>/worker.ts",
+                "line": 2,
+                "column": 43,
+                "endLine": 2,
+                "endColumn": 47
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "symbol": {
+              "name": "callee",
+              "signature": "export function callee(): number ",
+              "location": {
+                "filePath": "<fixture>/worker.ts",
+                "line": 3,
+                "column": 17,
+                "endLine": 3,
+                "endColumn": 23
+              },
+              "language": "typescript"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.ts:1:1:import ",
+            "to": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/caller.ts:2:17:export function caller(): number ",
+            "to": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/worker.ts:2:43:work(): number ",
+            "to": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "caller.ts",
+        "needle": "callee();",
+        "direction": "incoming",
+        "rootSameAs": 0
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/worker.ts:3:17:export function callee(): number ",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.ts:1:1:import ",
+            "symbol": {
+              "name": "caller.ts",
+              "signature": "import ",
+              "location": {
+                "filePath": "<fixture>/caller.ts",
+                "line": 1,
+                "column": 1,
+                "endLine": 3,
+                "endColumn": 1
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/caller.ts:2:17:export function caller(): number ",
+            "symbol": {
+              "name": "caller",
+              "signature": "export function caller(): number ",
+              "location": {
+                "filePath": "<fixture>/caller.ts",
+                "line": 2,
+                "column": 17,
+                "endLine": 2,
+                "endColumn": 23
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/worker.ts:2:43:work(): number ",
+            "symbol": {
+              "name": "work",
+              "signature": "work(): number ",
+              "location": {
+                "filePath": "<fixture>/worker.ts",
+                "line": 2,
+                "column": 43,
+                "endLine": 2,
+                "endColumn": 47
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "symbol": {
+              "name": "callee",
+              "signature": "export function callee(): number ",
+              "location": {
+                "filePath": "<fixture>/worker.ts",
+                "line": 3,
+                "column": 17,
+                "endLine": 3,
+                "endColumn": 23
+              },
+              "language": "typescript"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.ts:1:1:import ",
+            "to": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/caller.ts:2:17:export function caller(): number ",
+            "to": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/worker.ts:2:43:work(): number ",
+            "to": "<fixture>/worker.ts:3:17:export function callee(): number ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    }
+  ],
+  "passed": true
+}

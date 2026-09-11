@@ -1,0 +1,202 @@
+{
+  "language": "csharp",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Worker.cs",
+        "needle": "Callee() {",
+        "direction": "incoming",
+        "contains": [
+          "Run"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+        "nodes": [
+          {
+            "id": "<fixture>/Caller.cs:2:16:Caller",
+            "symbol": {
+              "name": "Run()",
+              "signature": "Caller",
+              "location": {
+                "filePath": "<fixture>/Caller.cs",
+                "line": 2,
+                "column": 16,
+                "endLine": 2,
+                "endColumn": 19
+              },
+              "language": "csharp"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.cs:3:16:ConcreteWorker",
+            "symbol": {
+              "name": "Work()",
+              "signature": "ConcreteWorker",
+              "location": {
+                "filePath": "<fixture>/Worker.cs",
+                "line": 3,
+                "column": 16,
+                "endLine": 3,
+                "endColumn": 20
+              },
+              "language": "csharp"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+            "symbol": {
+              "name": "Callee()",
+              "signature": "ConcreteWorker",
+              "location": {
+                "filePath": "<fixture>/Worker.cs",
+                "line": 4,
+                "column": 23,
+                "endLine": 4,
+                "endColumn": 29
+              },
+              "language": "csharp"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Caller.cs:2:16:Caller",
+            "to": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+            "callLocations": [
+              {
+                "filePath": "<fixture>/Caller.cs",
+                "line": 2,
+                "column": 46,
+                "endLine": 2,
+                "endColumn": 52
+              }
+            ]
+          },
+          {
+            "from": "<fixture>/Worker.cs:3:16:ConcreteWorker",
+            "to": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+            "callLocations": [
+              {
+                "filePath": "<fixture>/Worker.cs",
+                "line": 3,
+                "column": 32,
+                "endLine": 3,
+                "endColumn": 38
+              }
+            ]
+          }
+        ],
+        "truncated": false,
+        "backend": "csharp LSP"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Caller.cs",
+        "needle": "Callee();",
+        "direction": "incoming",
+        "rootSameAs": 0
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+        "nodes": [
+          {
+            "id": "<fixture>/Caller.cs:2:16:Caller",
+            "symbol": {
+              "name": "Run()",
+              "signature": "Caller",
+              "location": {
+                "filePath": "<fixture>/Caller.cs",
+                "line": 2,
+                "column": 16,
+                "endLine": 2,
+                "endColumn": 19
+              },
+              "language": "csharp"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.cs:3:16:ConcreteWorker",
+            "symbol": {
+              "name": "Work()",
+              "signature": "ConcreteWorker",
+              "location": {
+                "filePath": "<fixture>/Worker.cs",
+                "line": 3,
+                "column": 16,
+                "endLine": 3,
+                "endColumn": 20
+              },
+              "language": "csharp"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+            "symbol": {
+              "name": "Callee()",
+              "signature": "ConcreteWorker",
+              "location": {
+                "filePath": "<fixture>/Worker.cs",
+                "line": 4,
+                "column": 23,
+                "endLine": 4,
+                "endColumn": 29
+              },
+              "language": "csharp"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Caller.cs:2:16:Caller",
+            "to": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+            "callLocations": [
+              {
+                "filePath": "<fixture>/Caller.cs",
+                "line": 2,
+                "column": 46,
+                "endLine": 2,
+                "endColumn": 52
+              }
+            ]
+          },
+          {
+            "from": "<fixture>/Worker.cs:3:16:ConcreteWorker",
+            "to": "<fixture>/Worker.cs:4:23:ConcreteWorker",
+            "callLocations": [
+              {
+                "filePath": "<fixture>/Worker.cs",
+                "line": 3,
+                "column": 32,
+                "endLine": 3,
+                "endColumn": 38
+              }
+            ]
+          }
+        ],
+        "truncated": false,
+        "backend": "csharp LSP"
+      }
+    }
+  ],
+  "passed": true
+}

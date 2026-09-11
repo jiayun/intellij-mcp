@@ -2,6 +2,12 @@
 
 Expose JetBrains IDE code analysis capabilities via [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) for integration with AI coding assistants like Claude Code.
 
+## File diagnostics, calls, and implementations
+
+Version 1.11.0 adds `get_diagnostics`, `get_call_hierarchy`, and `find_implementations`, including unsaved IDE content, request deadlines, result limits, and explicit completeness status. `get_supported_languages` now reports backend capabilities and limitations, with an optional `projectPath`.
+
+See the [tool contract and language/backend matrix](docs/CODE_INTELLIGENCE.md) and [executed verification results](docs/verification/code-intelligence.md). An empty result is conclusive only when its status is `complete`. Vue symbol queries cover script sections; older Rust plugins use a limited direct-call fallback; Swift/C# support follows the initialized language server.
+
 ## Features
 
 - **Find Symbol** - Search for class, function, or variable definitions by name

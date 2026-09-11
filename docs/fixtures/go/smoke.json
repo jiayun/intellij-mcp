@@ -1,0 +1,54 @@
+{
+  "language": "go",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "worker.go",
+      "needle": "Callee() int",
+      "direction": "incoming",
+      "contains": [
+        "Caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "caller.go",
+      "needle": "Caller()",
+      "direction": "outgoing",
+      "contains": [
+        "Callee"
+      ]
+    },
+    {
+      "tool": "find_implementations",
+      "file": "worker.go",
+      "needle": "Work() int",
+      "contains": [
+        "Work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.go",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.go",
+      "replace": [
+        "return 1",
+        "return missing_symbol"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.go",
+      "replace": [
+        "return 1",
+        "return 1"
+      ],
+      "diagnosticError": false
+    }
+  ]
+}

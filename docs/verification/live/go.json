@@ -1,0 +1,259 @@
+{
+  "language": "go",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "worker.go",
+        "needle": "Callee() int",
+        "direction": "incoming",
+        "contains": [
+          "Caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/worker.go:6:6:func Callee() int ",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.go:2:6:func Caller() int ",
+            "symbol": {
+              "name": "Caller",
+              "signature": "func Caller() int ",
+              "location": {
+                "filePath": "<fixture>/caller.go",
+                "line": 2,
+                "column": 6,
+                "endLine": 2,
+                "endColumn": 12
+              },
+              "language": "go"
+            }
+          },
+          {
+            "id": "<fixture>/worker.go:5:17:func (Concrete) Work() int ",
+            "symbol": {
+              "name": "Work",
+              "signature": "func (Concrete) Work() int ",
+              "location": {
+                "filePath": "<fixture>/worker.go",
+                "line": 5,
+                "column": 17,
+                "endLine": 5,
+                "endColumn": 21
+              },
+              "language": "go"
+            }
+          },
+          {
+            "id": "<fixture>/worker.go:6:6:func Callee() int ",
+            "symbol": {
+              "name": "Callee",
+              "signature": "func Callee() int ",
+              "location": {
+                "filePath": "<fixture>/worker.go",
+                "line": 6,
+                "column": 6,
+                "endLine": 6,
+                "endColumn": 12
+              },
+              "language": "go"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.go:2:6:func Caller() int ",
+            "to": "<fixture>/worker.go:6:6:func Callee() int ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/worker.go:5:17:func (Concrete) Work() int ",
+            "to": "<fixture>/worker.go:6:6:func Callee() int ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "caller.go",
+        "needle": "Caller()",
+        "direction": "outgoing",
+        "contains": [
+          "Callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/caller.go:2:6:func Caller() int ",
+        "nodes": [
+          {
+            "id": "<fixture>/caller.go:2:6:func Caller() int ",
+            "symbol": {
+              "name": "Caller",
+              "signature": "func Caller() int ",
+              "location": {
+                "filePath": "<fixture>/caller.go",
+                "line": 2,
+                "column": 6,
+                "endLine": 2,
+                "endColumn": 12
+              },
+              "language": "go"
+            }
+          },
+          {
+            "id": "<fixture>/worker.go:6:6:func Callee() int ",
+            "symbol": {
+              "name": "Callee",
+              "signature": "func Callee() int ",
+              "location": {
+                "filePath": "<fixture>/worker.go",
+                "line": 6,
+                "column": 6,
+                "endLine": 6,
+                "endColumn": 12
+              },
+              "language": "go"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/caller.go:2:6:func Caller() int ",
+            "to": "<fixture>/worker.go:6:6:func Callee() int ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "worker.go",
+        "needle": "Work() int",
+        "contains": [
+          "Work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "Work",
+          "signature": "Work() int",
+          "location": {
+            "filePath": "<fixture>/worker.go",
+            "line": 3,
+            "column": 25,
+            "endLine": 3,
+            "endColumn": 29
+          },
+          "language": "go"
+        },
+        "implementations": [
+          {
+            "name": "Work",
+            "signature": "func (Concrete) Work() int ",
+            "location": {
+              "filePath": "<fixture>/worker.go",
+              "line": 5,
+              "column": 17,
+              "endLine": 5,
+              "endColumn": 21
+            },
+            "language": "go"
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE DefinitionsScopedSearch"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.go",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.go",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.go",
+        "replace": [
+          "return 1",
+          "return missing_symbol"
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.go",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "Unresolved reference \u0027missing_symbol\u0027",
+              "location": {
+                "filePath": "<fixture>/worker.go",
+                "line": 6,
+                "column": 28,
+                "endLine": 6,
+                "endColumn": 42
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "worker.go",
+        "replace": [
+          "return 1",
+          "return 1"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/worker.go",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

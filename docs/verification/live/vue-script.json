@@ -1,0 +1,259 @@
+{
+  "language": "vue",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Worker.vue",
+        "needle": "callee():",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Worker.vue:5:10:function callee(): number ",
+        "nodes": [
+          {
+            "id": "<fixture>/Worker.vue:4:36:work(): number ",
+            "symbol": {
+              "name": "work",
+              "signature": "work(): number ",
+              "location": {
+                "filePath": "<fixture>/Worker.vue",
+                "line": 4,
+                "column": 36,
+                "endLine": 4,
+                "endColumn": 40
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.vue:5:10:function callee(): number ",
+            "symbol": {
+              "name": "callee",
+              "signature": "function callee(): number ",
+              "location": {
+                "filePath": "<fixture>/Worker.vue",
+                "line": 5,
+                "column": 10,
+                "endLine": 5,
+                "endColumn": 16
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.vue:6:10:function caller(): number ",
+            "symbol": {
+              "name": "caller",
+              "signature": "function caller(): number ",
+              "location": {
+                "filePath": "<fixture>/Worker.vue",
+                "line": 6,
+                "column": 10,
+                "endLine": 6,
+                "endColumn": 16
+              },
+              "language": "typescript"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Worker.vue:4:36:work(): number ",
+            "to": "<fixture>/Worker.vue:5:10:function callee(): number ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/Worker.vue:6:10:function caller(): number ",
+            "to": "<fixture>/Worker.vue:5:10:function callee(): number ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Worker.vue",
+        "needle": "caller():",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Worker.vue:6:10:function caller(): number ",
+        "nodes": [
+          {
+            "id": "<fixture>/Worker.vue:5:10:function callee(): number ",
+            "symbol": {
+              "name": "callee",
+              "signature": "function callee(): number ",
+              "location": {
+                "filePath": "<fixture>/Worker.vue",
+                "line": 5,
+                "column": 10,
+                "endLine": 5,
+                "endColumn": 16
+              },
+              "language": "typescript"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.vue:6:10:function caller(): number ",
+            "symbol": {
+              "name": "caller",
+              "signature": "function caller(): number ",
+              "location": {
+                "filePath": "<fixture>/Worker.vue",
+                "line": 6,
+                "column": 10,
+                "endLine": 6,
+                "endColumn": 16
+              },
+              "language": "typescript"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Worker.vue:6:10:function caller(): number ",
+            "to": "<fixture>/Worker.vue:5:10:function callee(): number ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "Worker.vue",
+        "needle": "work():",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work",
+          "signature": "work(): number",
+          "location": {
+            "filePath": "<fixture>/Worker.vue",
+            "line": 3,
+            "column": 20,
+            "endLine": 3,
+            "endColumn": 24
+          },
+          "language": "typescript"
+        },
+        "implementations": [
+          {
+            "name": "work",
+            "signature": "work(): number ",
+            "location": {
+              "filePath": "<fixture>/Worker.vue",
+              "line": 4,
+              "column": 36,
+              "endLine": 4,
+              "endColumn": 40
+            },
+            "language": "typescript"
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE DefinitionsScopedSearch"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.vue",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.vue",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector + language services"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.vue",
+        "replace": [
+          "return 1",
+          "return missing_symbol"
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.vue",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "TS2304: Cannot find name \u0027missing_symbol\u0027.",
+              "location": {
+                "filePath": "<fixture>/Worker.vue",
+                "line": 5,
+                "column": 36,
+                "endLine": 5,
+                "endColumn": 50
+              },
+              "source": "IDE language service"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector + language services"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.vue",
+        "replace": [
+          "return 1",
+          "return 1"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.vue",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "IDE CodeSmellDetector + language services"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

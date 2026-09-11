@@ -1,0 +1,54 @@
+{
+  "language": "javascript",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "worker.js",
+      "needle": "callee()",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "caller.js",
+      "needle": "caller()",
+      "direction": "outgoing",
+      "contains": [
+        "callee"
+      ]
+    },
+    {
+      "tool": "find_implementations",
+      "file": "worker.js",
+      "needle": "work()",
+      "contains": [
+        "work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.js",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.js",
+      "replace": [
+        "return 1",
+        "return )"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.js",
+      "replace": [
+        "return 1",
+        "return 1"
+      ],
+      "diagnosticError": false
+    }
+  ]
+}

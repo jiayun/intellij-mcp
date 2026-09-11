@@ -1,0 +1,32 @@
+{
+  "language": "rust",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "src/lib.rs",
+      "needle": "callee()",
+      "direction": "incoming",
+      "occurrence": 1,
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "src/caller.rs",
+      "needle": "callee()",
+      "direction": "incoming",
+      "rootSameAs": 0
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "src/lib.rs",
+      "needle": "recursive()",
+      "direction": "outgoing",
+      "depth": 3,
+      "names": [
+        "recursive"
+      ]
+    }
+  ]
+}

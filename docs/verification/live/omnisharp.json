@@ -1,0 +1,161 @@
+{
+  "language": "csharp",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Worker.cs",
+        "needle": "Callee() {",
+        "direction": "incoming",
+        "status": "unsupported"
+      },
+      "result": {
+        "status": "unsupported",
+        "reason": "Server capability unavailable: call hierarchy",
+        "nodes": [],
+        "edges": [],
+        "truncated": false
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Caller.cs",
+        "needle": "Run()",
+        "direction": "outgoing",
+        "status": "unsupported"
+      },
+      "result": {
+        "status": "unsupported",
+        "reason": "Server capability unavailable: call hierarchy",
+        "nodes": [],
+        "edges": [],
+        "truncated": false
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "Worker.cs",
+        "needle": "Work();",
+        "contains": [
+          "Work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "Work",
+          "location": {
+            "filePath": "<fixture>/Worker.cs",
+            "line": 1,
+            "column": 32,
+            "endLine": 1,
+            "endColumn": 36
+          },
+          "language": "csharp"
+        },
+        "implementations": [
+          {
+            "name": "Work",
+            "location": {
+              "filePath": "<fixture>/Worker.cs",
+              "line": 3,
+              "column": 16,
+              "endLine": 3,
+              "endColumn": 20
+            },
+            "language": "csharp"
+          }
+        ],
+        "truncated": false,
+        "backend": "csharp LSP"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.cs",
+        "diagnosticError": false,
+        "status": "partial",
+        "timeout": 5000
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.cs",
+          "status": "partial",
+          "reason": "TimeoutException",
+          "diagnostics": []
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.cs",
+        "replace": [
+          "return 1",
+          "return missing_symbol"
+        ],
+        "diagnosticError": true,
+        "status": "complete"
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.cs",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "名稱 \u0027missing_symbol\u0027 不存在於目前的內容中",
+              "location": {
+                "filePath": "<fixture>/Worker.cs",
+                "line": 4,
+                "column": 41,
+                "endLine": 4,
+                "endColumn": 55
+              },
+              "source": "csharp"
+            }
+          ],
+          "backend": "csharp LSP"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.cs",
+        "replace": [
+          "return 1",
+          "return 1"
+        ],
+        "diagnosticError": false,
+        "status": "complete"
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.cs",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "csharp LSP"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

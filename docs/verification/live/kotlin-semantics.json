@@ -1,0 +1,173 @@
+{
+  "language": "kotlin",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Worker.kt",
+        "needle": "callee():",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ],
+        "excludeNames": [
+          "otherCaller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+        "nodes": [
+          {
+            "id": "<fixture>/Caller.kt:1:5:fun caller(): Int \u003d callee()",
+            "symbol": {
+              "name": "caller",
+              "signature": "fun caller(): Int \u003d callee()",
+              "location": {
+                "filePath": "<fixture>/Caller.kt",
+                "line": 1,
+                "column": 5,
+                "endLine": 1,
+                "endColumn": 11
+              },
+              "language": "kotlin"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.kt:2:40:override fun work() \u003d callee()",
+            "symbol": {
+              "name": "work",
+              "signature": "override fun work() \u003d callee()",
+              "location": {
+                "filePath": "<fixture>/Worker.kt",
+                "line": 2,
+                "column": 40,
+                "endLine": 2,
+                "endColumn": 44
+              },
+              "language": "kotlin"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+            "symbol": {
+              "name": "callee",
+              "signature": "fun callee(): Int \u003d 1",
+              "location": {
+                "filePath": "<fixture>/Worker.kt",
+                "line": 3,
+                "column": 5,
+                "endLine": 3,
+                "endColumn": 11
+              },
+              "language": "kotlin"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Caller.kt:1:5:fun caller(): Int \u003d callee()",
+            "to": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/Worker.kt:2:40:override fun work() \u003d callee()",
+            "to": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Caller.kt",
+        "needle": "callee()",
+        "direction": "incoming",
+        "rootSameAs": 0
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+        "nodes": [
+          {
+            "id": "<fixture>/Caller.kt:1:5:fun caller(): Int \u003d callee()",
+            "symbol": {
+              "name": "caller",
+              "signature": "fun caller(): Int \u003d callee()",
+              "location": {
+                "filePath": "<fixture>/Caller.kt",
+                "line": 1,
+                "column": 5,
+                "endLine": 1,
+                "endColumn": 11
+              },
+              "language": "kotlin"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.kt:2:40:override fun work() \u003d callee()",
+            "symbol": {
+              "name": "work",
+              "signature": "override fun work() \u003d callee()",
+              "location": {
+                "filePath": "<fixture>/Worker.kt",
+                "line": 2,
+                "column": 40,
+                "endLine": 2,
+                "endColumn": 44
+              },
+              "language": "kotlin"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+            "symbol": {
+              "name": "callee",
+              "signature": "fun callee(): Int \u003d 1",
+              "location": {
+                "filePath": "<fixture>/Worker.kt",
+                "line": 3,
+                "column": 5,
+                "endLine": 3,
+                "endColumn": 11
+              },
+              "language": "kotlin"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Caller.kt:1:5:fun caller(): Int \u003d callee()",
+            "to": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/Worker.kt:2:40:override fun work() \u003d callee()",
+            "to": "<fixture>/Worker.kt:3:5:fun callee(): Int \u003d 1",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    }
+  ],
+  "passed": true
+}

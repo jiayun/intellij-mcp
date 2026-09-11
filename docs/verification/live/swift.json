@@ -1,0 +1,249 @@
+{
+  "language": "swift",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Sources/IntelligenceFixture/Worker.swift",
+        "needle": "callee()",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Sources/IntelligenceFixture/Worker.swift:8:13:",
+        "nodes": [
+          {
+            "id": "<fixture>/Sources/IntelligenceFixture/Caller.swift:1:13:",
+            "symbol": {
+              "name": "caller()",
+              "location": {
+                "filePath": "<fixture>/Sources/IntelligenceFixture/Caller.swift",
+                "line": 1,
+                "column": 13,
+                "endLine": 1,
+                "endColumn": 13
+              },
+              "language": "swift"
+            }
+          },
+          {
+            "id": "<fixture>/Sources/IntelligenceFixture/Worker.swift:8:13:",
+            "symbol": {
+              "name": "callee()",
+              "location": {
+                "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+                "line": 8,
+                "column": 13,
+                "endLine": 8,
+                "endColumn": 13
+              },
+              "language": "swift"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Sources/IntelligenceFixture/Caller.swift:1:13:",
+            "to": "<fixture>/Sources/IntelligenceFixture/Worker.swift:8:13:",
+            "callLocations": [
+              {
+                "filePath": "<fixture>/Sources/IntelligenceFixture/Caller.swift",
+                "line": 2,
+                "column": 12,
+                "endLine": 2,
+                "endColumn": 12
+              }
+            ]
+          }
+        ],
+        "truncated": false,
+        "backend": "swift LSP"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Sources/IntelligenceFixture/Caller.swift",
+        "needle": "caller()",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Sources/IntelligenceFixture/Caller.swift:1:13:",
+        "nodes": [
+          {
+            "id": "<fixture>/Sources/IntelligenceFixture/Caller.swift:1:13:",
+            "symbol": {
+              "name": "caller()",
+              "location": {
+                "filePath": "<fixture>/Sources/IntelligenceFixture/Caller.swift",
+                "line": 1,
+                "column": 13,
+                "endLine": 1,
+                "endColumn": 13
+              },
+              "language": "swift"
+            }
+          },
+          {
+            "id": "<fixture>/Sources/IntelligenceFixture/Worker.swift:8:13:",
+            "symbol": {
+              "name": "callee()",
+              "location": {
+                "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+                "line": 8,
+                "column": 13,
+                "endLine": 8,
+                "endColumn": 13
+              },
+              "language": "swift"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Sources/IntelligenceFixture/Caller.swift:1:13:",
+            "to": "<fixture>/Sources/IntelligenceFixture/Worker.swift:8:13:",
+            "callLocations": [
+              {
+                "filePath": "<fixture>/Sources/IntelligenceFixture/Caller.swift",
+                "line": 2,
+                "column": 12,
+                "endLine": 2,
+                "endColumn": 12
+              }
+            ]
+          }
+        ],
+        "truncated": false,
+        "backend": "swift LSP"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "Sources/IntelligenceFixture/Worker.swift",
+        "needle": "work()",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work()",
+          "location": {
+            "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+            "line": 2,
+            "column": 10,
+            "endLine": 2,
+            "endColumn": 16
+          },
+          "language": "swift"
+        },
+        "implementations": [
+          {
+            "name": "work()",
+            "location": {
+              "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+              "line": 6,
+              "column": 17,
+              "endLine": 6,
+              "endColumn": 23
+            },
+            "language": "swift"
+          }
+        ],
+        "truncated": false,
+        "backend": "swift LSP"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Sources/IntelligenceFixture/Worker.swift",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "swift LSP"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Sources/IntelligenceFixture/Worker.swift",
+        "replace": [
+          "return 1",
+          "return missing_symbol"
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "Cannot find \u0027missing_symbol\u0027 in scope",
+              "location": {
+                "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+                "line": 8,
+                "column": 38,
+                "endLine": 8,
+                "endColumn": 52
+              },
+              "source": "SourceKit"
+            }
+          ],
+          "backend": "swift LSP"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Sources/IntelligenceFixture/Worker.swift",
+        "replace": [
+          "return 1",
+          "return 1"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Sources/IntelligenceFixture/Worker.swift",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "swift LSP"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,24 @@
+{
+  "language": "kotlin",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.kt",
+      "needle": "callee():",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ],
+      "excludeNames": [
+        "otherCaller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Caller.kt",
+      "needle": "callee()",
+      "direction": "incoming",
+      "rootSameAs": 0
+    }
+  ]
+}

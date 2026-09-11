@@ -1,0 +1,15 @@
+{
+  "path": "core/build/distributions/intellij-mcp-1.11.0.zip",
+  "bytes": 8951031,
+  "sha256": "e39cb466c54d299145cb2ad3aab62bffd3d6048b993f3f827b74d548f823903e",
+  "tests": 51,
+  "liveChecks": 142,
+  "liveFixtures": 31,
+  "verifier": "1.410",
+  "compatibleBuilds": [
+    "IU-251.23774.435",
+    "IU-253.29346.138",
+    "IU-262.10315.125",
+    "RR-262.10315.167"
+  ]
+}

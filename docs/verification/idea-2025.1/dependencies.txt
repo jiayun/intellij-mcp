@@ -1,0 +1,339 @@
+info.jiayun.intellij-mcp:1.11.0
++--- (failed) Dart (optional): Unavailable
++--- (failed) PythonCore (optional): Unavailable
++--- (failed) com.jetbrains.php (optional): Unavailable
++--- (failed) com.jetbrains.rust (optional): Unavailable
++--- (failed) org.jetbrains.plugins.go (optional): Unavailable
++--- JavaScript:251.23774.435 (aliased intellij.javascript.sharedIndexes.generator intellij.javascript.impl/diagrams intellij.aqua.runners.playwright.js intellij.javascript.devkit intellij.aqua.runners.cypress com.intellij.modules.javascript intellij.javascript.sharedIndexes intellij.javascript.sh intellij.javascript.java intellij.aqua.runners.js.core)
+|    +--- (failed) com.intellij.modules.webstorm (optional): Unavailable
+|    +--- (failed) com.intellij.plugins.watcher (optional): Unavailable
+|    +--- (failed) intellij.devkit.core (optional): Unavailable
+|    +--- Git4Idea:251.23774.435
+|    |    +--- com.jetbrains.performancePlugin:251.23774.435
+|    |    |    \--- com.intellij:251.23774.435 (aliased intellij.platform.debugger.impl.frontend intellij.profiler.ultimate.ideaAsyncProfiler com.intellij.modules.structuralsearch intellij.libraries.ktor.client.cio intellij.platform.rpc.backend intellij.platform.navbar.backend intellij.platform.execution.dashboard intellij.idea.customization.base com.intellij.modules.duplicatesDetector intellij.profiler.asyncOne com.intellij.modules.ruby-capable intellij.platform.tips intellij.grid.impl com.intellij.modules.run.targets intellij.platform.clouds intellij.platform.compose com.intellij.modules.ssh.attach intellij.platform.vcs.impl.lang.actions com.intellij.modules.clion-plugin-capable intellij.grid.types intellij.platform.jewel.ideLafBridge intellij.debugger.collections.visualizer.jvm com.intellij.modules.xml intellij.platform.lvcs.impl intellij.platform.registry.cloud intellij.platform.ide.newUiOnboarding intellij.libraries.compose.foundation.desktop intellij.platform.images.backend.svg intellij.platform.vcs.impl.shared com.intellij.modules.idea intellij.platform.bookmarks.backend intellij.platform.jewel.ui com.intellij.modules.go-capable com.intellij.marketplace intellij.grid com.intellij.ml.inline.completion com.intellij.modules.ssh.ui intellij.platform.recentFiles.backend intellij.platform.bookmarks.frontend intellij.libraries.grpc intellij.platform.vcs.impl.backend intellij.platform.execution.serviceView intellij.libraries.skiko intellij.platform.ide.newUsersOnboarding intellij.platform.images.copyright com.intellij.modules.ultimate intellij.platform.searchEverywhere.backend intellij.platform.searchEverywhere.frontend intellij.xml.xmlbeans intellij.execution.process.mediator.daemon com.intellij.modules.vcs intellij.platform.vcs.impl.exec com.intellij.modules.c-capable intellij.libraries.microba intellij.libraries.ktor.client com.intellij.modules.lang intellij.platform.smRunner.vcs com.intellij.modules.microservices intellij.platform.vcs.log.impl com.intellij.modules.nativeDebug-plugin-capable intellij.platform.settings.local com.intellij.modules.idea.ultimate intellij.platform.searchEverywhere com.intellij.modules.platform intellij.ide.startup.importSettings intellij.platform.coverage.agent com.intellij.modules.java-capable intellij.platform.recentFiles intellij.platform.diagnostic.freezeAnalyzer intellij.platform.editor intellij.grid.csv.core.impl intellij.platform.navbar.frontend intellij.libraries.grpc.netty.shaded intellij.profiler.ultimate intellij.platform.vcs.dvcs.impl intellij.platform.editor.frontend intellij.platform.collaborationTools intellij.platform.jewel.markdown.extension.gfmTables com.intellij.modules.rust-capable com.intellij.modules.xdebugger intellij.platform.vcs.impl com.intellij.modules.php-capable intellij.platform.coverage intellij.platform.diagnostic.freezes intellij.platform.editor.backend com.intellij.modules.jsp.base intellij.kotlin.onboarding-promoter com.intellij.modules.all intellij.platform.vcs.dvcs.impl.shared intellij.grid.core.impl com.intellij.modules.profiler intellij.rml.dfa.impl intellij.settingsSync.core intellij.platform.frontend intellij.platform.inline.completion intellij.execution.process.mediator.client intellij.platform.kernel.backend intellij.platform.jewel.markdown.extension.gfmAlerts com.intellij.modules.externalSystem intellij.platform.project.backend intellij.platform.jewel.foundation com.intellij.modules.ssh com.intellij.modules.python-core-capable intellij.jvm.dfa.analysis.ui intellij.platform.vcs.impl.frontend com.intellij.modules.python-pro-fleet-not-capable com.intellij.modules.python-single-distributive-capable intellij.platform.progress.backend intellij.execution.process.elevation intellij.platform.jewel.markdown.core com.intellij.modules.python-pro-capable intellij.platform.navbar intellij.debugger.collections.visualizer.core intellij.platform.navbar.monolith intellij.platform.jewel.markdown.ideLafBridgeStyling com.intellij.modules.python-in-non-pycharm-ide-capable intellij.platform.recentFiles.frontend com.intellij.platform.ide.provisioner com.intellij.modules.remoteServers intellij.profiler.common intellij.platform.vcs.impl.lang intellij.platform.debugger.impl.backend intellij.execution.process.mediator.common com.intellij.modules.coverage intellij.platform.dap) [declaring module com.intellij.modules.lang]
+|    |    |         +--- (failed) com.intellij.platform.experimental.backend (optional): Unavailable
+|    |    |         +--- (failed) com.intellij.platform.experimental.frontend (optional): Unavailable
+|    |    |         +--- Git4Idea:251.23774.435 (*)
+|    |    |         +--- com.intellij.copyright:251.23774.435
+|    |    |         |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         +--- com.intellij.java:251.23774.435 (aliased intellij.java.terminal com.intellij.java.frontback.impl intellij.java.unscramble com.intellij.java.frontback.psi.impl intellij.java.debugger.impl.frontend intellij.java.vcs intellij.jvm.analysis.impl intellij.java.compiler.charts intellij.java.performancePlugin com.intellij.modules.java intellij.java.debugger.impl.backend intellij.java.structuralSearch intellij.java.featuresTrainer)
+|    |    |         |    +--- (failed) com.intellij.modules.idea.community (optional): Unavailable
+|    |    |         |    +--- (failed) com.intellij.platform.experimental.frontend (optional): Unavailable
+|    |    |         |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    |         |    +--- com.intellij.platform.images:251.23774.435
+|    |    |         |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    +--- com.jetbrains.performancePlugin:251.23774.435 (*)
+|    |    |         |    +--- org.jetbrains.plugins.terminal:251.23774.435
+|    |    |         |    |    +--- (failed) com.intellij.platform.experimental.backend (optional): Unavailable
+|    |    |         |    |    +--- (failed) com.intellij.platform.experimental.frontend (optional): Unavailable
+|    |    |         |    |    +--- com.jetbrains.sh:251.23774.435
+|    |    |         |    |    |    +--- (failed) com.intellij.modules.python (optional): Unavailable
+|    |    |         |    |    |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    |         |    |    |    +--- org.intellij.plugins.markdown:251.23774.435
+|    |    |         |    |    |    |    +--- com.intellij.modules.json:251.23774.435
+|    |    |         |    |    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    |    |    |    +--- com.intellij.platform.images:251.23774.435 (*)
+|    |    |         |    |    |    |    +--- org.intellij.intelliLang:251.23774.435
+|    |    |         |    |    |    |    |    +--- XPathView:251.23774.435
+|    |    |         |    |    |    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    |         |    |    |    |    |    +--- com.intellij.java:251.23774.435 (*) [declaring module com.intellij.modules.java]
+|    |    |         |    |    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    |         |    |    |    |    +--- org.toml.lang:251.23774.435
+|    |    |         |    |    |    |    |    +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    |         |    |    |    |    |    +--- tanvd.grazi:251.23774.435
+|    |    |         |    |    |    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |    +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |    +--- com.intellij.properties:251.23774.435
+|    |    |         |    |    |    |    |    |    |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    |         |    |    |    |    |    |    +--- org.intellij.plugins.markdown:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    |         |    |    |    |    |    |    +--- intellij.platform.vcs.impl:251.23774.435 (aliased intellij.platform.vcs.impl com.intellij.modules.vcs) [product module]
+|    |    |         |    |    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |    |    +--- intellij.libraries.microba:251.23774.435 (aliased intellij.libraries.microba) [product module]
+|    |    |         |    |    |    |    |    |    |    |    \--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |    |    \--- intellij.platform.vcs.impl.shared:251.23774.435 (aliased intellij.platform.vcs.impl.shared) [product module]
+|    |    |         |    |    |    |    |    |    |         \--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |    \--- intellij.yaml.backend:251.23774.435 (aliased intellij.yaml.backend) [product module]
+|    |    |         |    |    |    |    |    |         +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |         +--- org.jetbrains.plugins.yaml:251.23774.435
+|    |    |         |    |    |    |    |    |         |    +--- (failed) com.intellij.jetbrains.client (optional): Unavailable
+|    |    |         |    |    |    |    |    |         |    +--- (failed) com.intellij.platform.experimental.backend (optional): Unavailable
+|    |    |         |    |    |    |    |    |         |    +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |         |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    |    |    |    |    |         |    \--- intellij.json.split:251.23774.435 (aliased intellij.json.split) [product module]
+|    |    |         |    |    |    |    |    |         |         \--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    |    |    |    |         \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    |    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    |    |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    |    |    |    \--- intellij.yaml.backend:251.23774.435 (*) [product module]
+|    |    |         |    |    |    +--- org.jetbrains.plugins.terminal:251.23774.435 (*)
+|    |    |         |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    +--- training:251.23774.435
+|    |    |         |    |    +--- Git4Idea:251.23774.435 (*)
+|    |    |         |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |         |    |    +--- intellij.platform.lvcs.impl:251.23774.435 (aliased intellij.platform.lvcs.impl) [product module]
+|    |    |         |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    |    +--- intellij.platform.vcs.impl:251.23774.435 (*) [product module]
+|    |    |         |    |    |    \--- intellij.platform.vcs.impl.shared:251.23774.435 (*) [product module]
+|    |    |         |    |    \--- intellij.platform.tips:251.23774.435 (aliased intellij.platform.tips) [product module]
+|    |    |         |    |         \--- com.intellij:251.23774.435 (*)
+|    |    |         |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.remoteServers]
+|    |    |         |    \--- intellij.performanceTesting.vcs:251.23774.435 (aliased intellij.performanceTesting.vcs) [product module]
+|    |    |         |         +--- com.intellij:251.23774.435 (*)
+|    |    |         |         +--- intellij.platform.vcs.impl:251.23774.435 (*) [product module]
+|    |    |         |         \--- intellij.platform.vcs.log.impl:251.23774.435 (aliased intellij.platform.vcs.log.impl) [product module]
+|    |    |         |              +--- com.intellij:251.23774.435 (*)
+|    |    |         |              +--- intellij.platform.vcs.impl:251.23774.435 (*) [product module]
+|    |    |         |              \--- intellij.platform.vcs.impl.shared:251.23774.435 (*) [product module]
+|    |    |         +--- com.intellij.platform.images:251.23774.435 (*)
+|    |    |         +--- intellij.grid.plugin:251.23774.435
+|    |    |         |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    |         |    +--- com.intellij.platform.images:251.23774.435 (*)
+|    |    |         |    +--- intellij.charts:251.23774.435
+|    |    |         |    |    \--- com.intellij:251.23774.435 (*)
+|    |    |         |    +--- intellij.grid.core.impl:251.23774.435 (aliased intellij.grid.core.impl) [product module]
+|    |    |         |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    +--- intellij.grid:251.23774.435 (aliased intellij.grid) [product module]
+|    |    |         |    |    |    \--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    +--- intellij.grid.csv.core.impl:251.23774.435 (aliased intellij.grid.csv.core.impl) [product module]
+|    |    |         |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    |    \--- intellij.grid.types:251.23774.435 (aliased intellij.grid.types) [product module]
+|    |    |         |    |    |         \--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    \--- intellij.grid.types:251.23774.435 (*) [product module]
+|    |    |         |    +--- intellij.grid.impl:251.23774.435 (aliased intellij.grid.impl) [product module]
+|    |    |         |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    |    +--- intellij.grid.core.impl:251.23774.435 (*) [product module]
+|    |    |         |    |    +--- intellij.libraries.microba:251.23774.435 (*) [product module]
+|    |    |         |    |    \--- intellij.platform.navbar.frontend:251.23774.435 (aliased intellij.platform.navbar.frontend) [product module]
+|    |    |         |    |         +--- com.intellij:251.23774.435 (*)
+|    |    |         |    |         \--- intellij.platform.navbar:251.23774.435 (aliased intellij.platform.navbar) [product module]
+|    |    |         |    |              \--- com.intellij:251.23774.435 (*)
+|    |    |         |    +--- intellij.libraries.microba:251.23774.435 (*) [product module]
+|    |    |         |    \--- intellij.platform.navbar.frontend:251.23774.435 (*) [product module]
+|    |    |         +--- org.jetbrains.kotlin:251.23774.435
+|    |    |         |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |         |    \--- intellij.platform.collaborationTools:251.23774.435 (aliased intellij.platform.collaborationTools) [product module]
+|    |    |         |         +--- com.intellij:251.23774.435 (*)
+|    |    |         |         +--- intellij.platform.vcs.dvcs.impl:251.23774.435 (aliased intellij.platform.vcs.dvcs.impl) [product module]
+|    |    |         |         |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |         |    +--- intellij.platform.vcs.dvcs.impl.shared:251.23774.435 (aliased intellij.platform.vcs.dvcs.impl.shared) [product module]
+|    |    |         |         |    |    \--- com.intellij:251.23774.435 (*)
+|    |    |         |         |    +--- intellij.platform.vcs.impl.backend:251.23774.435 (aliased intellij.platform.vcs.impl.backend) [product module]
+|    |    |         |         |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |         |    |    +--- intellij.platform.kernel.backend:251.23774.435 (aliased intellij.platform.kernel.backend) [product module]
+|    |    |         |         |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |         |    |    |    \--- intellij.platform.rpc.backend:251.23774.435 (aliased intellij.platform.rpc.backend) [product module]
+|    |    |         |         |    |    |         +--- (failed) com.intellij.platform.experimental.backend: Unavailable
+|    |    |         |         |    |    |         \--- com.intellij:251.23774.435 (*)
+|    |    |         |         |    |    +--- intellij.platform.vcs.impl:251.23774.435 (*) [product module]
+|    |    |         |         |    |    \--- intellij.platform.vcs.impl.shared:251.23774.435 (*) [product module]
+|    |    |         |         |    +--- intellij.platform.vcs.impl.shared:251.23774.435 (*) [product module]
+|    |    |         |         |    \--- intellij.platform.vcs.log.impl:251.23774.435 (*) [product module]
+|    |    |         |         +--- intellij.platform.vcs.dvcs.impl.shared:251.23774.435 (*) [product module]
+|    |    |         |         \--- intellij.platform.vcs.log.impl:251.23774.435 (*) [product module]
+|    |    |         +--- intellij.grid.charts.impl:251.23774.435 (aliased intellij.grid.charts.impl) [product module]
+|    |    |         |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    +--- com.intellij.platform.images:251.23774.435 (*)
+|    |    |         |    +--- intellij.charts:251.23774.435 (*)
+|    |    |         |    +--- intellij.grid.core.impl:251.23774.435 (*) [product module]
+|    |    |         |    +--- intellij.grid.impl:251.23774.435 (*) [product module]
+|    |    |         |    +--- intellij.libraries.microba:251.23774.435 (*) [product module]
+|    |    |         |    \--- intellij.platform.navbar.frontend:251.23774.435 (*) [product module]
+|    |    |         +--- intellij.java.featuresTrainer:251.23774.435 (aliased intellij.java.featuresTrainer) [product module]
+|    |    |         |    +--- com.intellij:251.23774.435 (*)
+|    |    |         |    \--- training:251.23774.435 (*)
+|    |    |         \--- kotlin.features-trainer:251.23774.435 (aliased kotlin.features-trainer) [product module]
+|    |    |              +--- com.intellij:251.23774.435 (*)
+|    |    |              +--- training:251.23774.435 (*)
+|    |    |              \--- intellij.java.featuresTrainer:251.23774.435 (*) [product module]
+|    |    +--- org.jetbrains.plugins.terminal:251.23774.435 (*)
+|    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.vcs]
+|    |    \--- intellij.platform.collaborationTools:251.23774.435 (*) [product module]
+|    +--- JavaScriptDebugger:251.23774.435
+|    |    +--- (failed) com.intellij.platform.experimental.frontend (optional): Unavailable
+|    |    +--- com.intellij.javaee:251.23774.435
+|    |    |    +--- com.intellij.database:251.23774.435
+|    |    |    |    +--- Docker:251.23774.435
+|    |    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |    |    |    +--- intellij.libraries.ktor.client:251.23774.435 (aliased intellij.libraries.ktor.client) [product module]
+|    |    |    |    |    |    \--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    +--- intellij.platform.clouds:251.23774.435 (aliased intellij.platform.clouds) [product module]
+|    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    \--- intellij.platform.execution.dashboard:251.23774.435 (aliased intellij.platform.execution.dashboard) [product module]
+|    |    |    |    |    |         +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |         \--- intellij.platform.execution.serviceView:251.23774.435 (aliased intellij.platform.execution.serviceView) [product module]
+|    |    |    |    |    |              +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |              \--- intellij.platform.navbar.frontend:251.23774.435 (*) [product module]
+|    |    |    |    |    \--- intellij.yaml.backend:251.23774.435 (*) [product module]
+|    |    |    |    +--- JavaScript:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.completion.ml.ranking:251.23774.435
+|    |    |    |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    |    |    |    |    +--- intellij.fullLine.core.completion:251.23774.435 (aliased intellij.fullLine.core.completion) [product module]
+|    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    \--- intellij.platform.inline.completion:251.23774.435 (aliased intellij.platform.inline.completion) [product module]
+|    |    |    |    |    |         \--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    \--- intellij.platform.vcs.impl:251.23774.435 (*) [product module]
+|    |    |    |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.diagram:251.23774.435
+|    |    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    |    +--- com.intellij.properties:251.23774.435 (*)
+|    |    |    |    |    +--- org.jetbrains.idea.maven:251.23774.435
+|    |    |    |    |    |    +--- (failed) Error-prone plugin (optional): Unavailable
+|    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    +--- com.intellij.properties:251.23774.435 (*)
+|    |    |    |    |    |    +--- com.jetbrains.performancePlugin:251.23774.435 (*)
+|    |    |    |    |    |    +--- org.intellij.groovy:251.23774.435
+|    |    |    |    |    |    |    +--- (failed) AntSupport (optional): Unavailable
+|    |    |    |    |    |    |    +--- ByteCodeViewer:251.23774.435
+|    |    |    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    |    |    \--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- Git4Idea:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- JUnit:251.23774.435
+|    |    |    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    |    |    |    |    \--- com.intellij.properties:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- com.intellij.properties:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- org.intellij.intelliLang:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.ultimate]
+|    |    |    |    |    |    |    \--- intellij.java.unscramble:251.23774.435 (aliased intellij.java.unscramble) [product module]
+|    |    |    |    |    |    |         +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    |         \--- intellij.platform.vcs.impl:251.23774.435 (*) [product module]
+|    |    |    |    |    |    +--- org.jetbrains.idea.maven.model:251.23774.435
+|    |    |    |    |    |    |    \--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    +--- org.jetbrains.idea.maven.server.api:251.23774.435
+|    |    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    |    \--- org.jetbrains.idea.maven.model:251.23774.435 (*)
+|    |    |    |    |    |    +--- org.jetbrains.idea.reposearch:251.23774.435
+|    |    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    |    +--- org.jetbrains.idea.maven.model:251.23774.435 (*)
+|    |    |    |    |    |    |    \--- intellij.libraries.ktor.client:251.23774.435 (*) [product module]
+|    |    |    |    |    |    \--- com.intellij.java:251.23774.435 (*) [declaring module com.intellij.modules.java]
+|    |    |    |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.ultimate]
+|    |    |    |    |    \--- intellij.platform.navbar.frontend:251.23774.435 (*) [product module]
+|    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.platform.images:251.23774.435 (*)
+|    |    |    |    +--- intellij.grid.plugin:251.23774.435 (*)
+|    |    |    |    +--- org.intellij.intelliLang:251.23774.435 (*)
+|    |    |    |    +--- tanvd.grazi:251.23774.435 (*)
+|    |    |    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.ultimate]
+|    |    |    |    +--- intellij.grid:251.23774.435 (*) [product module]
+|    |    |    |    +--- intellij.grid.charts.impl:251.23774.435 (*) [product module]
+|    |    |    |    +--- intellij.grid.core.impl:251.23774.435 (*) [product module]
+|    |    |    |    +--- intellij.grid.csv.core.impl:251.23774.435 (*) [product module]
+|    |    |    |    +--- intellij.grid.impl:251.23774.435 (*) [product module]
+|    |    |    |    +--- intellij.grid.scripting.impl:251.23774.435 (aliased intellij.grid.scripting.impl) [product module]
+|    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    +--- intellij.grid.core.impl:251.23774.435 (*) [product module]
+|    |    |    |    |    +--- intellij.grid.impl:251.23774.435 (*) [product module]
+|    |    |    |    |    \--- intellij.grid.scripting.rt:251.23774.435 (aliased intellij.grid.scripting.rt) [product module]
+|    |    |    |    |         \--- com.intellij:251.23774.435 (*)
+|    |    |    |    +--- intellij.grid.types:251.23774.435 (*) [product module]
+|    |    |    |    \--- intellij.platform.vcs.impl:251.23774.435 (*) [product module]
+|    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    +--- com.intellij.java-i18n:251.23774.435
+|    |    |    |    +--- com.intellij.properties:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.java:251.23774.435 (*) [declaring module com.intellij.modules.java]
+|    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.platform]
+|    |    |    +--- com.intellij.properties:251.23774.435 (*)
+|    |    |    +--- com.jetbrains.plugins.webDeployment:251.23774.435
+|    |    |    |    +--- (failed) com.intellij.modules.phpstorm (optional): Unavailable
+|    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    |    +--- org.intellij.intelliLang:251.23774.435 (*)
+|    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.ultimate]
+|    |    +--- com.intellij.jsp:251.23774.435
+|    |    |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    |    +--- com.intellij.css:251.23774.435
+|    |    |    |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.platform.images:251.23774.435 (*)
+|    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    |    +--- com.intellij.javaee.app.servers.integration:251.23774.435
+|    |    |    |    +--- com.intellij.database:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.java-i18n:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.javaee:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.properties:251.23774.435 (*)
+|    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.ultimate]
+|    |    |    +--- com.intellij.javaee.el:251.23774.435
+|    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    \--- com.intellij.javaee:251.23774.435 (*)
+|    |    |    +--- com.intellij.javaee.web:251.23774.435
+|    |    |    |    +--- Coverage:251.23774.435
+|    |    |    |    |    +--- JUnit:251.23774.435 (*)
+|    |    |    |    |    +--- TestNG-J:251.23774.435
+|    |    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    |    +--- org.intellij.intelliLang:251.23774.435 (*)
+|    |    |    |    |    |    \--- com.intellij.java:251.23774.435 (*) [declaring module com.intellij.modules.java]
+|    |    |    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    |    \--- intellij.platform.coverage:251.23774.435 (aliased com.intellij.modules.coverage intellij.platform.coverage) [product module]
+|    |    |    |    |         +--- com.intellij:251.23774.435 (*)
+|    |    |    |    |         \--- intellij.platform.coverage.agent:251.23774.435 (aliased intellij.platform.coverage.agent) [product module]
+|    |    |    |    |              \--- com.intellij:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.css:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.java-i18n:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.javaee:251.23774.435 (*)
+|    |    |    |    +--- com.intellij.properties:251.23774.435 (*)
+|    |    |    |    +--- org.intellij.intelliLang:251.23774.435 (*)
+|    |    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+|    |    +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    +--- com.jetbrains.plugins.webDeployment:251.23774.435 (*)
+|    |    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.coverage]
+|    |    \--- JavaScript:251.23774.435 (*) [declaring module com.intellij.modules.javascript]
+|    +--- com.intellij.completion.ml.ranking:251.23774.435 (*)
+|    +--- com.intellij.copyright:251.23774.435 (*)
+|    +--- com.intellij.css:251.23774.435 (*)
+|    +--- com.intellij.diagram:251.23774.435 (*)
+|    +--- com.intellij.modules.json:251.23774.435 (*)
+|    +--- com.jetbrains.performancePlugin:251.23774.435 (*)
+|    +--- com.jetbrains.sh:251.23774.435 (*)
+|    +--- intellij.indexing.shared.core:251.23774.435
+|    |    +--- com.intellij:251.23774.435 (*)
+|    |    +--- com.intellij.configurationScript:251.23774.435
+|    |    |    +--- com.intellij:251.23774.435 (*)
+|    |    |    \--- com.intellij.modules.json:251.23774.435 (*)
+|    |    +--- com.intellij.java:251.23774.435 (*)
+|    |    \--- com.jetbrains.performancePlugin:251.23774.435 (*)
+|    +--- org.intellij.intelliLang:251.23774.435 (*)
+|    +--- org.intellij.plugins.markdown:251.23774.435 (*)
+|    +--- org.jetbrains.plugins.terminal:251.23774.435 (*)
+|    +--- tanvd.grazi:251.23774.435 (*)
+|    +--- training:251.23774.435 (*)
+|    +--- com.intellij.java:251.23774.435 (*) [declaring module com.intellij.modules.java]
+|    +--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.ultimate]
+|    +--- intellij.indexing.shared.generator:251.23774.435 (aliased intellij.indexing.shared.generator) [product module]
+|    |    \--- com.intellij:251.23774.435 (*)
+|    \--- intellij.sh.terminal:251.23774.435 (aliased intellij.sh.terminal) [product module]
+|         +--- com.intellij:251.23774.435 (*)
+|         \--- org.jetbrains.plugins.terminal:251.23774.435 (*)
++--- com.intellij.java:251.23774.435 (*)
++--- org.jetbrains.kotlin:251.23774.435 (*)
++--- org.jetbrains.plugins.vue:251.23774.435
+|    +--- JavaScript:251.23774.435 (*)
+|    +--- JavaScriptDebugger:251.23774.435 (*)
+|    +--- com.intellij.copyright:251.23774.435 (*)
+|    +--- com.intellij.css:251.23774.435 (*)
+|    +--- intellij.prettierJS:251.23774.435
+|    |    +--- com.intellij.modules.json:251.23774.435 (*)
+|    |    +--- JavaScript:251.23774.435 (*) [declaring module com.intellij.modules.javascript]
+|    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.platform]
+|    +--- intellij.webpack:251.23774.435
+|    |    +--- JavaScript:251.23774.435 (*)
+|    |    +--- com.intellij:251.23774.435 (*)
+|    |    \--- com.intellij.modules.json:251.23774.435 (*)
+|    +--- org.intellij.plugins.markdown:251.23774.435 (*)
+|    +--- org.intellij.plugins.postcss:251.23774.435
+|    |    +--- com.intellij.copyright:251.23774.435 (*)
+|    |    +--- com.intellij.css:251.23774.435 (*)
+|    |    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.lang]
+|    \--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.xml]
+\--- com.intellij:251.23774.435 (*) [declaring module com.intellij.modules.platform]

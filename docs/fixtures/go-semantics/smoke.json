@@ -1,0 +1,21 @@
+{
+  "language": "go",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "worker.go",
+      "needle": "Callee() int",
+      "direction": "incoming",
+      "contains": [
+        "Caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "caller.go",
+      "needle": "Callee()",
+      "direction": "incoming",
+      "rootSameAs": 0
+    }
+  ]
+}

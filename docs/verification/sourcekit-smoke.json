@@ -1,0 +1,211 @@
+{
+  "prepare": {
+    "id": 2,
+    "result": [
+      {
+        "uri": "file://<workspace>/docs/fixtures/swift/Sources/IntelligenceFixture/Worker.swift",
+        "data": {
+          "uri": "file://<workspace>/docs/fixtures/swift/Sources/IntelligenceFixture/Worker.swift",
+          "usr": "s:19IntelligenceFixture6calleeSiyF"
+        },
+        "selectionRange": {
+          "start": {
+            "character": 12,
+            "line": 7
+          },
+          "end": {
+            "character": 12,
+            "line": 7
+          }
+        },
+        "range": {
+          "end": {
+            "line": 7,
+            "character": 12
+          },
+          "start": {
+            "line": 7,
+            "character": 12
+          }
+        },
+        "kind": 12,
+        "name": "callee()"
+      }
+    ],
+    "jsonrpc": "2.0"
+  },
+  "incoming": {
+    "id": 3,
+    "result": [
+      {
+        "from": {
+          "uri": "file://<workspace>/docs/fixtures/swift/Sources/IntelligenceFixture/Caller.swift",
+          "selectionRange": {
+            "start": {
+              "character": 12,
+              "line": 0
+            },
+            "end": {
+              "character": 12,
+              "line": 0
+            }
+          },
+          "data": {
+            "usr": "s:19IntelligenceFixture6callerSiyF",
+            "uri": "file://<workspace>/docs/fixtures/swift/Sources/IntelligenceFixture/Caller.swift"
+          },
+          "kind": 12,
+          "name": "caller()",
+          "range": {
+            "start": {
+              "character": 12,
+              "line": 0
+            },
+            "end": {
+              "character": 12,
+              "line": 0
+            }
+          }
+        },
+        "fromRanges": [
+          {
+            "end": {
+              "line": 1,
+              "character": 11
+            },
+            "start": {
+              "line": 1,
+              "character": 11
+            }
+          }
+        ]
+      }
+    ],
+    "jsonrpc": "2.0"
+  },
+  "outgoing": {
+    "id": 5,
+    "result": [
+      {
+        "to": {
+          "kind": 12,
+          "selectionRange": {
+            "end": {
+              "character": 12,
+              "line": 7
+            },
+            "start": {
+              "line": 7,
+              "character": 12
+            }
+          },
+          "data": {
+            "uri": "file://<workspace>/docs/fixtures/swift/Sources/IntelligenceFixture/Worker.swift",
+            "usr": "s:19IntelligenceFixture6calleeSiyF"
+          },
+          "uri": "file://<workspace>/docs/fixtures/swift/Sources/IntelligenceFixture/Worker.swift",
+          "range": {
+            "end": {
+              "character": 12,
+              "line": 7
+            },
+            "start": {
+              "line": 7,
+              "character": 12
+            }
+          },
+          "name": "callee()"
+        },
+        "fromRanges": [
+          {
+            "start": {
+              "character": 11,
+              "line": 1
+            },
+            "end": {
+              "line": 1,
+              "character": 11
+            }
+          }
+        ]
+      }
+    ],
+    "jsonrpc": "2.0"
+  },
+  "implementation": {
+    "id": 6,
+    "result": [
+      {
+        "uri": "file://<workspace>/docs/fixtures/swift/Sources/IntelligenceFixture/Worker.swift",
+        "range": {
+          "start": {
+            "line": 5,
+            "character": 16
+          },
+          "end": {
+            "character": 16,
+            "line": 5
+          }
+        }
+      }
+    ],
+    "jsonrpc": "2.0"
+  },
+  "diagnostics": {
+    "id": 7,
+    "result": {
+      "items": [],
+      "kind": "full"
+    },
+    "jsonrpc": "2.0"
+  },
+  "unsaved_error": {
+    "id": 8,
+    "result": {
+      "items": [
+        {
+          "tags": [],
+          "severity": 1,
+          "range": {
+            "end": {
+              "character": 50,
+              "line": 7
+            },
+            "start": {
+              "character": 37,
+              "line": 7
+            }
+          },
+          "source": "SourceKit",
+          "message": "Cannot find 'missingSymbol' in scope"
+        }
+      ],
+      "kind": "full"
+    },
+    "jsonrpc": "2.0"
+  },
+  "unsaved_fix": {
+    "id": 9,
+    "result": {
+      "items": [],
+      "kind": "full"
+    },
+    "jsonrpc": "2.0"
+  },
+  "registrations": [
+    {
+      "method": "textDocument/diagnostic",
+      "id": "15537DF4-DDF9-464A-B2EA-00387E9F4877",
+      "registerOptions": {
+        "interFileDependencies": true,
+        "documentSelector": [
+          {
+            "language": "swift"
+          }
+        ],
+        "workspaceDiagnostics": false
+      }
+    }
+  ],
+  "push_diagnostics": []
+}

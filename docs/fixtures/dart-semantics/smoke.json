@@ -1,0 +1,29 @@
+{
+  "language": "dart",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "lib/worker.dart",
+      "needle": "callee() =>",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "lib/caller.dart",
+      "needle": "callee();",
+      "direction": "incoming",
+      "rootSameAs": 0
+    },
+    {
+      "tool": "find_implementations",
+      "file": "lib/worker.dart",
+      "needle": "Extra {",
+      "names": [
+        "Concrete"
+      ]
+    }
+  ]
+}

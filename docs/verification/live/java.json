@@ -1,0 +1,333 @@
+{
+  "language": "java",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Worker.java",
+        "needle": "callee() {",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Worker.java:3:26:static int callee() ",
+        "nodes": [
+          {
+            "id": "<fixture>/Caller.java:1:20:int caller() ",
+            "symbol": {
+              "name": "caller",
+              "signature": "int caller() ",
+              "location": {
+                "filePath": "<fixture>/Caller.java",
+                "line": 1,
+                "column": 20,
+                "endLine": 1,
+                "endColumn": 26
+              },
+              "language": "java"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.java:2:47:public int work() ",
+            "symbol": {
+              "name": "work",
+              "signature": "public int work() ",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 2,
+                "column": 47,
+                "endLine": 2,
+                "endColumn": 51
+              },
+              "language": "java"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.java:3:26:static int callee() ",
+            "symbol": {
+              "name": "callee",
+              "signature": "static int callee() ",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 3,
+                "column": 26,
+                "endLine": 3,
+                "endColumn": 32
+              },
+              "language": "java"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Caller.java:1:20:int caller() ",
+            "to": "<fixture>/Worker.java:3:26:static int callee() ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/Worker.java:2:47:public int work() ",
+            "to": "<fixture>/Worker.java:3:26:static int callee() ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "Caller.java",
+        "needle": "caller()",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/Caller.java:1:20:int caller() ",
+        "nodes": [
+          {
+            "id": "<fixture>/Caller.java:1:20:int caller() ",
+            "symbol": {
+              "name": "caller",
+              "signature": "int caller() ",
+              "location": {
+                "filePath": "<fixture>/Caller.java",
+                "line": 1,
+                "column": 20,
+                "endLine": 1,
+                "endColumn": 26
+              },
+              "language": "java"
+            }
+          },
+          {
+            "id": "<fixture>/Worker.java:3:26:static int callee() ",
+            "symbol": {
+              "name": "callee",
+              "signature": "static int callee() ",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 3,
+                "column": 26,
+                "endLine": 3,
+                "endColumn": 32
+              },
+              "language": "java"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/Caller.java:1:20:int caller() ",
+            "to": "<fixture>/Worker.java:3:26:static int callee() ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "Worker.java",
+        "needle": "work();",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work",
+          "signature": "int work();",
+          "location": {
+            "filePath": "<fixture>/Worker.java",
+            "line": 1,
+            "column": 31,
+            "endLine": 1,
+            "endColumn": 35
+          },
+          "language": "java"
+        },
+        "implementations": [
+          {
+            "name": "work",
+            "signature": "public int work() ",
+            "location": {
+              "filePath": "<fixture>/Worker.java",
+              "line": 2,
+              "column": 47,
+              "endLine": 2,
+              "endColumn": 51
+            },
+            "language": "java"
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE DefinitionsScopedSearch"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.java",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.java",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "warning",
+              "message": "Method \u0027work()\u0027 is never used",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 1,
+                "column": 31,
+                "endLine": 1,
+                "endColumn": 35
+              },
+              "source": "IDE inspections"
+            },
+            {
+              "severity": "warning",
+              "message": "Class \u0027Concrete\u0027 is never used",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 2,
+                "column": 7,
+                "endLine": 2,
+                "endColumn": 15
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.java",
+        "replace": [
+          "return 1",
+          "return missing_symbol"
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.java",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "warning",
+              "message": "Method \u0027work()\u0027 is never used",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 1,
+                "column": 31,
+                "endLine": 1,
+                "endColumn": 35
+              },
+              "source": "IDE inspections"
+            },
+            {
+              "severity": "warning",
+              "message": "Class \u0027Concrete\u0027 is never used",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 2,
+                "column": 7,
+                "endLine": 2,
+                "endColumn": 15
+              },
+              "source": "IDE inspections"
+            },
+            {
+              "severity": "error",
+              "message": "Cannot resolve symbol \u0027missing_symbol\u0027",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 3,
+                "column": 44,
+                "endLine": 3,
+                "endColumn": 58
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "Worker.java",
+        "replace": [
+          "return 1",
+          "return 1"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/Worker.java",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "warning",
+              "message": "Method \u0027work()\u0027 is never used",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 1,
+                "column": 31,
+                "endLine": 1,
+                "endColumn": 35
+              },
+              "source": "IDE inspections"
+            },
+            {
+              "severity": "warning",
+              "message": "Class \u0027Concrete\u0027 is never used",
+              "location": {
+                "filePath": "<fixture>/Worker.java",
+                "line": 2,
+                "column": 7,
+                "endLine": 2,
+                "endColumn": 15
+              },
+              "source": "IDE inspections"
+            }
+          ],
+          "backend": "IDE CodeSmellDetector"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

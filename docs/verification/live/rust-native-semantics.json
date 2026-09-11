@@ -1,0 +1,207 @@
+{
+  "language": "rust",
+  "ide": "2026.2.2",
+  "adapters": [
+    "swift",
+    "csharp",
+    "javascript",
+    "vue",
+    "rust"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "src/lib.rs",
+        "needle": "callee()",
+        "direction": "incoming",
+        "occurrence": 1,
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+        "nodes": [
+          {
+            "id": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "symbol": {
+              "name": "caller",
+              "signature": "pub fn caller() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/caller.rs",
+                "line": 1,
+                "column": 8,
+                "endLine": 1,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "symbol": {
+              "name": "work",
+              "signature": "fn work(\u0026self) -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 4,
+                "column": 31,
+                "endLine": 4,
+                "endColumn": 35
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "symbol": {
+              "name": "callee",
+              "signature": "pub fn callee() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 8,
+                "endLine": 5,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "src/caller.rs",
+        "needle": "callee()",
+        "direction": "incoming",
+        "rootSameAs": 0
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+        "nodes": [
+          {
+            "id": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "symbol": {
+              "name": "caller",
+              "signature": "pub fn caller() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/caller.rs",
+                "line": 1,
+                "column": 8,
+                "endLine": 1,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "symbol": {
+              "name": "work",
+              "signature": "fn work(\u0026self) -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 4,
+                "column": 31,
+                "endLine": 4,
+                "endColumn": 35
+              },
+              "language": "rust"
+            }
+          },
+          {
+            "id": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "symbol": {
+              "name": "callee",
+              "signature": "pub fn callee() -\u003e i32 ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 5,
+                "column": 8,
+                "endLine": 5,
+                "endColumn": 14
+              },
+              "language": "rust"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/src/caller.rs:1:8:pub fn caller() -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          },
+          {
+            "from": "<fixture>/src/lib.rs:4:31:fn work(\u0026self) -\u003e i32 ",
+            "to": "<fixture>/src/lib.rs:5:8:pub fn callee() -\u003e i32 ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "src/lib.rs",
+        "needle": "recursive()",
+        "direction": "outgoing",
+        "depth": 3,
+        "names": [
+          "recursive"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/src/lib.rs:6:8:pub fn recursive() ",
+        "nodes": [
+          {
+            "id": "<fixture>/src/lib.rs:6:8:pub fn recursive() ",
+            "symbol": {
+              "name": "recursive",
+              "signature": "pub fn recursive() ",
+              "location": {
+                "filePath": "<fixture>/src/lib.rs",
+                "line": 6,
+                "column": 8,
+                "endLine": 6,
+                "endColumn": 17
+              },
+              "language": "rust"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/src/lib.rs:6:8:pub fn recursive() ",
+            "to": "<fixture>/src/lib.rs:6:8:pub fn recursive() ",
+            "callLocations": []
+          }
+        ],
+        "truncated": false,
+        "backend": "IDE native hierarchy"
+      }
+    }
+  ],
+  "passed": true
+}

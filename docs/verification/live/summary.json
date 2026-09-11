@@ -1,0 +1,188 @@
+[
+  {
+    "fixture": "csharp-026",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "csharp-027",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "csharp-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "dart-crlf",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "dart-semantics",
+    "passed": true,
+    "checks": 3,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "dart",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "go-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "go",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "java-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "java",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "javascript-js",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "javascript-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "javascript",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "kotlin-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "kotlin",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "omnisharp",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "php-semantics",
+    "passed": true,
+    "checks": 3,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "php",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "python-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "python",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "rust-fallback-semantics",
+    "passed": true,
+    "checks": 3,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "rust-fallback",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "rust-native-semantics",
+    "passed": true,
+    "checks": 3,
+    "ide": "2026.2.2"
+  },
+  {
+    "fixture": "rust-native",
+    "passed": true,
+    "checks": 6,
+    "ide": "2026.2.2"
+  },
+  {
+    "fixture": "swift-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "swift",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-editor",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-script",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-semantics",
+    "passed": true,
+    "checks": 2,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue-volar",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  },
+  {
+    "fixture": "vue",
+    "passed": true,
+    "checks": 6,
+    "ide": "2025.3.1"
+  }
+]

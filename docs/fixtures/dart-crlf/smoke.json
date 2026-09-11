@@ -1,0 +1,54 @@
+{
+  "language": "dart",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "lib/worker.dart",
+      "needle": "callee() =>",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "lib/caller.dart",
+      "needle": "caller()",
+      "direction": "outgoing",
+      "contains": [
+        "callee"
+      ]
+    },
+    {
+      "tool": "find_implementations",
+      "file": "lib/worker.dart",
+      "needle": "work();",
+      "contains": [
+        "work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "lib/worker.dart",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "lib/worker.dart",
+      "replace": [
+        "=> 1;",
+        "=> missing_symbol;"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "lib/worker.dart",
+      "replace": [
+        "=> 1;",
+        "=> 1;"
+      ],
+      "diagnosticError": false
+    }
+  ]
+}

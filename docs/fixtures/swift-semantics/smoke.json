@@ -1,0 +1,21 @@
+{
+  "language": "swift",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Sources/IntelligenceFixture/Worker.swift",
+      "needle": "callee()",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Sources/IntelligenceFixture/Caller.swift",
+      "needle": "callee()",
+      "direction": "incoming",
+      "rootSameAs": 0
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "language": "python",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "worker.py",
+      "needle": "callee():",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "caller.py",
+      "needle": "callee()",
+      "direction": "incoming",
+      "rootSameAs": 0
+    }
+  ]
+}

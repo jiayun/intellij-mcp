@@ -1,0 +1,24 @@
+{
+  "language": "java",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.java",
+      "needle": "callee() {",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ],
+      "excludeNames": [
+        "otherCaller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Caller.java",
+      "needle": "callee();",
+      "direction": "incoming",
+      "rootSameAs": 0
+    }
+  ]
+}

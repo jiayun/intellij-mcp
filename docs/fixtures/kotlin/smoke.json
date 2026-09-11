@@ -1,0 +1,54 @@
+{
+  "language": "kotlin",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.kt",
+      "needle": "callee():",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Caller.kt",
+      "needle": "caller():",
+      "direction": "outgoing",
+      "contains": [
+        "callee"
+      ]
+    },
+    {
+      "tool": "find_implementations",
+      "file": "Worker.kt",
+      "needle": "work():",
+      "contains": [
+        "work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.kt",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.kt",
+      "replace": [
+        "Int = 1",
+        "Int = missing_symbol"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.kt",
+      "replace": [
+        "Int = 1",
+        "Int = 1"
+      ],
+      "diagnosticError": false
+    }
+  ]
+}

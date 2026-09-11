@@ -1,0 +1,54 @@
+{
+  "language": "javascript",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "worker.ts",
+      "needle": "callee():",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "caller.ts",
+      "needle": "caller():",
+      "direction": "outgoing",
+      "contains": [
+        "callee"
+      ]
+    },
+    {
+      "tool": "find_implementations",
+      "file": "worker.ts",
+      "needle": "work():",
+      "contains": [
+        "work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.ts",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.ts",
+      "replace": [
+        "return 1",
+        "return missing_symbol"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "worker.ts",
+      "replace": [
+        "return 1",
+        "return 1"
+      ],
+      "diagnosticError": false
+    }
+  ]
+}

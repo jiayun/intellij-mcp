@@ -1,0 +1,283 @@
+{
+  "language": "dart",
+  "ide": "2025.3.1",
+  "adapters": [
+    "swift",
+    "csharp",
+    "python",
+    "java",
+    "kotlin",
+    "javascript",
+    "vue",
+    "php",
+    "rust",
+    "go",
+    "dart"
+  ],
+  "checks": [
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "lib/worker.dart",
+        "needle": "callee() \u003d\u003e",
+        "direction": "incoming",
+        "contains": [
+          "caller"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/lib/worker.dart:4:5:int callee() \u003d\u003e 1;",
+        "nodes": [
+          {
+            "id": "<fixture>/lib/caller.dart:2:5:int caller() \u003d\u003e callee();",
+            "symbol": {
+              "name": "caller",
+              "signature": "int caller() \u003d\u003e callee();",
+              "location": {
+                "filePath": "<fixture>/lib/caller.dart",
+                "line": 2,
+                "column": 5,
+                "endLine": 2,
+                "endColumn": 11
+              },
+              "language": "dart"
+            }
+          },
+          {
+            "id": "<fixture>/lib/worker.dart:3:48:int work() \u003d\u003e callee();",
+            "symbol": {
+              "name": "work",
+              "signature": "int work() \u003d\u003e callee();",
+              "location": {
+                "filePath": "<fixture>/lib/worker.dart",
+                "line": 3,
+                "column": 48,
+                "endLine": 3,
+                "endColumn": 52
+              },
+              "language": "dart"
+            }
+          },
+          {
+            "id": "<fixture>/lib/worker.dart:4:5:int callee() \u003d\u003e 1;",
+            "symbol": {
+              "name": "callee",
+              "signature": "int callee() \u003d\u003e 1;",
+              "location": {
+                "filePath": "<fixture>/lib/worker.dart",
+                "line": 4,
+                "column": 5,
+                "endLine": 4,
+                "endColumn": 11
+              },
+              "language": "dart"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/lib/caller.dart:2:5:int caller() \u003d\u003e callee();",
+            "to": "<fixture>/lib/worker.dart:4:5:int callee() \u003d\u003e 1;",
+            "callLocations": [
+              {
+                "filePath": "file://<fixture>/lib/caller.dart",
+                "line": 2,
+                "column": 17,
+                "endLine": 2,
+                "endColumn": 23
+              }
+            ]
+          },
+          {
+            "from": "<fixture>/lib/worker.dart:3:48:int work() \u003d\u003e callee();",
+            "to": "<fixture>/lib/worker.dart:4:5:int callee() \u003d\u003e 1;",
+            "callLocations": [
+              {
+                "filePath": "file://<fixture>/lib/worker.dart",
+                "line": 3,
+                "column": 58,
+                "endLine": 3,
+                "endColumn": 64
+              }
+            ]
+          }
+        ],
+        "truncated": false,
+        "backend": "Dart Analysis Server"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_call_hierarchy",
+        "file": "lib/caller.dart",
+        "needle": "caller()",
+        "direction": "outgoing",
+        "contains": [
+          "callee"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "root": "<fixture>/lib/caller.dart:2:5:int caller() \u003d\u003e callee();",
+        "nodes": [
+          {
+            "id": "<fixture>/lib/caller.dart:2:5:int caller() \u003d\u003e callee();",
+            "symbol": {
+              "name": "caller",
+              "signature": "int caller() \u003d\u003e callee();",
+              "location": {
+                "filePath": "<fixture>/lib/caller.dart",
+                "line": 2,
+                "column": 5,
+                "endLine": 2,
+                "endColumn": 11
+              },
+              "language": "dart"
+            }
+          },
+          {
+            "id": "<fixture>/lib/worker.dart:4:5:int callee() \u003d\u003e 1;",
+            "symbol": {
+              "name": "callee",
+              "signature": "int callee() \u003d\u003e 1;",
+              "location": {
+                "filePath": "<fixture>/lib/worker.dart",
+                "line": 4,
+                "column": 5,
+                "endLine": 4,
+                "endColumn": 11
+              },
+              "language": "dart"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": "<fixture>/lib/caller.dart:2:5:int caller() \u003d\u003e callee();",
+            "to": "<fixture>/lib/worker.dart:4:5:int callee() \u003d\u003e 1;",
+            "callLocations": [
+              {
+                "filePath": "<fixture>/lib/caller.dart",
+                "line": 2,
+                "column": 17,
+                "endLine": 2,
+                "endColumn": 23
+              }
+            ]
+          }
+        ],
+        "truncated": false,
+        "backend": "Dart Analysis Server"
+      }
+    },
+    {
+      "check": {
+        "tool": "find_implementations",
+        "file": "lib/worker.dart",
+        "needle": "work();",
+        "contains": [
+          "work"
+        ]
+      },
+      "result": {
+        "status": "complete",
+        "target": {
+          "name": "work",
+          "signature": "int work();",
+          "location": {
+            "filePath": "<fixture>/lib/worker.dart",
+            "line": 1,
+            "column": 29,
+            "endLine": 1,
+            "endColumn": 33
+          },
+          "language": "dart"
+        },
+        "implementations": [
+          {
+            "name": "work",
+            "signature": "int work() \u003d\u003e callee();",
+            "location": {
+              "filePath": "<fixture>/lib/worker.dart",
+              "line": 3,
+              "column": 48,
+              "endLine": 3,
+              "endColumn": 52
+            },
+            "language": "dart"
+          }
+        ],
+        "truncated": false,
+        "backend": "Dart Analysis Server"
+      }
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "lib/worker.dart",
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/lib/worker.dart",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "Dart Analysis Server"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "lib/worker.dart",
+        "replace": [
+          "\u003d\u003e 1;",
+          "\u003d\u003e missing_symbol;"
+        ],
+        "diagnosticError": true
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/lib/worker.dart",
+          "status": "complete",
+          "diagnostics": [
+            {
+              "severity": "error",
+              "message": "Undefined name \u0027missing_symbol\u0027.",
+              "location": {
+                "filePath": "<fixture>/lib/worker.dart",
+                "line": 4,
+                "column": 17,
+                "endLine": 4,
+                "endColumn": 31
+              },
+              "source": "Dart Analysis Server: undefined_identifier"
+            }
+          ],
+          "backend": "Dart Analysis Server"
+        }
+      ]
+    },
+    {
+      "check": {
+        "tool": "get_diagnostics",
+        "file": "lib/worker.dart",
+        "replace": [
+          "\u003d\u003e 1;",
+          "\u003d\u003e 1;"
+        ],
+        "diagnosticError": false
+      },
+      "result": [
+        {
+          "filePath": "<fixture>/lib/worker.dart",
+          "status": "complete",
+          "diagnostics": [],
+          "backend": "Dart Analysis Server"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

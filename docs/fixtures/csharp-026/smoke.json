@@ -1,0 +1,52 @@
+{
+  "language": "csharp",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Worker.cs",
+      "needle": "Callee() {",
+      "direction": "incoming",
+      "contains": [
+        "Run"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "Caller.cs",
+      "needle": "Run()",
+      "direction": "outgoing",
+      "status": "unsupported"
+    },
+    {
+      "tool": "find_implementations",
+      "file": "Worker.cs",
+      "needle": "Work();",
+      "contains": [
+        "Work"
+      ]
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.cs",
+      "diagnosticError": false
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.cs",
+      "replace": [
+        "return 1",
+        "return missing_symbol"
+      ],
+      "diagnosticError": true
+    },
+    {
+      "tool": "get_diagnostics",
+      "file": "Worker.cs",
+      "replace": [
+        "return 1",
+        "return 1"
+      ],
+      "diagnosticError": false
+    }
+  ]
+}

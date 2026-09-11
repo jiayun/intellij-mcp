@@ -1,0 +1,21 @@
+{
+  "language": "javascript",
+  "checks": [
+    {
+      "tool": "get_call_hierarchy",
+      "file": "worker.ts",
+      "needle": "callee():",
+      "direction": "incoming",
+      "contains": [
+        "caller"
+      ]
+    },
+    {
+      "tool": "get_call_hierarchy",
+      "file": "caller.ts",
+      "needle": "callee();",
+      "direction": "incoming",
+      "rootSameAs": 0
+    }
+  ]
+}

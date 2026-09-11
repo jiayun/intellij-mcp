@@ -1,0 +1,2 @@
+# Preserve the exact bytes used by the Dart server coordinate regression fixture.
+docs/fixtures/dart-crlf/lib/*.dart -text whitespace=cr-at-eol
